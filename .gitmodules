@@ -1,0 +1,3 @@
+[submodule "Thirdparty/libtorrent"]
+	path = Thirdparty/libtorrent
+	url = https://github.com/arvidn/libtorrent.git

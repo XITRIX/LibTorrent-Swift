@@ -8,11 +8,15 @@
 
 /* Begin PBXBuildFile section */
 		D15147692AE6AE9C000407AE /* LibTorrent.h in Headers */ = {isa = PBXBuildFile; fileRef = D15147682AE6AE9C000407AE /* LibTorrent.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		D15147802AE6BBE3000407AE /* make.sh in Resources */ = {isa = PBXBuildFile; fileRef = D151477F2AE6BBE3000407AE /* make.sh */; };
+		D15147882AE6C297000407AE /* libtorrent-rasterbar.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D15147872AE6C297000407AE /* libtorrent-rasterbar.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		D15147652AE6AE9C000407AE /* LibTorrent.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = LibTorrent.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		D15147682AE6AE9C000407AE /* LibTorrent.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LibTorrent.h; sourceTree = "<group>"; };
+		D151477F2AE6BBE3000407AE /* make.sh */ = {isa = PBXFileReference; lastKnownFileType = text.script.sh; path = make.sh; sourceTree = "<group>"; };
+		D15147872AE6C297000407AE /* libtorrent-rasterbar.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = "libtorrent-rasterbar.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -20,6 +24,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D15147882AE6C297000407AE /* libtorrent-rasterbar.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -29,8 +34,10 @@
 		D151475B2AE6AE9B000407AE = {
 			isa = PBXGroup;
 			children = (
+				D151477F2AE6BBE3000407AE /* make.sh */,
 				D15147672AE6AE9C000407AE /* LibTorrent */,
 				D15147662AE6AE9C000407AE /* Products */,
+				D15147782AE6B9BD000407AE /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -48,6 +55,14 @@
 				D15147682AE6AE9C000407AE /* LibTorrent.h */,
 			);
 			path = LibTorrent;
+			sourceTree = "<group>";
+		};
+		D15147782AE6B9BD000407AE /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				D15147872AE6C297000407AE /* libtorrent-rasterbar.a */,
+			);
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -119,6 +134,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D15147802AE6BBE3000407AE /* make.sh in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -278,6 +294,10 @@
 					"@executable_path/../Frameworks",
 					"@loader_path/Frameworks",
 				);
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/libtorrent-build/Debug",
+				);
 				MACOSX_DEPLOYMENT_TARGET = 14.0;
 				MARKETING_VERSION = 1.0;
 				MODULE_VERIFIER_SUPPORTED_LANGUAGES = "objective-c objective-c++";
@@ -315,6 +335,10 @@
 				"LD_RUNPATH_SEARCH_PATHS[sdk=macosx*]" = (
 					"@executable_path/../Frameworks",
 					"@loader_path/Frameworks",
+				);
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/libtorrent-build/Debug",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 14.0;
 				MARKETING_VERSION = 1.0;
