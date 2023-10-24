@@ -9,13 +9,24 @@
 /* Begin PBXBuildFile section */
 		D15147692AE6AE9C000407AE /* LibTorrent.h in Headers */ = {isa = PBXBuildFile; fileRef = D15147682AE6AE9C000407AE /* LibTorrent.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		D15147802AE6BBE3000407AE /* make.sh in Resources */ = {isa = PBXBuildFile; fileRef = D151477F2AE6BBE3000407AE /* make.sh */; };
-		D15147882AE6C297000407AE /* libtorrent-rasterbar.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D15147872AE6C297000407AE /* libtorrent-rasterbar.a */; };
 		D151478B2AE7A4CD000407AE /* Test.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D15147892AE7A4CD000407AE /* Test.cpp */; };
 		D151478C2AE7A4CD000407AE /* Test.hpp in Headers */ = {isa = PBXBuildFile; fileRef = D151478A2AE7A4CD000407AE /* Test.hpp */; };
 		D151478F2AE7B555000407AE /* OpenSSL in Frameworks */ = {isa = PBXBuildFile; productRef = D151478E2AE7B555000407AE /* OpenSSL */; };
 		D15147912AE7B5BA000407AE /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D15147902AE7B5BA000407AE /* SystemConfiguration.framework */; };
 		D15147932AE7B5CA000407AE /* CoreFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D15147922AE7B5CA000407AE /* CoreFoundation.framework */; };
+		D15147952AE7BBCB000407AE /* SwiftFile.swift in Sources */ = {isa = PBXBuildFile; fileRef = D15147942AE7BBCB000407AE /* SwiftFile.swift */; };
+		D151479F2AE7BE6D000407AE /* libtorrent-rasterbar.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D151479E2AE7BE56000407AE /* libtorrent-rasterbar.a */; };
 /* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		D151479D2AE7BE56000407AE /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = D15147962AE7BE56000407AE /* libtorrent.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 03DD39AD889B452FB11A4B52;
+			remoteInfo = "torrent-rasterbar";
+		};
+/* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
 		D15147652AE6AE9C000407AE /* LibTorrent.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = LibTorrent.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -26,6 +37,8 @@
 		D151478A2AE7A4CD000407AE /* Test.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = Test.hpp; sourceTree = "<group>"; };
 		D15147902AE7B5BA000407AE /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS17.0.sdk/System/Library/Frameworks/SystemConfiguration.framework; sourceTree = DEVELOPER_DIR; };
 		D15147922AE7B5CA000407AE /* CoreFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreFoundation.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS17.0.sdk/System/Library/Frameworks/CoreFoundation.framework; sourceTree = DEVELOPER_DIR; };
+		D15147942AE7BBCB000407AE /* SwiftFile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwiftFile.swift; sourceTree = "<group>"; };
+		D15147962AE7BE56000407AE /* libtorrent.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = libtorrent.xcodeproj; path = "libtorrent-build/libtorrent.xcodeproj"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -34,7 +47,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				D15147932AE7B5CA000407AE /* CoreFoundation.framework in Frameworks */,
-				D15147882AE6C297000407AE /* libtorrent-rasterbar.a in Frameworks */,
+				D151479F2AE7BE6D000407AE /* libtorrent-rasterbar.a in Frameworks */,
 				D15147912AE7B5BA000407AE /* SystemConfiguration.framework in Frameworks */,
 				D151478F2AE7B555000407AE /* OpenSSL in Frameworks */,
 			);
@@ -46,6 +59,7 @@
 		D151475B2AE6AE9B000407AE = {
 			isa = PBXGroup;
 			children = (
+				D15147962AE7BE56000407AE /* libtorrent.xcodeproj */,
 				D151477F2AE6BBE3000407AE /* make.sh */,
 				D15147672AE6AE9C000407AE /* LibTorrent */,
 				D15147662AE6AE9C000407AE /* Products */,
@@ -67,6 +81,7 @@
 				D15147682AE6AE9C000407AE /* LibTorrent.h */,
 				D15147892AE7A4CD000407AE /* Test.cpp */,
 				D151478A2AE7A4CD000407AE /* Test.hpp */,
+				D15147942AE7BBCB000407AE /* SwiftFile.swift */,
 			);
 			path = LibTorrent;
 			sourceTree = "<group>";
@@ -79,6 +94,14 @@
 				D15147872AE6C297000407AE /* libtorrent-rasterbar.a */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		D15147972AE7BE56000407AE /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				D151479E2AE7BE56000407AE /* libtorrent-rasterbar.a */,
+			);
+			name = Products;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -128,6 +151,7 @@
 				TargetAttributes = {
 					D15147642AE6AE9C000407AE = {
 						CreatedOnToolsVersion = 15.0;
+						LastSwiftMigration = 1500;
 					};
 				};
 			};
@@ -145,12 +169,28 @@
 			);
 			productRefGroup = D15147662AE6AE9C000407AE /* Products */;
 			projectDirPath = "";
+			projectReferences = (
+				{
+					ProductGroup = D15147972AE7BE56000407AE /* Products */;
+					ProjectRef = D15147962AE7BE56000407AE /* libtorrent.xcodeproj */;
+				},
+			);
 			projectRoot = "";
 			targets = (
 				D15147642AE6AE9C000407AE /* LibTorrent */,
 			);
 		};
 /* End PBXProject section */
+
+/* Begin PBXReferenceProxy section */
+		D151479E2AE7BE56000407AE /* libtorrent-rasterbar.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = "libtorrent-rasterbar.a";
+			remoteRef = D151479D2AE7BE56000407AE /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+/* End PBXReferenceProxy section */
 
 /* Begin PBXResourcesBuildPhase section */
 		D15147632AE6AE9C000407AE /* Resources */ = {
@@ -169,6 +209,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				D151478B2AE7A4CD000407AE /* Test.cpp in Sources */,
+				D15147952AE7BBCB000407AE /* SwiftFile.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -313,10 +354,12 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALLOW_TARGET_PLATFORM_SPECIALIZATION = YES;
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = D59DHVRS87;
+				DRIVERKIT_DEPLOYMENT_TARGET = 19.0;
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
@@ -347,8 +390,11 @@
 				SKIP_INSTALL = YES;
 				SUPPORTS_MACCATALYST = YES;
 				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
+				TVOS_DEPLOYMENT_TARGET = 12.0;
+				WATCHOS_DEPLOYMENT_TARGET = 4.0;
 			};
 			name = Debug;
 		};
@@ -356,10 +402,12 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALLOW_TARGET_PLATFORM_SPECIALIZATION = YES;
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = D59DHVRS87;
+				DRIVERKIT_DEPLOYMENT_TARGET = 19.0;
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
@@ -392,6 +440,8 @@
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
+				TVOS_DEPLOYMENT_TARGET = 12.0;
+				WATCHOS_DEPLOYMENT_TARGET = 4.0;
 			};
 			name = Release;
 		};
