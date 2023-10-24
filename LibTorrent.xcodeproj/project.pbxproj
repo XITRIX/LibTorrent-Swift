@@ -10,6 +10,11 @@
 		D15147692AE6AE9C000407AE /* LibTorrent.h in Headers */ = {isa = PBXBuildFile; fileRef = D15147682AE6AE9C000407AE /* LibTorrent.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		D15147802AE6BBE3000407AE /* make.sh in Resources */ = {isa = PBXBuildFile; fileRef = D151477F2AE6BBE3000407AE /* make.sh */; };
 		D15147882AE6C297000407AE /* libtorrent-rasterbar.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D15147872AE6C297000407AE /* libtorrent-rasterbar.a */; };
+		D151478B2AE7A4CD000407AE /* Test.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D15147892AE7A4CD000407AE /* Test.cpp */; };
+		D151478C2AE7A4CD000407AE /* Test.hpp in Headers */ = {isa = PBXBuildFile; fileRef = D151478A2AE7A4CD000407AE /* Test.hpp */; };
+		D151478F2AE7B555000407AE /* OpenSSL in Frameworks */ = {isa = PBXBuildFile; productRef = D151478E2AE7B555000407AE /* OpenSSL */; };
+		D15147912AE7B5BA000407AE /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D15147902AE7B5BA000407AE /* SystemConfiguration.framework */; };
+		D15147932AE7B5CA000407AE /* CoreFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D15147922AE7B5CA000407AE /* CoreFoundation.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -17,6 +22,10 @@
 		D15147682AE6AE9C000407AE /* LibTorrent.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LibTorrent.h; sourceTree = "<group>"; };
 		D151477F2AE6BBE3000407AE /* make.sh */ = {isa = PBXFileReference; lastKnownFileType = text.script.sh; path = make.sh; sourceTree = "<group>"; };
 		D15147872AE6C297000407AE /* libtorrent-rasterbar.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = "libtorrent-rasterbar.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		D15147892AE7A4CD000407AE /* Test.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Test.cpp; sourceTree = "<group>"; };
+		D151478A2AE7A4CD000407AE /* Test.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = Test.hpp; sourceTree = "<group>"; };
+		D15147902AE7B5BA000407AE /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS17.0.sdk/System/Library/Frameworks/SystemConfiguration.framework; sourceTree = DEVELOPER_DIR; };
+		D15147922AE7B5CA000407AE /* CoreFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreFoundation.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS17.0.sdk/System/Library/Frameworks/CoreFoundation.framework; sourceTree = DEVELOPER_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -24,7 +33,10 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D15147932AE7B5CA000407AE /* CoreFoundation.framework in Frameworks */,
 				D15147882AE6C297000407AE /* libtorrent-rasterbar.a in Frameworks */,
+				D15147912AE7B5BA000407AE /* SystemConfiguration.framework in Frameworks */,
+				D151478F2AE7B555000407AE /* OpenSSL in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -53,6 +65,8 @@
 			isa = PBXGroup;
 			children = (
 				D15147682AE6AE9C000407AE /* LibTorrent.h */,
+				D15147892AE7A4CD000407AE /* Test.cpp */,
+				D151478A2AE7A4CD000407AE /* Test.hpp */,
 			);
 			path = LibTorrent;
 			sourceTree = "<group>";
@@ -60,6 +74,8 @@
 		D15147782AE6B9BD000407AE /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				D15147922AE7B5CA000407AE /* CoreFoundation.framework */,
+				D15147902AE7B5BA000407AE /* SystemConfiguration.framework */,
 				D15147872AE6C297000407AE /* libtorrent-rasterbar.a */,
 			);
 			name = Frameworks;
@@ -72,6 +88,7 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D151478C2AE7A4CD000407AE /* Test.hpp in Headers */,
 				D15147692AE6AE9C000407AE /* LibTorrent.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -93,6 +110,9 @@
 			dependencies = (
 			);
 			name = LibTorrent;
+			packageProductDependencies = (
+				D151478E2AE7B555000407AE /* OpenSSL */,
+			);
 			productName = LibTorrent;
 			productReference = D15147652AE6AE9C000407AE /* LibTorrent.framework */;
 			productType = "com.apple.product-type.framework";
@@ -120,6 +140,9 @@
 				Base,
 			);
 			mainGroup = D151475B2AE6AE9B000407AE;
+			packageReferences = (
+				D151478D2AE7B555000407AE /* XCRemoteSwiftPackageReference "OpenSSL" */,
+			);
 			productRefGroup = D15147662AE6AE9C000407AE /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -145,6 +168,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D151478B2AE7A4CD000407AE /* Test.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -154,6 +178,7 @@
 		D151476A2AE6AE9C000407AE /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALLOW_TARGET_PLATFORM_SPECIALIZATION = YES;
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
 				CLANG_ANALYZER_NONNULL = YES;
@@ -204,10 +229,16 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
+				HEADER_SEARCH_PATHS = (
+					/opt/homebrew/include,
+					Thirdparty/libtorrent/include,
+				);
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
+				SUPPORTED_PLATFORMS = "watchsimulator watchos macosx iphonesimulator iphoneos driverkit appletvsimulator appletvos";
+				SUPPORTS_MACCATALYST = YES;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				VERSIONING_SYSTEM = "apple-generic";
@@ -218,6 +249,7 @@
 		D151476B2AE6AE9C000407AE /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALLOW_TARGET_PLATFORM_SPECIALIZATION = YES;
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
 				CLANG_ANALYZER_NONNULL = YES;
@@ -262,9 +294,15 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
+				HEADER_SEARCH_PATHS = (
+					/opt/homebrew/include,
+					Thirdparty/libtorrent/include,
+				);
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
+				SUPPORTED_PLATFORMS = "watchsimulator watchos macosx iphonesimulator iphoneos driverkit appletvsimulator appletvos";
+				SUPPORTS_MACCATALYST = YES;
 				SWIFT_COMPILATION_MODE = wholemodule;
 				VERSIONING_SYSTEM = "apple-generic";
 				VERSION_INFO_PREFIX = "";
@@ -274,6 +312,7 @@
 		D151476D2AE6AE9C000407AE /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALLOW_TARGET_PLATFORM_SPECIALIZATION = YES;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEFINES_MODULE = YES;
@@ -285,7 +324,7 @@
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
@@ -298,7 +337,7 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)/libtorrent-build/Debug",
 				);
-				MACOSX_DEPLOYMENT_TARGET = 14.0;
+				MACOSX_DEPLOYMENT_TARGET = 10.13;
 				MARKETING_VERSION = 1.0;
 				MODULE_VERIFIER_SUPPORTED_LANGUAGES = "objective-c objective-c++";
 				MODULE_VERIFIER_SUPPORTED_LANGUAGE_STANDARDS = "gnu17 gnu++20";
@@ -306,7 +345,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SDKROOT = auto;
 				SKIP_INSTALL = YES;
-				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx";
+				SUPPORTS_MACCATALYST = YES;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -316,6 +355,7 @@
 		D151476E2AE6AE9C000407AE /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALLOW_TARGET_PLATFORM_SPECIALIZATION = YES;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEFINES_MODULE = YES;
@@ -327,7 +367,7 @@
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
@@ -340,7 +380,7 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)/libtorrent-build/Debug",
 				);
-				MACOSX_DEPLOYMENT_TARGET = 14.0;
+				MACOSX_DEPLOYMENT_TARGET = 10.13;
 				MARKETING_VERSION = 1.0;
 				MODULE_VERIFIER_SUPPORTED_LANGUAGES = "objective-c objective-c++";
 				MODULE_VERIFIER_SUPPORTED_LANGUAGE_STANDARDS = "gnu17 gnu++20";
@@ -348,7 +388,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SDKROOT = auto;
 				SKIP_INSTALL = YES;
-				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx";
+				SUPPORTS_MACCATALYST = YES;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -377,6 +417,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		D151478D2AE7B555000407AE /* XCRemoteSwiftPackageReference "OpenSSL" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/krzyzanowskim/OpenSSL.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 3.1.3001;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		D151478E2AE7B555000407AE /* OpenSSL */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = D151478D2AE7B555000407AE /* XCRemoteSwiftPackageReference "OpenSSL" */;
+			productName = OpenSSL;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = D151475C2AE6AE9B000407AE /* Project object */;
 }
