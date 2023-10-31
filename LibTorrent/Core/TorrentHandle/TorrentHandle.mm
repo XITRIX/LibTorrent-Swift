@@ -15,6 +15,22 @@
 #import "libtorrent/torrent_info.hpp"
 #import "libtorrent/magnet_uri.hpp"
 
+@implementation TorrentHashes
+- (instancetype)initWith:(lt::info_hash_t)infoHash {
+    self = [self init];
+    if (self) {
+        _v1 = [[NSData alloc] initWithBytes:infoHash.v1.data() length:infoHash.v1.size()];
+        _v2 = [[NSData alloc] initWithBytes:infoHash.v2.data() length:infoHash.v2.size()];
+        _hasV1 = infoHash.has_v1();
+        _hasV2 = infoHash.has_v2();
+
+        auto best = infoHash.get_best();
+        _best = [[NSData alloc] initWithBytes:best.data() length:best.size()]; ;
+    }
+    return self;
+}
+@end
+
 @implementation TorrentHandleSnapshot
 @end
 
@@ -41,6 +57,11 @@
 - (NSData *)infoHash {
     auto ih = _torrentHandle.info_hash();
     return [[NSData alloc] initWithBytes:ih.data() length:ih.size()];
+}
+
+- (TorrentHashes *)infoHashes {
+    auto ih = _torrentHandle.info_hashes();
+    return [[TorrentHashes alloc] initWith:ih];
 }
 
 - (NSString *)name {
@@ -236,7 +257,7 @@
 // MARK: - Functions
 
 - (void)resume {
-    _torrentHandle.set_flags(lt::torrent_flags::auto_managed);
+    _torrentHandle.unset_flags(lt::torrent_flags::auto_managed);
     _torrentHandle.resume();
 }
 

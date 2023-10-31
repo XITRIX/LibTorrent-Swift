@@ -22,7 +22,7 @@ typedef NS_ENUM(NSUInteger, ErrorCode) {
 @class Session, TorrentHandle;
 @protocol SessionDelegate
 - (void)torrentManager:(Session *)manager didAddTorrent:(TorrentHandle *)torrent;
-- (void)torrentManager:(Session *)manager didRemoveTorrentWithHash:(NSData *)hashData;
+- (void)torrentManager:(Session *)manager didRemoveTorrentWithHash:(TorrentHashes *)hashesData;
 - (void)torrentManager:(Session *)manager didReceiveUpdateForTorrent:(TorrentHandle *)torrent;
 - (void)torrentManager:(Session *)manager didErrorOccur:(NSError *)error;
 @end
@@ -39,7 +39,7 @@ typedef NS_ENUM(NSUInteger, ErrorCode) {
 
 - (instancetype)initWith:(NSString *)downloadPath torrentsPath:(NSString *)torrentsPath fastResumePath:(NSString *)fastResumePath settings:(SessionSettings *)settings;
 
-- (NSString *)fastResumePathForInfoHash:(NSData *)infoHash;
+- (NSString *)fastResumePathForInfoHashes:(TorrentHashes *)infoHashes;
 
 - (void)addDelegate:(id<SessionDelegate>)delegate;
 - (void)removeDelegate:(id<SessionDelegate>)delegate;

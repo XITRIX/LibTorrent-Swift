@@ -6,6 +6,7 @@
 //
 
 #import "MagnetURI_Internal.h"
+#import "TorrentHandle_Internal.h"
 
 @implementation MagnetURI : NSObject
 
@@ -21,9 +22,9 @@
     return self;
 }
 
-- (NSData *)infoHash {
-    auto ih = _torrentParams.info_hash;
-    return [NSData dataWithBytes:ih.data() length:ih.size()];
+- (TorrentHashes *)infoHashes {
+    auto ih = _torrentParams.info_hashes;
+    return [[TorrentHashes alloc] initWith:ih];
 }
 
 - (BOOL)isMagnetLinkValid {

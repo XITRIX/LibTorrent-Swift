@@ -13,11 +13,21 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+NS_SWIFT_NAME(TorrentHashes)
+@interface TorrentHashes : NSObject
+@property (readonly) BOOL hasV1;
+@property (readonly) BOOL hasV2;
+@property (readonly) NSData *v1;
+@property (readonly) NSData *v2;
+@property (readonly) NSData *best;
+@end
+
 NS_SWIFT_NAME(TorrentHandle.Snapshot)
 @interface TorrentHandleSnapshot : NSObject
 
 @property (readonly) BOOL isValid;
-@property (readonly) NSData *infoHash;
+//@property (readonly) NSData *infoHash DEPRECATED_MSG_ATTRIBUTE("Use infoHashes instead");
+@property (readonly) TorrentHashes *infoHashes;
 @property (readonly) NSString* name;
 @property (readonly) TorrentHandleState state;
 @property (readonly, nullable) NSString *creator;

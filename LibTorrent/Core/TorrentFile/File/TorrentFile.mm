@@ -50,9 +50,9 @@
     return lt::torrent_info((char *)buffer, (int)size);
 }
 
-- (NSData *)infoHash {
-    auto ih = self.torrent_info.info_hash();
-    return [NSData dataWithBytes:ih.data() length:ih.size()];
+- (TorrentHashes *)infoHashes {
+    auto ih = self.torrent_info.info_hashes();
+    return [[TorrentHashes alloc] initWith:ih];
 }
 
 - (BOOL)isValid {
@@ -63,7 +63,16 @@
     lt::add_torrent_params *_params = (lt::add_torrent_params *)params;
     lt::torrent_info ti = [self torrent_info];
 
-    auto nspath = [session fastResumePathForInfoHash: self.infoHash];
+    // Save torrent file
+    NSString *fileName = [NSString stringWithFormat:@"%s.torrent", ti.name().c_str()];
+    NSString *filePath = [session.torrentsPath stringByAppendingPathComponent:fileName];
+
+    if (![[NSFileManager defaultManager] fileExistsAtPath:filePath] && _fileData != NULL) {
+        BOOL success = [_fileData writeToFile:filePath atomically:YES];
+        if (!success) { NSLog(@"Can't save .torrent file"); }
+    }
+
+    auto nspath = [session fastResumePathForInfoHashes: self.infoHashes];
     std::string path = std::string([nspath UTF8String]);
 
     std::ifstream ifs(path, std::ios_base::binary);

@@ -59,4 +59,9 @@ NS_ASSUME_NONNULL_BEGIN
 - (instancetype)initWith:(lt::torrent_handle)torrentHandle inSession:(Session *)session;
 @end
 
+
+@interface TorrentHashes ()
+- (instancetype)initWith:(lt::info_hash_t)infoHash;
+@end
+
 NS_ASSUME_NONNULL_END

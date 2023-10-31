@@ -78,8 +78,8 @@ static NSString *FileEntriesQueueIdentifier = @"ru.xitrix.TorrentKit.Session.fil
 }
 
 // MARK: - Path
-- (NSString *)fastResumePathForInfoHash:(NSData *)infoHash {
-    return [[_fastResumePath stringByAppendingPathComponent:infoHash.hexString] stringByAppendingPathExtension:@"fastresume"];
+- (NSString *)fastResumePathForInfoHashes:(TorrentHashes *)infoHashes {
+    return [[_fastResumePath stringByAppendingPathComponent:infoHashes.best.hexString] stringByAppendingPathExtension:@"fastresume"];
 }
 
 - (NSString *)magnetURIsFilePath {
@@ -273,9 +273,9 @@ static NSString *FileEntriesQueueIdentifier = @"ru.xitrix.TorrentKit.Session.fil
 }
 
 - (void)notifyDelegatesWithRemove:(lt::torrent_handle)th {
-    NSData *hashData = [[NSData alloc] initWith:th.info_hash()];
+    TorrentHashes *hashesData = [[TorrentHashes alloc] initWith:th.info_hashes()];
     for (id<SessionDelegate>delegate in self.delegates) {
-        [delegate torrentManager:self didRemoveTorrentWithHash:hashData];
+        [delegate torrentManager:self didRemoveTorrentWithHash:hashesData];
     }
 }
 
@@ -349,10 +349,10 @@ static NSString *FileEntriesQueueIdentifier = @"ru.xitrix.TorrentKit.Session.fil
     bencode(std::back_inserter(ret), rd);
 
     lt::torrent_handle h = alert->handle;
-    auto ih = h.info_hash();
+    auto ih = h.info_hashes();
 
-    auto data = [NSData dataWithBytes:ih.data() length:ih.size()];
-    auto nspath = [self fastResumePathForInfoHash: data];
+    auto data = [[TorrentHashes alloc] initWith:ih];
+    auto nspath = [self fastResumePathForInfoHashes: data];
     std::string path = std::string([nspath UTF8String]);
 
     std::fstream f(path, std::ios_base::trunc | std::ios_base::out | std::ios_base::binary);
@@ -363,15 +363,18 @@ static NSString *FileEntriesQueueIdentifier = @"ru.xitrix.TorrentKit.Session.fil
 - (void)saveTorrentFileWithInfo:(std::shared_ptr<const lt::torrent_info>)ti {
     if (ti == nullptr) { return; }
 
-    lt::create_torrent new_torrent(*ti);
-    std::vector<char> out_file;
-    lt::bencode(std::back_inserter(out_file), new_torrent.generate());
-
     NSString *fileName = [NSString stringWithFormat:@"%s.torrent", (*ti).name().c_str()];
     NSString *filePath = [_torrentsPath stringByAppendingPathComponent:fileName];
-    NSData *data = [NSData dataWithBytes:out_file.data() length:out_file.size()];
-    BOOL success = [data writeToFile:filePath atomically:YES];
-    if (!success) { NSLog(@"Can't save .torrent file"); }
+
+    if (![[NSFileManager defaultManager] fileExistsAtPath:filePath]) {
+        lt::create_torrent new_torrent(*ti);
+        std::vector<char> out_file;
+        lt::bencode(std::back_inserter(out_file), new_torrent.generate());
+
+        NSData *data = [NSData dataWithBytes:out_file.data() length:out_file.size()];
+        BOOL success = [data writeToFile:filePath atomically:YES];
+        if (!success) { NSLog(@"Can't save .torrent file"); }
+    }
 }
 
 - (void)saveMagnetURIWithContent:(std::string)uri {
@@ -412,10 +415,10 @@ static NSString *FileEntriesQueueIdentifier = @"ru.xitrix.TorrentKit.Session.fil
 - (void)removeFastResumeFileWithInfo:(std::shared_ptr<const lt::torrent_info>)ti {
     if (ti == nullptr) { return; }
 
-    auto hash = ti->info_hash();
-    auto data = [[NSData alloc] initWithBytes:hash.data() length:hash.size()];
+    auto hash = ti->info_hashes();
+    auto data = [[TorrentHashes alloc] initWith:hash];
 
-    NSString *filePath = [self fastResumePathForInfoHash:data];
+    NSString *filePath = [self fastResumePathForInfoHashes:data];
 
     NSError *error;
     BOOL success = [[NSFileManager defaultManager] removeItemAtPath:filePath error:&error];
