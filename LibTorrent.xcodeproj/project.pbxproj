@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		7CF9C2BA2AF7EFC4009BBFA0 /* OpenSSL in Frameworks */ = {isa = PBXBuildFile; productRef = 7CF9C2B92AF7EFC4009BBFA0 /* OpenSSL */; };
 		D15147692AE6AE9C000407AE /* LibTorrent.h in Headers */ = {isa = PBXBuildFile; fileRef = D15147682AE6AE9C000407AE /* LibTorrent.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		D15147912AE7B5BA000407AE /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D15147902AE7B5BA000407AE /* SystemConfiguration.framework */; };
 		D15147932AE7B5CA000407AE /* CoreFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D15147922AE7B5CA000407AE /* CoreFoundation.framework */; };
@@ -101,6 +102,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				7CF9C2BA2AF7EFC4009BBFA0 /* OpenSSL in Frameworks */,
 				D15147932AE7B5CA000407AE /* CoreFoundation.framework in Frameworks */,
 				D151479F2AE7BE6D000407AE /* libtorrent-rasterbar.a in Frameworks */,
 				D15147912AE7B5BA000407AE /* SystemConfiguration.framework in Frameworks */,
@@ -322,6 +324,7 @@
 			name = LibTorrent;
 			packageProductDependencies = (
 				D1975E712AE9C41C0087FDB8 /* OpenSSL */,
+				7CF9C2B92AF7EFC4009BBFA0 /* OpenSSL */,
 			);
 			productName = LibTorrent;
 			productReference = D15147652AE6AE9C000407AE /* LibTorrent.framework */;
@@ -352,7 +355,7 @@
 			);
 			mainGroup = D151475B2AE6AE9B000407AE;
 			packageReferences = (
-				D1975E702AE9C41C0087FDB8 /* XCLocalSwiftPackageReference "../../OpenSSL" */,
+				7CF9C2B82AF7EFC4009BBFA0 /* XCRemoteSwiftPackageReference "OpenSSL" */,
 			);
 			productRefGroup = D15147662AE6AE9C000407AE /* Products */;
 			projectDirPath = "";
@@ -783,14 +786,23 @@
 		};
 /* End XCConfigurationList section */
 
-/* Begin XCLocalSwiftPackageReference section */
-		D1975E702AE9C41C0087FDB8 /* XCLocalSwiftPackageReference "../../OpenSSL" */ = {
-			isa = XCLocalSwiftPackageReference;
-			relativePath = ../../OpenSSL;
+/* Begin XCRemoteSwiftPackageReference section */
+		7CF9C2B82AF7EFC4009BBFA0 /* XCRemoteSwiftPackageReference "OpenSSL" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/XITRIX/OpenSSL.git";
+			requirement = {
+				branch = main;
+				kind = branch;
+			};
 		};
-/* End XCLocalSwiftPackageReference section */
+/* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		7CF9C2B92AF7EFC4009BBFA0 /* OpenSSL */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 7CF9C2B82AF7EFC4009BBFA0 /* XCRemoteSwiftPackageReference "OpenSSL" */;
+			productName = OpenSSL;
+		};
 		D1975E712AE9C41C0087FDB8 /* OpenSSL */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = OpenSSL;
