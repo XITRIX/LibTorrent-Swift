@@ -12,6 +12,7 @@
 NS_ASSUME_NONNULL_BEGIN
 
 @interface FileEntry : NSObject
+@property (readonly, nonatomic) int index;
 @property (readonly, nonatomic) BOOL isPrototype;
 @property (readonly, strong, nonatomic) NSString *name;
 @property (readonly, strong, nonatomic) NSString *path;

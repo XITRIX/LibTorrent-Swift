@@ -29,6 +29,18 @@
     }
     return self;
 }
+- (BOOL)isEqual:(id)other
+{
+    if (other == self) {
+        return YES;
+    } 
+
+    if (![other isKindOfClass:[TorrentHashes class]]) {
+        return NO;
+    }
+
+    return [self.v1 isEqual:((TorrentHashes *)other).v1] && [self.v2 isEqual:((TorrentHashes *)other).v2];
+}
 @end
 
 @implementation TorrentHandleSnapshot
@@ -99,7 +111,7 @@
         case lt::torrent_status::state_t::downloading: return TorrentHandleStateDownloading;
         case lt::torrent_status::state_t::finished: return TorrentHandleStateFinished;
         case lt::torrent_status::state_t::seeding: return TorrentHandleStateSeeding;
-        case lt::torrent_status::state_t::allocating: return TorrentHandleStateAllocating;
+//        case lt::torrent_status::state_t::allocating: return TorrentHandleStateAllocating;
         case lt::torrent_status::state_t::checking_resume_data: return TorrentHandleStateCheckingResumeData;
     }
 }
@@ -107,6 +119,10 @@
 - (double)progress {
     auto status = _torrentHandle.status();
     return status.progress;
+}
+
+- (double)progressWanted {
+    return (double) self.totalWantedDone / (double) self.totalWanted;
 }
 
 - (NSUInteger)numberOfPeers {
@@ -141,12 +157,12 @@
     return incomplete > 0 ? incomplete : status.list_peers - status.list_seeds;
 }
 
-- (NSUInteger)downloadRate {
+- (uint64_t)downloadRate {
     auto status = _torrentHandle.status();
     return status.download_payload_rate;
 }
 
-- (NSUInteger)uploadRate {
+- (uint64_t)uploadRate {
     auto status = _torrentHandle.status();
     return status.upload_payload_rate;
 }
@@ -156,7 +172,7 @@
     return status.has_metadata;
 }
 
-- (NSUInteger)total {
+- (uint64_t)total {
     auto ts = _torrentHandle.status();
 
     if (ts.has_metadata) {
@@ -167,27 +183,27 @@
     return NULL;
 }
 
-- (NSUInteger)totalDone {
+- (uint64_t)totalDone {
     auto ts = _torrentHandle.status();
     return ts.total_done;
 }
 
-- (NSUInteger)totalWanted {
+- (uint64_t)totalWanted {
     auto ts = _torrentHandle.status();
     return ts.total_wanted;
 }
 
-- (NSUInteger)totalWantedDone {
+- (uint64_t)totalWantedDone {
     auto ts = _torrentHandle.status();
     return ts.total_wanted_done;
 }
 
-- (NSUInteger)totalDownload {
+- (uint64_t)totalDownload {
     auto ts = _torrentHandle.status();
     return ts.total_download;
 }
 
-- (NSUInteger)totalUpload {
+- (uint64_t)totalUpload {
     auto ts = _torrentHandle.status();
     return ts.total_upload;
 }
@@ -257,6 +273,7 @@
 // MARK: - Functions
 
 - (void)resume {
+//    _torrentHandle.set_flags(lt::torrent_flags::auto_managed);
     _torrentHandle.unset_flags(lt::torrent_flags::auto_managed);
     _torrentHandle.resume();
 }
@@ -278,6 +295,50 @@
         _torrentHandle.unset_flags(lt::torrent_flags::sequential_download);
     }
     _torrentHandle.save_resume_data();
+}
+
+- (NSUInteger) filesCount {
+    return _torrentHandle.torrent_file()->files().num_files();
+}
+
+- (FileEntry *)getFileAt:(int)index {
+    auto stat = _torrentHandle.status();
+    auto info = _torrentHandle.torrent_file();
+    auto files = info->files();
+    auto priorities = _torrentHandle.get_file_priorities();
+    const int pieceLength = info->piece_length();
+
+    std::vector<int64_t> progresses;
+    _torrentHandle.file_progress(progresses);
+
+    auto name = std::string(files.file_name(index));
+    auto path = files.file_path(index);
+    auto size = files.file_size(index);
+    uint8_t priority = priorities[index];
+
+    FileEntry *fileEntry = [[FileEntry alloc] init];
+    fileEntry.index = index;
+    fileEntry.name = [NSString stringWithUTF8String:name.c_str()];
+    fileEntry.path = [NSString stringWithUTF8String:path.c_str()];
+    fileEntry.size = size;
+    fileEntry.downloaded = progresses[index];
+    fileEntry.priority = (FilePriority) priority;
+
+    const auto fileSize = files.file_size(index);// > 0 ? files.file_size(i) : 0;
+    const auto fileOffset = files.file_offset(index);
+
+    const long long beginIdx = (fileOffset / pieceLength);
+    const long long endIdx = ((fileOffset + fileSize) / pieceLength);
+
+    fileEntry.begin_idx = beginIdx;
+    fileEntry.end_idx = endIdx;
+    fileEntry.num_pieces = (int)(endIdx - beginIdx);
+    auto array = [[NSMutableArray<NSNumber *> alloc] init];
+    for (int j = 0; j < fileEntry.num_pieces; j++) {
+        [array addObject: [NSNumber numberWithBool: stat.pieces.get_bit(j + (int)beginIdx)]];
+    }
+    fileEntry.pieces = array;
+    return fileEntry;
 }
 
 - (NSArray<FileEntry *> *)files {
@@ -305,6 +366,7 @@
         uint8_t priority = priorities[i];
 
         FileEntry *fileEntry = [[FileEntry alloc] init];
+        fileEntry.index = i;
         fileEntry.name = [NSString stringWithUTF8String:name.c_str()];
         fileEntry.path = [NSString stringWithUTF8String:path.c_str()];
         fileEntry.size = size;

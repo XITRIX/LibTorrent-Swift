@@ -33,21 +33,22 @@ NS_SWIFT_NAME(TorrentHandle.Snapshot)
 @property (readonly, nullable) NSString *creator;
 @property (readonly, nullable) NSDate *creationDate;
 @property (readonly) double progress;
+@property (readonly) double progressWanted;
 @property (readonly) NSUInteger numberOfPeers;
 @property (readonly) NSUInteger numberOfSeeds;
 @property (readonly) NSUInteger numberOfLeechers;
 @property (readonly) NSUInteger numberOfTotalPeers;
 @property (readonly) NSUInteger numberOfTotalSeeds;
 @property (readonly) NSUInteger numberOfTotalLeechers;
-@property (readonly) NSUInteger downloadRate;
-@property (readonly) NSUInteger uploadRate;
+@property (readonly) uint64_t downloadRate;
+@property (readonly) uint64_t uploadRate;
 @property (readonly) BOOL hasMetadata;
-@property (readonly) NSUInteger total;
-@property (readonly) NSUInteger totalDone;
-@property (readonly) NSUInteger totalWanted;
-@property (readonly) NSUInteger totalWantedDone;
-@property (readonly) NSUInteger totalDownload;
-@property (readonly) NSUInteger totalUpload;
+@property (readonly) uint64_t total;
+@property (readonly) uint64_t totalDone;
+@property (readonly) uint64_t totalWanted;
+@property (readonly) uint64_t totalWantedDone;
+@property (readonly) uint64_t totalDownload;
+@property (readonly) uint64_t totalUpload;
 @property (readonly) BOOL isPaused;
 @property (readonly) BOOL isFinished;
 @property (readonly) BOOL isSeed;
@@ -65,7 +66,10 @@ NS_SWIFT_NAME(TorrentHandle.Snapshot)
 @property (readonly) TorrentHandleSnapshot* snapshot;
 
 //@property (readonly) NSArray<NSNumber *> *pieces;
+
+@property (readonly) NSUInteger filesCount;
 @property (readonly) NSArray<FileEntry *> *files;
+- (FileEntry *)getFileAt:(int)index;
 
 - (void)resume;
 - (void)pause;

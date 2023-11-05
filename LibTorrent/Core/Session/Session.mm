@@ -211,7 +211,7 @@ static NSString *FileEntriesQueueIdentifier = @"ru.xitrix.TorrentKit.Session.fil
 
                     case lt::torrent_removed_alert::alert_type: {
 //                        [self torrentRemovedAlert:(lt::torrent_alert *)alert];
-                        continue;
+                        continue; // Do not notify about update cause it was already removed
                     } break;
 
                     case lt::torrent_deleted_alert::alert_type: {
@@ -231,10 +231,28 @@ static NSString *FileEntriesQueueIdentifier = @"ru.xitrix.TorrentKit.Session.fil
                     } break;
 
                     case lt::torrent_error_alert::alert_type: {
+                        NSLog(@"TorrentKit - %s", alert->message().c_str());
+                    } break;
+
+                    case lt::file_error_alert::alert_type: {
+                        NSLog(@"TorrentKit - %s", alert->message().c_str());
+                    } break;
+
+                    case lt::session_error_alert::alert_type: {
+                        NSLog(@"TorrentKit - %s", alert->message().c_str());
+                    } break;
+
+                    case lt::peer_error_alert::alert_type: {
+                        NSLog(@"TorrentKit - %s", alert->message().c_str());
+                    } break;
+
+                    case lt::tracker_error_alert::alert_type: {
+                        NSLog(@"TorrentKit - %s", alert->message().c_str());
                     } break;
 
                     case lt::save_resume_data_alert::alert_type: {
                         [self torrentSaveFastResume:(lt::save_resume_data_alert *)alert];
+                        continue; // Not sure if need notify update
                     } break;
 
                         // Skip log alerts
@@ -253,6 +271,10 @@ static NSString *FileEntriesQueueIdentifier = @"ru.xitrix.TorrentKit.Session.fil
                     default: break;
                 }
 
+//                if (alert->message().size() > 0) {
+//                    NSLog(@"TorrentKit - %s", alert->message().c_str());
+//                }
+
                 if (dynamic_cast<lt::torrent_alert *>(alert) != nullptr) {
                     auto th = ((lt::torrent_alert *)alert)->handle;
                     if (!th.is_valid()) { continue; }
@@ -261,6 +283,7 @@ static NSString *FileEntriesQueueIdentifier = @"ru.xitrix.TorrentKit.Session.fil
             }
 
             alerts_queue.clear();
+            [NSThread sleepForTimeInterval:0.1];
         }
     }
 }

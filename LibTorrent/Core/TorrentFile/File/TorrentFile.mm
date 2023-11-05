@@ -119,6 +119,7 @@
         [_priorities setObject:[NSNumber numberWithInt:FilePriorityDefaultPriority] atIndexedSubscript:i];
 
         FileEntry *fileEntry = [[FileEntry alloc] init];
+        fileEntry.index = i;
         fileEntry.isPrototype = true;
         fileEntry.priority = FilePriorityDefaultPriority;
         fileEntry.path = [NSString stringWithUTF8String:path.c_str()];
