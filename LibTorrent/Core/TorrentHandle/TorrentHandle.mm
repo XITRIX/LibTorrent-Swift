@@ -398,7 +398,7 @@
     NSMutableArray *results = [[NSMutableArray alloc] init];
 
     for (auto tracker : trackers) {
-        [results addObject: [[TorrentTracker alloc] initWithAnnounceEntry: tracker]];
+        [results addObject: [[TorrentTracker alloc] initWithAnnounceEntry: tracker from: self]];
     }
 
     return results;
