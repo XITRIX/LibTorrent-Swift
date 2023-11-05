@@ -1,0 +1,2155 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 54;
+	objects = {
+
+/* Begin PBXAggregateTarget section */
+		60B5B85E2CBE4A1D88FA9D35 /* ZERO_CHECK */ = {
+			isa = PBXAggregateTarget;
+			buildConfigurationList = 80CEB0CD10904C7782D6E6B7 /* Build configuration list for PBXAggregateTarget "ZERO_CHECK" */;
+			buildPhases = (
+				A9DAA7714326CB425DE8B29A /* Generate CMakeFiles/ZERO_CHECK */,
+			);
+			dependencies = (
+			);
+			name = ZERO_CHECK;
+			productName = ZERO_CHECK;
+		};
+		8BCDAC5C5C6E43309E9F87AA /* ALL_BUILD */ = {
+			isa = PBXAggregateTarget;
+			buildConfigurationList = 9DDCEC0B0BDB481DB52412C8 /* Build configuration list for PBXAggregateTarget "ALL_BUILD" */;
+			buildPhases = (
+				345FCC046022AE7A2895B79A /* Generate CMakeFiles/ALL_BUILD */,
+			);
+			dependencies = (
+				69B467F5D65B493AB42F1AA8 /* PBXTargetDependency */,
+				48CFCC231F1040F699CF91C8 /* PBXTargetDependency */,
+			);
+			name = ALL_BUILD;
+			productName = ALL_BUILD;
+		};
+		937C7C76FB1C4D5884CBE1E1 /* install */ = {
+			isa = PBXAggregateTarget;
+			buildConfigurationList = 58F5E9E89CF647ED9098BE92 /* Build configuration list for PBXAggregateTarget "install" */;
+			buildPhases = (
+				93426DA6A4AC2C2AC9CE883C /* CMake PostBuild Rules */,
+			);
+			dependencies = (
+				62926C5C52494C258B2144B2 /* PBXTargetDependency */,
+			);
+			name = install;
+			productName = install;
+		};
+/* End PBXAggregateTarget section */
+
+/* Begin PBXBuildFile section */
+		02F709C20C48471F856A4DEC /* alert.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3DCFD940BD62474A803156EF /* alert.cpp */; };
+		03F73AE027C744E4AC4F3F32 /* cpuid.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AA20E59163CA40B4890A6D78 /* cpuid.cpp */; };
+		057A6490FC5042BFAF8D90D1 /* announce_entry.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6236902342F4DB683A509BB /* announce_entry.cpp */; };
+		064FA3CBBB4842339A6654DA /* ed25519.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F0103ABFF6D54329AE882EE4 /* ed25519.cpp */; };
+		0946F7973BC54C5097D8932D /* bitfield.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A8261553C05242B294FD8491 /* bitfield.cpp */; };
+		09A595E229EE4FB6AB77C49E /* read_resume_data.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4679671D0D8F4B52B4D644FA /* read_resume_data.cpp */; };
+		0A4ADCCA79D44DD4B32C37DB /* pe_crypto.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 7295F8C2DA2F4EF697F37274 /* pe_crypto.cpp */; };
+		0B8291D223DA407D89FBEFCD /* hasher.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBBB09A7833E46C2B54A786D /* hasher.cpp */; };
+		0CE0A5F25E5640398CA5CF23 /* session.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E03E427C9C27445A8E5DF5B5 /* session.cpp */; };
+		0F26C059EF7442158EF21B72 /* gzip.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BD5580F41FDC4C4CBE63C42A /* gzip.cpp */; };
+		0F30FED19C1C43069736FD8F /* file_progress.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C364CB3957CA49E790400C3C /* file_progress.cpp */; };
+		0F82CBC7E5534FE497C47ED3 /* resolver.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9C61B15FD6B84BD194E652C8 /* resolver.cpp */; };
+		103353BEEDFD4EF89625B07D /* sha1_hash.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3B91CD5E6E1749DEA35EE283 /* sha1_hash.cpp */; };
+		123FD71E720C4B5B8F409EDD /* receive_buffer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F31DD24BF1224F4C9B915242 /* receive_buffer.cpp */; };
+		12EAF11A7CEC4FF5A1A431BB /* ge.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E10DA693ED864547ADBFE879 /* ge.cpp */; };
+		155826CFD343441280949A74 /* time.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C1E2D898E791489AB71B70E6 /* time.cpp */; };
+		1817DB38A88C4218B9299043 /* utp_stream.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D5EC803DD9264CDA948DEDF3 /* utp_stream.cpp */; };
+		19587D31B616418490FE7A64 /* path.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DC03670DEC5048C3BFD6FCB3 /* path.cpp */; };
+		196087CF449B406E82E0D99F /* copy_file.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8469A23F8CBF425BA7261C97 /* copy_file.cpp */; };
+		1B80B969F38F4A5C8196CFD0 /* write_resume_data.cpp in Sources */ = {isa = PBXBuildFile; fileRef = EF0AC8A63F194812AC265F26 /* write_resume_data.cpp */; };
+		1FDD289E09AF46519CCB6153 /* try_signal.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5F69DACE0B4B439DAA9731F5 /* try_signal.cpp */; };
+		21367FB4E8B144CC9A7FE993 /* bt_peer_connection.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3D5EC40DF61A48578DECFED6 /* bt_peer_connection.cpp */; };
+		21BDDD341EF84E5C990BEA10 /* piece_picker.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 96DD0F9E97BE49FB9DF6AFF1 /* piece_picker.cpp */; };
+		2338B9D8221046B983E62A58 /* ip_voter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5D53243763FD47F89DD49658 /* ip_voter.cpp */; };
+		276ADF5BF3EC4818B6B7AE5A /* close_reason.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0A9FA1C0FAF6411D8D3402EE /* close_reason.cpp */; };
+		297477B72C99445C9BD6F3A5 /* peer_info.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0EDA883B7A484D8FA5C633B9 /* peer_info.cpp */; };
+		29B16B005A1A49D3AF2E716A /* bdecode.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 86507A5F0E1E4C3D85F15C6F /* bdecode.cpp */; };
+		2C1FE94E80EB4427AFC6ACF2 /* sha512.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B9B56E7C214D42E0BD2B3F21 /* sha512.cpp */; };
+		2C6B65569F854212A7968A16 /* posix_storage.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CAE9E91884A642A39A78E8E4 /* posix_storage.cpp */; };
+		2D3D52970C344A2BB0AA3BFE /* torrent.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 19565815A0A34FA59FFF17DE /* torrent.cpp */; };
+		2F6D2C9A24F94714BA9B2975 /* file.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 28E92BCFC5884EC5AAD9803D /* file.cpp */; };
+		2F9BE8BF5DFC4F24B426CFE1 /* session_settings.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 35E782B12DC44932BA1C8D48 /* session_settings.cpp */; };
+		2F9E588C66FE495CAC6644E8 /* crc32c.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 52092AACB1A44DCEA6E4E16F /* crc32c.cpp */; };
+		30CA877040414FA8A669162C /* item.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1A86902945814B008C12D881 /* item.cpp */; };
+		30E2E5D785DD4EE69C652AEC /* load_torrent.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FA619CEF9EBB4919B0D58F52 /* load_torrent.cpp */; };
+		357B7CD6B8DE46499CED4592 /* packet_buffer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D8CCD39B977D491DB2A6EDA1 /* packet_buffer.cpp */; };
+		38003526606B41C6B14ED0F8 /* torrent_status.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 01CAAA4F1B5E4B3E931DA7CA /* torrent_status.cpp */; };
+		387B1A76250C4DD88C1E5D70 /* dos_blocker.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 50503A7085ED48D986010839 /* dos_blocker.cpp */; };
+		3B45514DEA8B4602B4415BD6 /* udp_socket.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 92BA0E2D248640A49AB89B0A /* udp_socket.cpp */; };
+		3EB018D61AD54915BDEE2570 /* node_id.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A8F328165AE647D5A681BD6A /* node_id.cpp */; };
+		40BBEDEEC80144609B9CCF24 /* utp_socket_manager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CFB2147B9A3744908F785D26 /* utp_socket_manager.cpp */; };
+		47B064C1D3CE4C41BA6C07E9 /* session_stats.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B84CC786BBBC4B37B6FDF88C /* session_stats.cpp */; };
+		49615EE1326E422190C01A0B /* smart_ban.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5399D0F03D274EC8B991F0CB /* smart_ban.cpp */; };
+		4A382A1169E84D1BB1C02FBB /* bandwidth_limit.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DD5FE2584ED44AEAB9E33D9E /* bandwidth_limit.cpp */; };
+		4C2567BFD84F44F0B93FA2EC /* proxy_base.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3C185627843A4D8C98E09B2C /* proxy_base.cpp */; };
+		4F4C51B8AC6D4742A20BDDFF /* sc.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4B07C88EFF404727907023AD /* sc.cpp */; };
+		515702FC50B941E88798D242 /* bloom_filter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB59F9ED099B42658C393470 /* bloom_filter.cpp */; };
+		5173BECCA3BC46C89321BA5D /* assert.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 80D1C14EF9AE4454B9599DE4 /* assert.cpp */; };
+		51CD32EE6EF242888087AABA /* xml_parse.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A39D0D4E093145B3ACAE37F8 /* xml_parse.cpp */; };
+		55B3C0D4F01B4DD397C7A3EF /* entry.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 34A398C89F4F42808DD9A6AA /* entry.cpp */; };
+		55CE7CB146E5431A9D5315E4 /* ip_helpers.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BC29203C79414FE595FFFF37 /* ip_helpers.cpp */; };
+		567B20B87D414E508D47619C /* string_util.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8F35F3C7365D4A188F7C9745 /* string_util.cpp */; };
+		5687816918514EE0858E8551 /* session_call.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AFA94B1CCA7D4150B2A25B5B /* session_call.cpp */; };
+		57AEE6141C214DEDA2F4F8D3 /* session_impl.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 7DB7CA5A3946405FB8A9FDF2 /* session_impl.cpp */; };
+		59947986EF70428F9C5C7747 /* ssl.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 33B86A48597E479CB8A361D2 /* ssl.cpp */; };
+		5DB02E6CFBAB41A392D35CEC /* settings_pack.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 6BB88E10AAFB444886B3B9B3 /* settings_pack.cpp */; };
+		5E0B6DA95703409493287883 /* torrent_peer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E186278FD6A94D57A891661C /* torrent_peer.cpp */; };
+		5F1AD25339BB4609A1DAB5D7 /* lsd.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DEEB094B77914D77A62F1D8A /* lsd.cpp */; };
+		5F41F97FD1D74B87BB16CB77 /* mmap_disk_job.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1F5D0157A36E40DC9D185520 /* mmap_disk_job.cpp */; };
+		609D691E54894A80AC66EAD2 /* refresh.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B827A53C73D34D91BB0F0ED4 /* refresh.cpp */; };
+		635507D706FA456B89DFE867 /* peer_class.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B948337813D44A5481774F73 /* peer_class.cpp */; };
+		6382B4E922564243B008310E /* ut_metadata.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 79F17B6440764E77A8C7EDC7 /* ut_metadata.cpp */; };
+		664B8603919B4B4C8C54F59A /* generate_peer_id.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 414C35F04B1D4BC0A8A4D106 /* generate_peer_id.cpp */; };
+		66F4BD4298AB4BB89E5774EC /* traversal_algorithm.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3900803217B9440090AF85A2 /* traversal_algorithm.cpp */; };
+		67FAF10C29404005BC632F8E /* merkle_tree.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 583FDCD1655D442580868C12 /* merkle_tree.cpp */; };
+		68C06562759647628C8AC173 /* disk_job_pool.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5CD6E407814243DBB995F1C5 /* disk_job_pool.cpp */; };
+		6AD1AA47188044B08D854864 /* keypair.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9D0B0BA81D0D4091A8BDC031 /* keypair.cpp */; };
+		6C5BB3ADE09C43F299ED913E /* alert_manager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 40F46712517F4063B34BA5E0 /* alert_manager.cpp */; };
+		6E3107213E6348619EA834C3 /* upnp.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 286FCD68D7F14015A8AD8CD0 /* upnp.cpp */; };
+		7064C4857FEF4972B1D29187 /* torrent_info.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8110F94069B34EC8B82D8728 /* torrent_info.cpp */; };
+		70D4CE8AA61549208BAF422F /* escape_string.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E98559CB388C48F2B2914A9A /* escape_string.cpp */; };
+		717F2A42FA754C15A2990B27 /* file_view_pool.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 52BB63232AFB4565AFACC397 /* file_view_pool.cpp */; };
+		73E7C9DDC6474D8F89A4C224 /* node.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AB9BC5CFC8264A3AB50CDE56 /* node.cpp */; };
+		746AE59DA4A74C49B9120AAE /* hasher512.cpp in Sources */ = {isa = PBXBuildFile; fileRef = EBB1EC76D9784D809055E2C1 /* hasher512.cpp */; };
+		765554504CB0450DAF9A3AE6 /* sign.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 83C5F1F10C1144F7B2E8BDCA /* sign.cpp */; };
+		76908E414B764BCBB49EC188 /* find_data.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F0EAA0AE51F84FF2B5429181 /* find_data.cpp */; };
+		7711631670E944128ED4FF06 /* session_params.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BC35C69071F94558A230C91C /* session_params.cpp */; };
+		77D74D80940F489BA4848906 /* put_data.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DB741E2DDDA14EB0A6DD7C47 /* put_data.cpp */; };
+		789684C4B4F749F4A3744F0B /* get_item.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5438287968C24E0788FEC7E4 /* get_item.cpp */; };
+		7B32983B7A8143F9A52605E4 /* torrent_peer_allocator.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AEEE3CF257EF46C9871A942B /* torrent_peer_allocator.cpp */; };
+		7BB23EC13909466A802508A4 /* session_handle.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E52FE25151D341CBA19CECE6 /* session_handle.cpp */; };
+		7BDA0DECEA5C421D8188637C /* socket_io.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0C8966BDF52A4848AF792C5B /* socket_io.cpp */; };
+		7E4B2173135F4BE2B6C97C33 /* http_connection.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E869C5E55C4A49CEA7D2480A /* http_connection.cpp */; };
+		7EC9FEB1C7634294981D8DDE /* magnet_uri.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C0E01E72D4D6487099AE8245 /* magnet_uri.cpp */; };
+		7F9A67F98CA742E28F9A8B19 /* drive_info.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5BBB14B7174A4E99BBE880C6 /* drive_info.cpp */; };
+		8319D9E376B74592A8BC9753 /* dht_settings.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E93A598F3F954C0BBD2D06B3 /* dht_settings.cpp */; };
+		844327B233F942E293A8E123 /* http_tracker_connection.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 156D8BBDCB3C4FD18BC921F8 /* http_tracker_connection.cpp */; };
+		84E38688C46345E48D3B2563 /* key_exchange.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FB7594502576462DAE77EFAC /* key_exchange.cpp */; };
+		8781C317CE44483981ADF1FF /* file_storage.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AF80A0047A7C4AAB9B8E7974 /* file_storage.cpp */; };
+		8A658F5CD3694261B4812AF6 /* posix_part_file.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1411C2F2BE364637A7CB0FD9 /* posix_part_file.cpp */; };
+		8E9A8C0280FE47D4894BFCDD /* fe.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B5B388BA867E4F3898F72BD8 /* fe.cpp */; };
+		8FC8656E23A64DC2BE126F0C /* i2p_stream.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A89F462430A040A790A2891D /* i2p_stream.cpp */; };
+		90DCBDD5E8FD42FD80443BCF /* identify_client.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DF24DB2C8E354F6196958DE3 /* identify_client.cpp */; };
+		9127DB78FF4C459B9BDA8C3C /* mmap_disk_io.cpp in Sources */ = {isa = PBXBuildFile; fileRef = ED1E975ED9B34B7DBBBA55D8 /* mmap_disk_io.cpp */; };
+		92BBF4A01BB1406D9798E472 /* listen_socket_handle.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8E23CD7BDA6144AB9FA09DED /* listen_socket_handle.cpp */; };
+		94451EAC75E74BF69405CF9B /* peer_list.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 035028BC49DD477BB4C94CFB /* peer_list.cpp */; };
+		950E2AD82D6245E39CC52C4A /* web_peer_connection.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FE6178FF1FE64E17A0318002 /* web_peer_connection.cpp */; };
+		95FB627D22B74B89B16EAEEF /* sha1.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BE3753AAF5204AE8B1C0C23B /* sha1.cpp */; };
+		972EF8C07F414DB59008E6D3 /* bandwidth_queue_entry.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FC3C6C627DF54597ADE06FC7 /* bandwidth_queue_entry.cpp */; };
+		9AD6D8C063134DBC89A33F6E /* random.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 355EBBBC69174216B4FECDD2 /* random.cpp */; };
+		9AF25E8C841549E6A082352C /* socket_type.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E5BF9F7FF9F64EC2BAABC41B /* socket_type.cpp */; };
+		9CD648EA4D1240FFAC2466A2 /* timestamp_history.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 01588FEF969F45F1845BB627 /* timestamp_history.cpp */; };
+		A04EE6B3706B485B85B66096 /* truncate.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2B0D39D9EB4E4C25BA03988B /* truncate.cpp */; };
+		A128EEC5543C44869FFFA643 /* stat_cache.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D95CA744131D4E41A0EAE84D /* stat_cache.cpp */; };
+		A12C1B1A3509442DA41C1A59 /* rpc_manager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C63CE4DD6F804778A6A1F88E /* rpc_manager.cpp */; };
+		A492D4B83D95488EBCFB8AB6 /* create_torrent.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 99687BF9113344C9B6139BC3 /* create_torrent.cpp */; };
+		A4F2A8739608474391C2F49B /* ffs.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 40CB31135EBF445BAF3EC8BF /* ffs.cpp */; };
+		A54FBC0653ED452BAD86F7B7 /* parse_url.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 59BE8451F01C4DF3980B13B3 /* parse_url.cpp */; };
+		A599E1F265A140498C6883BE /* part_file.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FFBF64CD2EFF47DB841CA339 /* part_file.cpp */; };
+		A98C748B46B3490D87CE2FB2 /* instantiate_connection.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 6E3AB66BFA274E3E989EBBCF /* instantiate_connection.cpp */; };
+		AA316B5C5CBA482B98E4F40F /* merkle.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F0283946898E49CFB419068A /* merkle.cpp */; };
+		AA622C6C828F4B5191CBAC6B /* web_connection_base.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A690A147D1FB4224BFD07FF7 /* web_connection_base.cpp */; };
+		AA8AF326597B4EAF84F6B5BD /* error_code.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 97F5076ABD2B4CA5932D735F /* error_code.cpp */; };
+		AE8AECEF3BCB4860914848C1 /* verify.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AA4170021B2A4EF592FEF74B /* verify.cpp */; };
+		B110B362EBA245F0A1AF1A58 /* tracker_manager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D492507758424A2CBDD87958 /* tracker_manager.cpp */; };
+		B353F28237624E6EBC1F30DE /* http_seed_connection.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A8A05B174EF941118BC8BFB4 /* http_seed_connection.cpp */; };
+		B48C76B6EAA54319BDC52FF9 /* bandwidth_manager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9194ED50C46A49EC9F7245F9 /* bandwidth_manager.cpp */; };
+		B55C086B67A84CFE839CCCF5 /* disk_interface.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0539F5AB222F4D77AA25F362 /* disk_interface.cpp */; };
+		B58DF1985D6345CAA73C9A13 /* node_entry.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4CF9D6569DA744A689DB3A69 /* node_entry.cpp */; };
+		B5D1F751E8EF40ABB84C081A /* routing_table.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9EC7356E7D7D43A98DC155FD /* routing_table.cpp */; };
+		B5D7E801E71B4D30981D5CD4 /* get_peers.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5D1EA59D9B204FC68DDF9450 /* get_peers.cpp */; };
+		B5F385C833334335A7CD9B05 /* hash_picker.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F9478DEC51C94E84B860F229 /* hash_picker.cpp */; };
+		B72FEB217318437E972D5482 /* sha256.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 25FAE1CF737246FA84D4AA35 /* sha256.cpp */; };
+		B7418648469C42C2B7034974 /* disk_job_fence.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8A83D2C126D94BEE9096AB6E /* disk_job_fence.cpp */; };
+		B755D7C77D8F45C38A8633DF /* peer_class_set.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C3016147A7AD41AF9A9AD419 /* peer_class_set.cpp */; };
+		B8CC200B32A24242B26FEF1C /* stack_allocator.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 194633621B07413D8EB52B90 /* stack_allocator.cpp */; };
+		BAE6E1DD68EC48DBB987781B /* stat.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E0733293DCA64323AA155D22 /* stat.cpp */; };
+		BC05A3CEDCFF493D92D7E478 /* mmap.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C998185584FF46EF861E9EDB /* mmap.cpp */; };
+		BC1AFDB904C240FDA2FB47D9 /* add_torrent_params.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A6D6C6F1D1F549B9A088935D /* add_torrent_params.cpp */; };
+		C074842824354B988EE4F0EE /* http_parser.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 66E19992F0CF4B698F55CC79 /* http_parser.cpp */; };
+		C07F86515686422482E5EDB7 /* sample_infohashes.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 870957D56CB84B0AB8E5E0E7 /* sample_infohashes.cpp */; };
+		C08CFB6E4FC442FDA3AF77A1 /* ut_pex.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2499C09E8812470E89F87362 /* ut_pex.cpp */; };
+		C09143E0ADD6493A8F3F0FA1 /* add_scalar.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CD3C259FA7BE4F55AB9B869F /* add_scalar.cpp */; };
+		C4229E5E06DB490AACD63092 /* resolve_links.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 98C38F21F2284153A823DF47 /* resolve_links.cpp */; };
+		C43BBFE4481A484FA1BA7E62 /* disabled_disk_io.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AF38701163B245C187044937 /* disabled_disk_io.cpp */; };
+		C4F96B25478748FAA8D53929 /* socks5_stream.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 762AD9F71C7541B6A9010241 /* socks5_stream.cpp */; };
+		C5755F3D91604F14A3407535 /* enum_net.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A99BF05601904EADBB695174 /* enum_net.cpp */; };
+		C754476A55F14951A6F11275 /* mmap_storage.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F50F191B07DA4037AF6D02CA /* mmap_storage.cpp */; };
+		C8B49C5F3C624362B100A6E6 /* posix_disk_io.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 83B47CA967CA44B4A6ACDEF6 /* posix_disk_io.cpp */; };
+		C92F5B60CAD44C3DBB783023 /* torrent_handle.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1970E865AD5143A9897DC19A /* torrent_handle.cpp */; };
+		C9E907BC1BEC47F584F0B2E7 /* dht_state.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 6833D120D08B4934ACCB1809 /* dht_state.cpp */; };
+		CA83CC5C020241CAB98B929A /* choker.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 79C31AB69E774354A6E9E071 /* choker.cpp */; };
+		CAB2FF2654C045FE8EB7555A /* performance_counters.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F862D96D7517427E8EC65AF6 /* performance_counters.cpp */; };
+		CEEE192F95DD45EDB6CAD30C /* disk_io_thread_pool.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1FCAFD44FDB14019B7466534 /* disk_io_thread_pool.cpp */; };
+		D46D64382CF94FA4B61A1B05 /* request_blocks.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9576BCC5015642519A0C90D1 /* request_blocks.cpp */; };
+		D48401F7182141CD99EBB083 /* proxy_settings.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 74B052DAFEE340959406A03E /* proxy_settings.cpp */; };
+		D5C4CCC55C764020A72A0723 /* natpmp.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C534CAFDCAD24FAEA0F02B94 /* natpmp.cpp */; };
+		D64056738DD543CF9051C8E1 /* fingerprint.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 89F4EBB4B83D48F781B36EDC /* fingerprint.cpp */; };
+		D7513BECAAD94E5591E2FBB4 /* dht_tracker.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57A58DD5A6744DD0B2364CA9 /* dht_tracker.cpp */; };
+		D7F9D4D0BD6441A8BCF8C26C /* disk_buffer_pool.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 47E2586397694EEC853E9369 /* disk_buffer_pool.cpp */; };
+		D901ECB410C843CCB792BD40 /* msg.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1B2F7A146D1743469AFCF503 /* msg.cpp */; };
+		DBF9EC2CBC4742CD9F768756 /* platform_util.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C3ADFA7728634C0BBF02BD91 /* platform_util.cpp */; };
+		E415163AB3A54B26809440DE /* peer_connection.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8CAFCAAA751643AC8020E6DF /* peer_connection.cpp */; };
+		E420FE27E8004D0EB5F9C8D4 /* dht_storage.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C4BED81CA09E4D41B157803C /* dht_storage.cpp */; };
+		E5B03C9CB2BD41F7BE550B92 /* disk_buffer_holder.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B46A0A7407974883B426A52C /* disk_buffer_holder.cpp */; };
+		E6B079950CA249849146A3A3 /* puff.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3AE17564F90942EDBAB9AEE0 /* puff.cpp */; };
+		E7FDFE67E2B54C3FA2F6413C /* hex.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 785807D1A6DB449AAE0F87D0 /* hex.cpp */; };
+		ECD2B08189FC45C2B0DBDF9F /* udp_tracker_connection.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 7A884BC502594EA6A275FDE4 /* udp_tracker_connection.cpp */; };
+		EE673CA2ABF34F3D8D83DEF0 /* utf8.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 08D89FD0591349DEB2BAA1A0 /* utf8.cpp */; };
+		F25CB1F1A7284E20A51F863F /* signal_error_code.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B2E6B3E30C1047FCB43FEB5A /* signal_error_code.cpp */; };
+		F65EBDA1820548AC978ADE8F /* version.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 29BC49F5E86444758CCFDD5A /* version.cpp */; };
+		FA01FDF3B63C44B2B87534DE /* ip_notifier.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B2E1B73BAFEB4B2BAA5CA98C /* ip_notifier.cpp */; };
+		FD96496003424E26BE4167B8 /* peer_connection_handle.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CAFA32844ED54C7892806CA6 /* peer_connection_handle.cpp */; };
+		FDC0318A3A2E45C988F56384 /* chained_buffer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 88AC7D4F501C449A8F7CD406 /* chained_buffer.cpp */; };
+		FDE8005693A94219B96BB7C4 /* ip_filter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 341B832722D84889AAC464C7 /* ip_filter.cpp */; };
+		FEDDAE2C37814C3E9529DD5F /* storage_utils.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 666C38F86A7C4FAD99E75A38 /* storage_utils.cpp */; };
+		FF603F79D8DE436F8B8BCDFF /* directory.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3EF3B487C6F84954B1D422D7 /* directory.cpp */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		18B47BCB1DB841F684CABA47 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 112EACC49393465FAE85F3D0 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 8BCDAC5C5C6E43309E9F87AA;
+			remoteInfo = ALL_BUILD;
+		};
+		298C37D44CE246DD870A8038 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 112EACC49393465FAE85F3D0 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = BFB7D81C12A84FBC981E99A4;
+			remoteInfo = "torrent-rasterbar";
+		};
+		3045E2921BB54D5ABF451D78 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 112EACC49393465FAE85F3D0 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 60B5B85E2CBE4A1D88FA9D35;
+			remoteInfo = ZERO_CHECK;
+		};
+		6F65A2B911184F72AD3B947C /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 112EACC49393465FAE85F3D0 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 60B5B85E2CBE4A1D88FA9D35;
+			remoteInfo = ZERO_CHECK;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		0082B1CDE9454EABA0ADA2D1 /* download_priority.hpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.h; fileEncoding = 4; name = download_priority.hpp; path = include/libtorrent/download_priority.hpp; sourceTree = SOURCE_ROOT; };
+		00B9CC3F539347FFA3FD858A /* session_stats.hpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.h; fileEncoding = 4; name = session_stats.hpp; path = include/libtorrent/session_stats.hpp; sourceTree = SOURCE_ROOT; };
+		011E83ECDA8843959AC88071 /* udp_socket.hpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.h; fileEncoding = 4; name = udp_socket.hpp; path = include/libtorrent/udp_socket.hpp; sourceTree = SOURCE_ROOT; };
+		01588FEF969F45F1845BB627 /* timestamp_history.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = timestamp_history.cpp; path = src/timestamp_history.cpp; sourceTree = SOURCE_ROOT; };
+		01CAAA4F1B5E4B3E931DA7CA /* torrent_status.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = torrent_status.cpp; path = src/torrent_status.cpp; sourceTree = SOURCE_ROOT; };
+		035028BC49DD477BB4C94CFB /* peer_list.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = peer_list.cpp; path = src/peer_list.cpp; sourceTree = SOURCE_ROOT; };
+		03735AB85C3E46AE8D50F426 /* address.hpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.h; fileEncoding = 4; name = address.hpp; path = include/libtorrent/address.hpp; sourceTree = SOURCE_ROOT; };
+		04879190AB564B6FA76282D4 /* invariant_check.hpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.h; fileEncoding = 4; name = invariant_check.hpp; path = include/libtorrent/aux_/invariant_check.hpp; sourceTree = SOURCE_ROOT; };
+		049E3B9F49414F6C9E8FDE39 /* array.hpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.h; fileEncoding = 4; name = array.hpp; path = include/libtorrent/aux_/array.hpp; sourceTree = SOURCE_ROOT; };
+		0539F5AB222F4D77AA25F362 /* disk_interface.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = disk_interface.cpp; path = src/disk_interface.cpp; sourceTree = SOURCE_ROOT; };
+		06EFDD41252948B88DB0BB30 /* heterogeneous_queue.hpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.h; fileEncoding = 4; name = heterogeneous_queue.hpp; path = include/libtorrent/aux_/heterogeneous_queue.hpp; sourceTree = SOURCE_ROOT; };
+		08D89FD0591349DEB2BAA1A0 /* utf8.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = utf8.cpp; path = src/utf8.cpp; sourceTree = SOURCE_ROOT; };
+		0965403D3A874F419846BE5F /* disk_buffer_pool.hpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.h; fileEncoding = 4; name = disk_buffer_pool.hpp; path = include/libtorrent/aux_/disk_buffer_pool.hpp; sourceTree = SOURCE_ROOT; };
+		09CB55FE3F1F455E92344C17 /* parse_url.hpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.h; fileEncoding = 4; name = parse_url.hpp; path = include/libtorrent/parse_url.hpp; sourceTree = SOURCE_ROOT; };
+		0A9FA1C0FAF6411D8D3402EE /* close_reason.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = close_reason.cpp; path = src/close_reason.cpp; sourceTree = SOURCE_ROOT; };
+		0C05E884CC844088A0F66BA0 /* extensions.hpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.h; fileEncoding = 4; name = extensions.hpp; path = include/libtorrent/extensions.hpp; sourceTree = SOURCE_ROOT; };
+		0C8966BDF52A4848AF792C5B /* socket_io.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = socket_io.cpp; path = src/socket_io.cpp; sourceTree = SOURCE_ROOT; };
+		0EDA883B7A484D8FA5C633B9 /* peer_info.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = peer_info.cpp; path = src/peer_info.cpp; sourceTree = SOURCE_ROOT; };
+		0F92B884A17942A1A80A025F /* bencode.hpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.h; fileEncoding = 4; name = bencode.hpp; path = include/libtorrent/bencode.hpp; sourceTree = SOURCE_ROOT; };
+		102FA8CC98AE4CBFB0471274 /* path.hpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.h; fileEncoding = 4; name = path.hpp; path = include/libtorrent/aux_/path.hpp; sourceTree = SOURCE_ROOT; };
+		10638DDCB5AF448A9A1D8B3F /* string_view.hpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.h; fileEncoding = 4; name = string_view.hpp; path = include/libtorrent/string_view.hpp; sourceTree = SOURCE_ROOT; };
+		110C10703FD5461294884B84 /* resolver_interface.hpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.h; fileEncoding = 4; name = resolver_interface.hpp; path = include/libtorrent/aux_/resolver_interface.hpp; sourceTree = SOURCE_ROOT; };
+		118A53109A3E451AA08CCED4 /* timestamp_history.hpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.h; fileEncoding = 4; name = timestamp_history.hpp; path = include/libtorrent/aux_/timestamp_history.hpp; sourceTree = SOURCE_ROOT; };
+		11E42D141DA64765AA0A290C /* tailqueue.hpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.h; fileEncoding = 4; name = tailqueue.hpp; path = include/libtorrent/tailqueue.hpp; sourceTree = SOURCE_ROOT; };
+		133C43F8383F4C4792E2101D /* portmap.hpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.h; fileEncoding = 4; name = portmap.hpp; path = include/libtorrent/portmap.hpp; sourceTree = SOURCE_ROOT; };
+		1411C2F2BE364637A7CB0FD9 /* posix_part_file.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = posix_part_file.cpp; path = src/posix_part_file.cpp; sourceTree = SOURCE_ROOT; };
+		149E4228746D45BEB37A7C03 /* operations.hpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.h; fileEncoding = 4; name = operations.hpp; path = include/libtorrent/operations.hpp; sourceTree = SOURCE_ROOT; };
+		156D8BBDCB3C4FD18BC921F8 /* http_tracker_connection.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = http_tracker_connection.cpp; path = src/http_tracker_connection.cpp; sourceTree = SOURCE_ROOT; };
+		167A7412D739484DBAAE620E /* time.hpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.h; fileEncoding = 4; name = time.hpp; path = include/libtorrent/aux_/time.hpp; sourceTree = SOURCE_ROOT; };
+		16A91000F4D14FF98911BD6D /* bdecode.hpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.h; fileEncoding = 4; name = bdecode.hpp; path = include/libtorrent/bdecode.hpp; sourceTree = SOURCE_ROOT; };
+		17CECF61536D431E89473BE2 /* pe_crypto.hpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.h; fileEncoding = 4; name = pe_crypto.hpp; path = include/libtorrent/pe_crypto.hpp; sourceTree = SOURCE_ROOT; };
+		180FC2D7CEEC42E4AE3E5DA6 /* announce_entry.hpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.h; fileEncoding = 4; name = announce_entry.hpp; path = include/libtorrent/announce_entry.hpp; sourceTree = SOURCE_ROOT; };
+		1912AFFA0D1048CC94AB0119 /* types.hpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.h; fileEncoding = 4; name = types.hpp; path = include/libtorrent/kademlia/types.hpp; sourceTree = SOURCE_ROOT; };
+		194633621B07413D8EB52B90 /* stack_allocator.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = stack_allocator.cpp; path = src/stack_allocator.cpp; sourceTree = SOURCE_ROOT; };
+		19565815A0A34FA59FFF17DE /* torrent.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = torrent.cpp; path = src/torrent.cpp; sourceTree = SOURCE_ROOT; };
+		1970E865AD5143A9897DC19A /* torrent_handle.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = torrent_handle.cpp; path = src/torrent_handle.cpp; sourceTree = SOURCE_ROOT; };
+		1A86902945814B008C12D881 /* item.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = item.cpp; path = src/kademlia/item.cpp; sourceTree = SOURCE_ROOT; };
+		1B2F7A146D1743469AFCF503 /* msg.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = msg.cpp; path = src/kademlia/msg.cpp; sourceTree = SOURCE_ROOT; };
+		1BFA44CF4F4C4BF090991509 /* merkle_tree.hpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.h; fileEncoding = 4; name = merkle_tree.hpp; path = include/libtorrent/aux_/merkle_tree.hpp; sourceTree = SOURCE_ROOT; };
+		1C5B570DF9BB41AE8CD3BAFD /* item.hpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.h; fileEncoding = 4; name = item.hpp; path = include/libtorrent/kademlia/item.hpp; sourceTree = SOURCE_ROOT; };
+		1CAE3E4EF67F49339C0116DC /* export.hpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.h; fileEncoding = 4; name = export.hpp; path = include/libtorrent/aux_/export.hpp; sourceTree = SOURCE_ROOT; };
+		1CB9C1CC41864033BDB2B424 /* peer_class.hpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.h; fileEncoding = 4; name = peer_class.hpp; path = include/libtorrent/peer_class.hpp; sourceTree = SOURCE_ROOT; };
+		1D7E11E301884DDB8C52922D /* platform_util.hpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.h; fileEncoding = 4; name = platform_util.hpp; path = include/libtorrent/platform_util.hpp; sourceTree = SOURCE_ROOT; };
+		1E7CF68F62174E5BB1C37A02 /* file_progress.hpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.h; fileEncoding = 4; name = file_progress.hpp; path = include/libtorrent/aux_/file_progress.hpp; sourceTree = SOURCE_ROOT; };
+		1F5D0157A36E40DC9D185520 /* mmap_disk_job.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = mmap_disk_job.cpp; path = src/mmap_disk_job.cpp; sourceTree = SOURCE_ROOT; };
+		1F80A266DC59451295C2EEE9 /* entry.hpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.h; fileEncoding = 4; name = entry.hpp; path = include/libtorrent/entry.hpp; sourceTree = SOURCE_ROOT; };
+		1FC1514C75594A04835B415C /* create_torrent.hpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.h; fileEncoding = 4; name = create_torrent.hpp; path = include/libtorrent/create_torrent.hpp; sourceTree = SOURCE_ROOT; };
+		1FCAFD44FDB14019B7466534 /* disk_io_thread_pool.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = disk_io_thread_pool.cpp; path = src/disk_io_thread_pool.cpp; sourceTree = SOURCE_ROOT; };
+		1FF104A8999048AF99F0B356 /* torrent.hpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.h; fileEncoding = 4; name = torrent.hpp; path = include/libtorrent/torrent.hpp; sourceTree = SOURCE_ROOT; };
+		205096DA5F504EEBBE3C4A73 /* libtorrent.hpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.h; fileEncoding = 4; name = libtorrent.hpp; path = include/libtorrent/libtorrent.hpp; sourceTree = SOURCE_ROOT; };
+		2067A34EA35D4C2E953740C7 /* peer_info.hpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.h; fileEncoding = 4; name = peer_info.hpp; path = include/libtorrent/peer_info.hpp; sourceTree = SOURCE_ROOT; };
+		2076563AED154D7C9533ACD0 /* win_crypto_provider.hpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.h; fileEncoding = 4; name = win_crypto_provider.hpp; path = include/libtorrent/aux_/win_crypto_provider.hpp; sourceTree = SOURCE_ROOT; };
+		23525813F5604EDCA2FA0882 /* resolve_links.hpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.h; fileEncoding = 4; name = resolve_links.hpp; path = include/libtorrent/resolve_links.hpp; sourceTree = SOURCE_ROOT; };
+		2499C09E8812470E89F87362 /* ut_pex.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = ut_pex.cpp; path = src/ut_pex.cpp; sourceTree = SOURCE_ROOT; };
+		25FAE1CF737246FA84D4AA35 /* sha256.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = sha256.cpp; path = src/sha256.cpp; sourceTree = SOURCE_ROOT; };
+		2776CAEBEE70487FA1ED7915 /* read_resume_data.hpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.h; fileEncoding = 4; name = read_resume_data.hpp; path = include/libtorrent/read_resume_data.hpp; sourceTree = SOURCE_ROOT; };
+		27B816863A2047B3B6256BC5 /* upnp.hpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.h; fileEncoding = 4; name = upnp.hpp; path = include/libtorrent/upnp.hpp; sourceTree = SOURCE_ROOT; };
+		27E7C482ADF6439C984EA323 /* tracker_manager.hpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.h; fileEncoding = 4; name = tracker_manager.hpp; path = include/libtorrent/tracker_manager.hpp; sourceTree = SOURCE_ROOT; };
+		281A5240590740E6A32D6F24 /* announce_flags.hpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.h; fileEncoding = 4; name = announce_flags.hpp; path = include/libtorrent/kademlia/announce_flags.hpp; sourceTree = SOURCE_ROOT; };
+		28483FC863E140E59994F74E /* hex.hpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.h; fileEncoding = 4; name = hex.hpp; path = include/libtorrent/hex.hpp; sourceTree = SOURCE_ROOT; };
+		2869519EDC0E411C94E5C385 /* node_id.hpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.h; fileEncoding = 4; name = node_id.hpp; path = include/libtorrent/kademlia/node_id.hpp; sourceTree = SOURCE_ROOT; };
+		286FCD68D7F14015A8AD8CD0 /* upnp.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = upnp.cpp; path = src/upnp.cpp; sourceTree = SOURCE_ROOT; };
+		2870D5EBB9194BBBB91144A4 /* socket.hpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.h; fileEncoding = 4; name = socket.hpp; path = include/libtorrent/socket.hpp; sourceTree = SOURCE_ROOT; };
+		28E92BCFC5884EC5AAD9803D /* file.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = file.cpp; path = src/file.cpp; sourceTree = SOURCE_ROOT; };
+		29BC49F5E86444758CCFDD5A /* version.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = version.cpp; path = src/version.cpp; sourceTree = SOURCE_ROOT; };
+		2B0D39D9EB4E4C25BA03988B /* truncate.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = truncate.cpp; path = src/truncate.cpp; sourceTree = SOURCE_ROOT; };
+		2B88A6CBF7E2454FB20201AB /* ed25519.hpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.h; fileEncoding = 4; name = ed25519.hpp; path = include/libtorrent/aux_/ed25519.hpp; sourceTree = SOURCE_ROOT; };
+		2C12194E7B8F4AD583C68E40 /* session_types.hpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.h; fileEncoding = 4; name = session_types.hpp; path = include/libtorrent/session_types.hpp; sourceTree = SOURCE_ROOT; };
+		2C62D13F256348A8855A99E5 /* stack_allocator.hpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.h; fileEncoding = 4; name = stack_allocator.hpp; path = include/libtorrent/stack_allocator.hpp; sourceTree = SOURCE_ROOT; };
+		2D105161F89842B88DE49E82 /* suggest_piece.hpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.h; fileEncoding = 4; name = suggest_piece.hpp; path = include/libtorrent/aux_/suggest_piece.hpp; sourceTree = SOURCE_ROOT; };
+		2E499680F25E4D4ABBB86AAE /* session_settings.hpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.h; fileEncoding = 4; name = session_settings.hpp; path = include/libtorrent/session_settings.hpp; sourceTree = SOURCE_ROOT; };
+		2E8BC54960D14275B30AAB08 /* set_traffic_class.hpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.h; fileEncoding = 4; name = set_traffic_class.hpp; path = include/libtorrent/aux_/set_traffic_class.hpp; sourceTree = SOURCE_ROOT; };
+		2F39E6351E164BED85B5645B /* apply_pad_files.hpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.h; fileEncoding = 4; name = apply_pad_files.hpp; path = include/libtorrent/aux_/apply_pad_files.hpp; sourceTree = SOURCE_ROOT; };
+		30F4E125EEB14E5E952B930A /* add_torrent_params.hpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.h; fileEncoding = 4; name = add_torrent_params.hpp; path = include/libtorrent/add_torrent_params.hpp; sourceTree = SOURCE_ROOT; };
+		317BADA12F544260B83B8318 /* peer_class_type_filter.hpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.h; fileEncoding = 4; name = peer_class_type_filter.hpp; path = include/libtorrent/peer_class_type_filter.hpp; sourceTree = SOURCE_ROOT; };
+		33B29F676A1A49F390D79A6B /* storage_defs.hpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.h; fileEncoding = 4; name = storage_defs.hpp; path = include/libtorrent/storage_defs.hpp; sourceTree = SOURCE_ROOT; };
+		33B86A48597E479CB8A361D2 /* ssl.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = ssl.cpp; path = src/ssl.cpp; sourceTree = SOURCE_ROOT; };
+		340BBD2DD0D3477FBF16049C /* file_view_pool.hpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.h; fileEncoding = 4; name = file_view_pool.hpp; path = include/libtorrent/aux_/file_view_pool.hpp; sourceTree = SOURCE_ROOT; };
+		341B832722D84889AAC464C7 /* ip_filter.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = ip_filter.cpp; path = src/ip_filter.cpp; sourceTree = SOURCE_ROOT; };
+		344870F806394E688655B88B /* disable_warnings_push.hpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.h; fileEncoding = 4; name = disable_warnings_push.hpp; path = include/libtorrent/aux_/disable_warnings_push.hpp; sourceTree = SOURCE_ROOT; };
+		34A398C89F4F42808DD9A6AA /* entry.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = entry.cpp; path = src/entry.cpp; sourceTree = SOURCE_ROOT; };
+		355EBBBC69174216B4FECDD2 /* random.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = random.cpp; path = src/random.cpp; sourceTree = SOURCE_ROOT; };
+		35E782B12DC44932BA1C8D48 /* session_settings.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = session_settings.cpp; path = src/session_settings.cpp; sourceTree = SOURCE_ROOT; };
+		35F1D5983D3A4A1BB0D5E172 /* proxy_settings.hpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.h; fileEncoding = 4; name = proxy_settings.hpp; path = include/libtorrent/aux_/proxy_settings.hpp; sourceTree = SOURCE_ROOT; };
+		3653EB883BD94C2787642077 /* scope_end.hpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.h; fileEncoding = 4; name = scope_end.hpp; path = include/libtorrent/aux_/scope_end.hpp; sourceTree = SOURCE_ROOT; };
+		36FD9644341A450EA6B34F12 /* routing_table.hpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.h; fileEncoding = 4; name = routing_table.hpp; path = include/libtorrent/kademlia/routing_table.hpp; sourceTree = SOURCE_ROOT; };
+		3843BCC13DDB4D98ADA9BD4A /* ssl_stream.hpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.h; fileEncoding = 4; name = ssl_stream.hpp; path = include/libtorrent/ssl_stream.hpp; sourceTree = SOURCE_ROOT; };
+		3900803217B9440090AF85A2 /* traversal_algorithm.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = traversal_algorithm.cpp; path = src/kademlia/traversal_algorithm.cpp; sourceTree = SOURCE_ROOT; };
+		3A1A29C344BF40739B34091B /* bitfield.hpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.h; fileEncoding = 4; name = bitfield.hpp; path = include/libtorrent/bitfield.hpp; sourceTree = SOURCE_ROOT; };
+		3AB4EB5F225C44E39E1C97AB /* unique_ptr.hpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.h; fileEncoding = 4; name = unique_ptr.hpp; path = include/libtorrent/aux_/unique_ptr.hpp; sourceTree = SOURCE_ROOT; };
+		3AE17564F90942EDBAB9AEE0 /* puff.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = puff.cpp; path = src/puff.cpp; sourceTree = SOURCE_ROOT; };
+		3B5F90B837264EFEB3235B28 /* CMakeLists.txt */ = {isa = PBXFileReference; explicitFileType = sourcecode.text; fileEncoding = 4; lastKnownFileType = text; path = CMakeLists.txt; sourceTree = SOURCE_ROOT; };
+		3B91CD5E6E1749DEA35EE283 /* sha1_hash.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = sha1_hash.cpp; path = src/sha1_hash.cpp; sourceTree = SOURCE_ROOT; };
+		3C185627843A4D8C98E09B2C /* proxy_base.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = proxy_base.cpp; path = src/proxy_base.cpp; sourceTree = SOURCE_ROOT; };
+		3C3EFD30CFC0444787580D3F /* string_util.hpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.h; fileEncoding = 4; name = string_util.hpp; path = include/libtorrent/string_util.hpp; sourceTree = SOURCE_ROOT; };
+		3D5EC40DF61A48578DECFED6 /* bt_peer_connection.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = bt_peer_connection.cpp; path = src/bt_peer_connection.cpp; sourceTree = SOURCE_ROOT; };
+		3DCFD940BD62474A803156EF /* alert.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = alert.cpp; path = src/alert.cpp; sourceTree = SOURCE_ROOT; };
+		3DE26841816F4672BE93FEE4 /* bandwidth_limit.hpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.h; fileEncoding = 4; name = bandwidth_limit.hpp; path = include/libtorrent/aux_/bandwidth_limit.hpp; sourceTree = SOURCE_ROOT; };
+		3E9DFA99403E4F19AB410544 /* utp_stream.hpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.h; fileEncoding = 4; name = utp_stream.hpp; path = include/libtorrent/aux_/utp_stream.hpp; sourceTree = SOURCE_ROOT; };
+		3EF3B487C6F84954B1D422D7 /* directory.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = directory.cpp; path = src/directory.cpp; sourceTree = SOURCE_ROOT; };
+		3EFBA5933FC44D48873CEBE3 /* has_block.hpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.h; fileEncoding = 4; name = has_block.hpp; path = include/libtorrent/aux_/has_block.hpp; sourceTree = SOURCE_ROOT; };
+		3F4C177C56CA4B5FA6496F46 /* bloom_filter.hpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.h; fileEncoding = 4; name = bloom_filter.hpp; path = include/libtorrent/bloom_filter.hpp; sourceTree = SOURCE_ROOT; };
+		3F4F5A79400141B497DE5F61 /* bandwidth_manager.hpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.h; fileEncoding = 4; name = bandwidth_manager.hpp; path = include/libtorrent/aux_/bandwidth_manager.hpp; sourceTree = SOURCE_ROOT; };
+		4060689310834A25A584E0B7 /* mmap_storage.hpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.h; fileEncoding = 4; name = mmap_storage.hpp; path = include/libtorrent/mmap_storage.hpp; sourceTree = SOURCE_ROOT; };
+		40CB31135EBF445BAF3EC8BF /* ffs.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = ffs.cpp; path = src/ffs.cpp; sourceTree = SOURCE_ROOT; };
+		40F46712517F4063B34BA5E0 /* alert_manager.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = alert_manager.cpp; path = src/alert_manager.cpp; sourceTree = SOURCE_ROOT; };
+		414C35F04B1D4BC0A8A4D106 /* generate_peer_id.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = generate_peer_id.cpp; path = src/generate_peer_id.cpp; sourceTree = SOURCE_ROOT; };
+		419C4E76EABA498494DC6686 /* error_code.hpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.h; fileEncoding = 4; name = error_code.hpp; path = include/libtorrent/error_code.hpp; sourceTree = SOURCE_ROOT; };
+		42DD419781E540ADBC2F7EAF /* ed25519.hpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.h; fileEncoding = 4; name = ed25519.hpp; path = include/libtorrent/kademlia/ed25519.hpp; sourceTree = SOURCE_ROOT; };
+		437BC1E6D16B4B16A83E1336 /* torrent_handle.hpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.h; fileEncoding = 4; name = torrent_handle.hpp; path = include/libtorrent/torrent_handle.hpp; sourceTree = SOURCE_ROOT; };
+		448BCF324AD94B498FA1E8BB /* pool.hpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.h; fileEncoding = 4; name = pool.hpp; path = include/libtorrent/aux_/pool.hpp; sourceTree = SOURCE_ROOT; };
+		44B5B2BF81184EDB8BE20630 /* torrent_list.hpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.h; fileEncoding = 4; name = torrent_list.hpp; path = include/libtorrent/aux_/torrent_list.hpp; sourceTree = SOURCE_ROOT; };
+		4679671D0D8F4B52B4D644FA /* read_resume_data.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = read_resume_data.cpp; path = src/read_resume_data.cpp; sourceTree = SOURCE_ROOT; };
+		473B6163575E4FAAA498B5CC /* union_endpoint.hpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.h; fileEncoding = 4; name = union_endpoint.hpp; path = include/libtorrent/union_endpoint.hpp; sourceTree = SOURCE_ROOT; };
+		47E2586397694EEC853E9369 /* disk_buffer_pool.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = disk_buffer_pool.cpp; path = src/disk_buffer_pool.cpp; sourceTree = SOURCE_ROOT; };
+		4A9D2946E9CA417BB135DDA6 /* ip_voter.hpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.h; fileEncoding = 4; name = ip_voter.hpp; path = include/libtorrent/ip_voter.hpp; sourceTree = SOURCE_ROOT; };
+		4B07C88EFF404727907023AD /* sc.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = sc.cpp; path = src/ed25519/sc.cpp; sourceTree = SOURCE_ROOT; };
+		4B0AC6E7821C4B26AF92F2B6 /* stat_cache.hpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.h; fileEncoding = 4; name = stat_cache.hpp; path = include/libtorrent/stat_cache.hpp; sourceTree = SOURCE_ROOT; };
+		4BD0FEA2B81345DEA000FECF /* allocating_handler.hpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.h; fileEncoding = 4; name = allocating_handler.hpp; path = include/libtorrent/aux_/allocating_handler.hpp; sourceTree = SOURCE_ROOT; };
+		4C587C3A906D4C0A9467E5AF /* mmap_disk_job.hpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.h; fileEncoding = 4; name = mmap_disk_job.hpp; path = include/libtorrent/aux_/mmap_disk_job.hpp; sourceTree = SOURCE_ROOT; };
+		4CDA4251A7994B249E6A9DCA /* disk_interface.hpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.h; fileEncoding = 4; name = disk_interface.hpp; path = include/libtorrent/disk_interface.hpp; sourceTree = SOURCE_ROOT; };
+		4CF9D6569DA744A689DB3A69 /* node_entry.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = node_entry.cpp; path = src/kademlia/node_entry.cpp; sourceTree = SOURCE_ROOT; };
+		4D870D13D05E4469A218AF8E /* node.hpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.h; fileEncoding = 4; name = node.hpp; path = include/libtorrent/kademlia/node.hpp; sourceTree = SOURCE_ROOT; };
+		4ECB635FC3424C5E89997CDE /* natpmp.hpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.h; fileEncoding = 4; name = natpmp.hpp; path = include/libtorrent/natpmp.hpp; sourceTree = SOURCE_ROOT; };
+		4F15E56F658C4DFA9ECE6A7A /* time.hpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.h; fileEncoding = 4; name = time.hpp; path = include/libtorrent/time.hpp; sourceTree = SOURCE_ROOT; };
+		4F2B348952A64997B89C0373 /* deque.hpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.h; fileEncoding = 4; name = deque.hpp; path = include/libtorrent/aux_/deque.hpp; sourceTree = SOURCE_ROOT; };
+		4F55A54F80D74A93A007C9BC /* torrent_flags.hpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.h; fileEncoding = 4; name = torrent_flags.hpp; path = include/libtorrent/torrent_flags.hpp; sourceTree = SOURCE_ROOT; };
+		4FC16E7BD03046B29355AD7A /* crc32c.hpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.h; fileEncoding = 4; name = crc32c.hpp; path = include/libtorrent/crc32c.hpp; sourceTree = SOURCE_ROOT; };
+		50503A7085ED48D986010839 /* dos_blocker.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = dos_blocker.cpp; path = src/kademlia/dos_blocker.cpp; sourceTree = SOURCE_ROOT; };
+		51185756058C4AD9B6D994EF /* dos_blocker.hpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.h; fileEncoding = 4; name = dos_blocker.hpp; path = include/libtorrent/kademlia/dos_blocker.hpp; sourceTree = SOURCE_ROOT; };
+		5120F0C253434777B7C8D2B2 /* chained_buffer.hpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.h; fileEncoding = 4; name = chained_buffer.hpp; path = include/libtorrent/aux_/chained_buffer.hpp; sourceTree = SOURCE_ROOT; };
+		51A3B86600914114AC2EA387 /* gzip.hpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.h; fileEncoding = 4; name = gzip.hpp; path = include/libtorrent/gzip.hpp; sourceTree = SOURCE_ROOT; };
+		51DE25DA93454730818244E0 /* session_interface.hpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.h; fileEncoding = 4; name = session_interface.hpp; path = include/libtorrent/aux_/session_interface.hpp; sourceTree = SOURCE_ROOT; };
+		52092AACB1A44DCEA6E4E16F /* crc32c.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = crc32c.cpp; path = src/crc32c.cpp; sourceTree = SOURCE_ROOT; };
+		521304A8D94644189571C9F5 /* storage_utils.hpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.h; fileEncoding = 4; name = storage_utils.hpp; path = include/libtorrent/aux_/storage_utils.hpp; sourceTree = SOURCE_ROOT; };
+		525BD31290D64090B0E71B4F /* vector.hpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.h; fileEncoding = 4; name = vector.hpp; path = include/libtorrent/aux_/vector.hpp; sourceTree = SOURCE_ROOT; };
+		52BB63232AFB4565AFACC397 /* file_view_pool.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = file_view_pool.cpp; path = src/file_view_pool.cpp; sourceTree = SOURCE_ROOT; };
+		52DD3088153D4D628F2EAA82 /* disable_warnings_pop.hpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.h; fileEncoding = 4; name = disable_warnings_pop.hpp; path = include/libtorrent/aux_/disable_warnings_pop.hpp; sourceTree = SOURCE_ROOT; };
+		5399D0F03D274EC8B991F0CB /* smart_ban.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = smart_ban.cpp; path = src/smart_ban.cpp; sourceTree = SOURCE_ROOT; };
+		53A794191AD646889D880A08 /* part_file.hpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.h; fileEncoding = 4; name = part_file.hpp; path = include/libtorrent/part_file.hpp; sourceTree = SOURCE_ROOT; };
+		53E96726355B43B6A73893DF /* get_peers.hpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.h; fileEncoding = 4; name = get_peers.hpp; path = include/libtorrent/kademlia/get_peers.hpp; sourceTree = SOURCE_ROOT; };
+		53F69A84B2364ED683955752 /* dht_tracker.hpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.h; fileEncoding = 4; name = dht_tracker.hpp; path = include/libtorrent/kademlia/dht_tracker.hpp; sourceTree = SOURCE_ROOT; };
+		5438287968C24E0788FEC7E4 /* get_item.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = get_item.cpp; path = src/kademlia/get_item.cpp; sourceTree = SOURCE_ROOT; };
+		55AD31DAF2E24E898A1DD56F /* set_socket_buffer.hpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.h; fileEncoding = 4; name = set_socket_buffer.hpp; path = include/libtorrent/aux_/set_socket_buffer.hpp; sourceTree = SOURCE_ROOT; };
+		56D5E375DC8749B4B38E08DE /* version.hpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.h; fileEncoding = 4; name = version.hpp; path = include/libtorrent/version.hpp; sourceTree = SOURCE_ROOT; };
+		57A58DD5A6744DD0B2364CA9 /* dht_tracker.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = dht_tracker.cpp; path = src/kademlia/dht_tracker.cpp; sourceTree = SOURCE_ROOT; };
+		57A916A9F9D14C3BAF324E36 /* deferred_handler.hpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.h; fileEncoding = 4; name = deferred_handler.hpp; path = include/libtorrent/aux_/deferred_handler.hpp; sourceTree = SOURCE_ROOT; };
+		583FDCD1655D442580868C12 /* merkle_tree.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = merkle_tree.cpp; path = src/merkle_tree.cpp; sourceTree = SOURCE_ROOT; };
+		59BE8451F01C4DF3980B13B3 /* parse_url.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = parse_url.cpp; path = src/parse_url.cpp; sourceTree = SOURCE_ROOT; };
+		59C007A575154B7FB0742DE9 /* cpuid.hpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.h; fileEncoding = 4; name = cpuid.hpp; path = include/libtorrent/aux_/cpuid.hpp; sourceTree = SOURCE_ROOT; };
+		5A5F3F7CEE1346D0A7E189C4 /* msg.hpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.h; fileEncoding = 4; name = msg.hpp; path = include/libtorrent/kademlia/msg.hpp; sourceTree = SOURCE_ROOT; };
+		5B44997BEAAD48BDB4B6C47B /* sha1.hpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.h; fileEncoding = 4; name = sha1.hpp; path = include/libtorrent/sha1.hpp; sourceTree = SOURCE_ROOT; };
+		5BBB14B7174A4E99BBE880C6 /* drive_info.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = drive_info.cpp; path = src/drive_info.cpp; sourceTree = SOURCE_ROOT; };
+		5C3C27CC748A48D9B0C64CDC /* string_ptr.hpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.h; fileEncoding = 4; name = string_ptr.hpp; path = include/libtorrent/aux_/string_ptr.hpp; sourceTree = SOURCE_ROOT; };
+		5CADF0E2CCF74486949DA2C7 /* file_storage.hpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.h; fileEncoding = 4; name = file_storage.hpp; path = include/libtorrent/file_storage.hpp; sourceTree = SOURCE_ROOT; };
+		5CD6E407814243DBB995F1C5 /* disk_job_pool.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = disk_job_pool.cpp; path = src/disk_job_pool.cpp; sourceTree = SOURCE_ROOT; };
+		5CF94258D5724906B07A81A3 /* session_call.hpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.h; fileEncoding = 4; name = session_call.hpp; path = include/libtorrent/aux_/session_call.hpp; sourceTree = SOURCE_ROOT; };
+		5D1EA59D9B204FC68DDF9450 /* get_peers.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = get_peers.cpp; path = src/kademlia/get_peers.cpp; sourceTree = SOURCE_ROOT; };
+		5D53243763FD47F89DD49658 /* ip_voter.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = ip_voter.cpp; path = src/ip_voter.cpp; sourceTree = SOURCE_ROOT; };
+		5DDE8C0EF6E74CF1A196D2DB /* utf8.hpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.h; fileEncoding = 4; name = utf8.hpp; path = include/libtorrent/utf8.hpp; sourceTree = SOURCE_ROOT; };
+		5EA4E13CED17442BBD142D68 /* win_file_handle.hpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.h; fileEncoding = 4; name = win_file_handle.hpp; path = include/libtorrent/aux_/win_file_handle.hpp; sourceTree = SOURCE_ROOT; };
+		5F28183D7BBA45A786865EFF /* bind_to_device.hpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.h; fileEncoding = 4; name = bind_to_device.hpp; path = include/libtorrent/aux_/bind_to_device.hpp; sourceTree = SOURCE_ROOT; };
+		5F6980EBE26E4165987C4F47 /* traversal_algorithm.hpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.h; fileEncoding = 4; name = traversal_algorithm.hpp; path = include/libtorrent/kademlia/traversal_algorithm.hpp; sourceTree = SOURCE_ROOT; };
+		5F69DACE0B4B439DAA9731F5 /* try_signal.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = try_signal.cpp; path = deps/try_signal/try_signal.cpp; sourceTree = SOURCE_ROOT; };
+		5FC1B4DD196B41DDB841A987 /* disk_buffer_holder.hpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.h; fileEncoding = 4; name = disk_buffer_holder.hpp; path = include/libtorrent/disk_buffer_holder.hpp; sourceTree = SOURCE_ROOT; };
+		6181C0B86FFE4478BF741F9F /* session_udp_sockets.hpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.h; fileEncoding = 4; name = session_udp_sockets.hpp; path = include/libtorrent/aux_/session_udp_sockets.hpp; sourceTree = SOURCE_ROOT; };
+		628A73B510024E15B94A6FF7 /* index_range.hpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.h; fileEncoding = 4; name = index_range.hpp; path = include/libtorrent/index_range.hpp; sourceTree = SOURCE_ROOT; };
+		638ED47957F94A9FBC598862 /* ut_metadata.hpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.h; fileEncoding = 4; name = ut_metadata.hpp; path = include/libtorrent/extensions/ut_metadata.hpp; sourceTree = SOURCE_ROOT; };
+		64C0A8A465F4456D96B1AD1A /* ip_notifier.hpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.h; fileEncoding = 4; name = ip_notifier.hpp; path = include/libtorrent/aux_/ip_notifier.hpp; sourceTree = SOURCE_ROOT; };
+		654FA4ABAB82432983A15805 /* disk_observer.hpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.h; fileEncoding = 4; name = disk_observer.hpp; path = include/libtorrent/disk_observer.hpp; sourceTree = SOURCE_ROOT; };
+		666C38F86A7C4FAD99E75A38 /* storage_utils.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = storage_utils.cpp; path = src/storage_utils.cpp; sourceTree = SOURCE_ROOT; };
+		66AD3C0D72A34AEAB4E182FE /* resolver.hpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.h; fileEncoding = 4; name = resolver.hpp; path = include/libtorrent/aux_/resolver.hpp; sourceTree = SOURCE_ROOT; };
+		66E19992F0CF4B698F55CC79 /* http_parser.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = http_parser.cpp; path = src/http_parser.cpp; sourceTree = SOURCE_ROOT; };
+		66E20D979AB641FEB3487AAC /* session.hpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.h; fileEncoding = 4; name = session.hpp; path = include/libtorrent/session.hpp; sourceTree = SOURCE_ROOT; };
+		67CA927505674D10A89F6CDB /* storage_free_list.hpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.h; fileEncoding = 4; name = storage_free_list.hpp; path = include/libtorrent/aux_/storage_free_list.hpp; sourceTree = SOURCE_ROOT; };
+		6833D120D08B4934ACCB1809 /* dht_state.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = dht_state.cpp; path = src/kademlia/dht_state.cpp; sourceTree = SOURCE_ROOT; };
+		6A763C6B4B9F4F33B4320FC6 /* write_resume_data.hpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.h; fileEncoding = 4; name = write_resume_data.hpp; path = include/libtorrent/write_resume_data.hpp; sourceTree = SOURCE_ROOT; };
+		6AD09F1FD31649A9B78C5EA2 /* file_descriptor.hpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.h; fileEncoding = 4; name = file_descriptor.hpp; path = include/libtorrent/aux_/file_descriptor.hpp; sourceTree = SOURCE_ROOT; };
+		6AF8BAC9151146FCB0EDFD09 /* ssl.hpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.h; fileEncoding = 4; name = ssl.hpp; path = include/libtorrent/ssl.hpp; sourceTree = SOURCE_ROOT; };
+		6B1C710A685747C0A4BE059A /* packet_buffer.hpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.h; fileEncoding = 4; name = packet_buffer.hpp; path = include/libtorrent/aux_/packet_buffer.hpp; sourceTree = SOURCE_ROOT; };
+		6BB88E10AAFB444886B3B9B3 /* settings_pack.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = settings_pack.cpp; path = src/settings_pack.cpp; sourceTree = SOURCE_ROOT; };
+		6D431CA21D8C431EA88D9BDE /* socket_io.hpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.h; fileEncoding = 4; name = socket_io.hpp; path = include/libtorrent/socket_io.hpp; sourceTree = SOURCE_ROOT; };
+		6E3AB66BFA274E3E989EBBCF /* instantiate_connection.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = instantiate_connection.cpp; path = src/instantiate_connection.cpp; sourceTree = SOURCE_ROOT; };
+		70015CE927D64B959EA91558 /* dht_settings.hpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.h; fileEncoding = 4; name = dht_settings.hpp; path = include/libtorrent/kademlia/dht_settings.hpp; sourceTree = SOURCE_ROOT; };
+		7295F8C2DA2F4EF697F37274 /* pe_crypto.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = pe_crypto.cpp; path = src/pe_crypto.cpp; sourceTree = SOURCE_ROOT; };
+		72C57FFE5AB54F52A56AAC8A /* vector_utils.hpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.h; fileEncoding = 4; name = vector_utils.hpp; path = include/libtorrent/vector_utils.hpp; sourceTree = SOURCE_ROOT; };
+		73A9A879D6BA49CEB7C23E46 /* xml_parse.hpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.h; fileEncoding = 4; name = xml_parse.hpp; path = include/libtorrent/xml_parse.hpp; sourceTree = SOURCE_ROOT; };
+		74B052DAFEE340959406A03E /* proxy_settings.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = proxy_settings.cpp; path = src/proxy_settings.cpp; sourceTree = SOURCE_ROOT; };
+		762AD9F71C7541B6A9010241 /* socks5_stream.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = socks5_stream.cpp; path = src/socks5_stream.cpp; sourceTree = SOURCE_ROOT; };
+		785807D1A6DB449AAE0F87D0 /* hex.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = hex.cpp; path = src/hex.cpp; sourceTree = SOURCE_ROOT; };
+		78E126D3C0114B0FA0A7E25A /* peer_connection.hpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.h; fileEncoding = 4; name = peer_connection.hpp; path = include/libtorrent/peer_connection.hpp; sourceTree = SOURCE_ROOT; };
+		79C31AB69E774354A6E9E071 /* choker.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = choker.cpp; path = src/choker.cpp; sourceTree = SOURCE_ROOT; };
+		79F17B6440764E77A8C7EDC7 /* ut_metadata.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = ut_metadata.cpp; path = src/ut_metadata.cpp; sourceTree = SOURCE_ROOT; };
+		7A884BC502594EA6A275FDE4 /* udp_tracker_connection.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = udp_tracker_connection.cpp; path = src/udp_tracker_connection.cpp; sourceTree = SOURCE_ROOT; };
+		7B99E2560F6C423292051586 /* puff.hpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.h; fileEncoding = 4; name = puff.hpp; path = include/libtorrent/puff.hpp; sourceTree = SOURCE_ROOT; };
+		7C680A9FF35E436B9FE52927 /* stat.hpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.h; fileEncoding = 4; name = stat.hpp; path = include/libtorrent/stat.hpp; sourceTree = SOURCE_ROOT; };
+		7C92DED61BAE41B09944A2F7 /* error.hpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.h; fileEncoding = 4; name = error.hpp; path = include/libtorrent/error.hpp; sourceTree = SOURCE_ROOT; };
+		7D4A366508A94EBDA3DC1231 /* disk_job_pool.hpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.h; fileEncoding = 4; name = disk_job_pool.hpp; path = include/libtorrent/aux_/disk_job_pool.hpp; sourceTree = SOURCE_ROOT; };
+		7DB7CA5A3946405FB8A9FDF2 /* session_impl.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = session_impl.cpp; path = src/session_impl.cpp; sourceTree = SOURCE_ROOT; };
+		7EB9BCC3C1CB463D97BD2BDE /* http_parser.hpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.h; fileEncoding = 4; name = http_parser.hpp; path = include/libtorrent/http_parser.hpp; sourceTree = SOURCE_ROOT; };
+		7FF280CAE76C4A4797656B90 /* refresh.hpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.h; fileEncoding = 4; name = refresh.hpp; path = include/libtorrent/kademlia/refresh.hpp; sourceTree = SOURCE_ROOT; };
+		8039E556101C4AAA900045CA /* throw.hpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.h; fileEncoding = 4; name = throw.hpp; path = include/libtorrent/aux_/throw.hpp; sourceTree = SOURCE_ROOT; };
+		80D1C14EF9AE4454B9599DE4 /* assert.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = assert.cpp; path = src/assert.cpp; sourceTree = SOURCE_ROOT; };
+		8110F94069B34EC8B82D8728 /* torrent_info.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = torrent_info.cpp; path = src/torrent_info.cpp; sourceTree = SOURCE_ROOT; };
+		8193C13B134344FA9C2AD63F /* peer_list.hpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.h; fileEncoding = 4; name = peer_list.hpp; path = include/libtorrent/peer_list.hpp; sourceTree = SOURCE_ROOT; };
+		8219CC672D2E4ED9B5AA6D88 /* listen_socket_handle.hpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.h; fileEncoding = 4; name = listen_socket_handle.hpp; path = include/libtorrent/aux_/listen_socket_handle.hpp; sourceTree = SOURCE_ROOT; };
+		82406210A9D743B198FE6E1C /* flags.hpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.h; fileEncoding = 4; name = flags.hpp; path = include/libtorrent/flags.hpp; sourceTree = SOURCE_ROOT; };
+		8374D97C7ADD44C4A758C485 /* disk_job_fence.hpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.h; fileEncoding = 4; name = disk_job_fence.hpp; path = include/libtorrent/aux_/disk_job_fence.hpp; sourceTree = SOURCE_ROOT; };
+		83A608DEA7754DD2B2FCB601 /* socks5_stream.hpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.h; fileEncoding = 4; name = socks5_stream.hpp; path = include/libtorrent/socks5_stream.hpp; sourceTree = SOURCE_ROOT; };
+		83B47CA967CA44B4A6ACDEF6 /* posix_disk_io.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = posix_disk_io.cpp; path = src/posix_disk_io.cpp; sourceTree = SOURCE_ROOT; };
+		83C5F1F10C1144F7B2E8BDCA /* sign.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = sign.cpp; path = src/ed25519/sign.cpp; sourceTree = SOURCE_ROOT; };
+		8469A23F8CBF425BA7261C97 /* copy_file.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = copy_file.cpp; path = src/copy_file.cpp; sourceTree = SOURCE_ROOT; };
+		846D719A76CE4BBD8364C710 /* win_util.hpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.h; fileEncoding = 4; name = win_util.hpp; path = include/libtorrent/aux_/win_util.hpp; sourceTree = SOURCE_ROOT; };
+		86507A5F0E1E4C3D85F15C6F /* bdecode.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = bdecode.cpp; path = src/bdecode.cpp; sourceTree = SOURCE_ROOT; };
+		870957D56CB84B0AB8E5E0E7 /* sample_infohashes.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = sample_infohashes.cpp; path = src/kademlia/sample_infohashes.cpp; sourceTree = SOURCE_ROOT; };
+		88AC7D4F501C449A8F7CD406 /* chained_buffer.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = chained_buffer.cpp; path = src/chained_buffer.cpp; sourceTree = SOURCE_ROOT; };
+		892EC860E5714F8C85EF3531 /* io.hpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.h; fileEncoding = 4; name = io.hpp; path = include/libtorrent/kademlia/io.hpp; sourceTree = SOURCE_ROOT; };
+		89648CFB4E5D4F42B7C861CB /* direct_request.hpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.h; fileEncoding = 4; name = direct_request.hpp; path = include/libtorrent/kademlia/direct_request.hpp; sourceTree = SOURCE_ROOT; };
+		89A74A5B826D429FA9F29505 /* alloca.hpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.h; fileEncoding = 4; name = alloca.hpp; path = include/libtorrent/aux_/alloca.hpp; sourceTree = SOURCE_ROOT; };
+		89F47041FDE44CA18BC91745 /* aligned_storage.hpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.h; fileEncoding = 4; name = aligned_storage.hpp; path = include/libtorrent/aux_/aligned_storage.hpp; sourceTree = SOURCE_ROOT; };
+		89F4EBB4B83D48F781B36EDC /* fingerprint.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = fingerprint.cpp; path = src/fingerprint.cpp; sourceTree = SOURCE_ROOT; };
+		8A83D2C126D94BEE9096AB6E /* disk_job_fence.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = disk_job_fence.cpp; path = src/disk_job_fence.cpp; sourceTree = SOURCE_ROOT; };
+		8AE6DF3CDB6A4529B6AADA04 /* merkle.hpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.h; fileEncoding = 4; name = merkle.hpp; path = include/libtorrent/aux_/merkle.hpp; sourceTree = SOURCE_ROOT; };
+		8CAFCAAA751643AC8020E6DF /* peer_connection.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = peer_connection.cpp; path = src/peer_connection.cpp; sourceTree = SOURCE_ROOT; };
+		8CF1765BE524410CBD3E7EC7 /* deadline_timer.hpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.h; fileEncoding = 4; name = deadline_timer.hpp; path = include/libtorrent/deadline_timer.hpp; sourceTree = SOURCE_ROOT; };
+		8E083461E593454B9CEF0841 /* dht_storage.hpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.h; fileEncoding = 4; name = dht_storage.hpp; path = include/libtorrent/kademlia/dht_storage.hpp; sourceTree = SOURCE_ROOT; };
+		8E23CD7BDA6144AB9FA09DED /* listen_socket_handle.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = listen_socket_handle.cpp; path = src/listen_socket_handle.cpp; sourceTree = SOURCE_ROOT; };
+		8F35F3C7365D4A188F7C9745 /* string_util.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = string_util.cpp; path = src/string_util.cpp; sourceTree = SOURCE_ROOT; };
+		9035B80F183144A3A4123FE2 /* debug.hpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.h; fileEncoding = 4; name = debug.hpp; path = include/libtorrent/debug.hpp; sourceTree = SOURCE_ROOT; };
+		90DD5233855748358A40D68F /* alert_types.hpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.h; fileEncoding = 4; name = alert_types.hpp; path = include/libtorrent/alert_types.hpp; sourceTree = SOURCE_ROOT; };
+		9126151B283745BBB6C58C38 /* pex_flags.hpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.h; fileEncoding = 4; name = pex_flags.hpp; path = include/libtorrent/pex_flags.hpp; sourceTree = SOURCE_ROOT; };
+		9152490CBA9F471F9AA37310 /* identify_client.hpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.h; fileEncoding = 4; name = identify_client.hpp; path = include/libtorrent/identify_client.hpp; sourceTree = SOURCE_ROOT; };
+		9194ED50C46A49EC9F7245F9 /* bandwidth_manager.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = bandwidth_manager.cpp; path = src/bandwidth_manager.cpp; sourceTree = SOURCE_ROOT; };
+		92BA0E2D248640A49AB89B0A /* udp_socket.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = udp_socket.cpp; path = src/udp_socket.cpp; sourceTree = SOURCE_ROOT; };
+		93B24312251E447F81695BBA /* drive_info.hpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.h; fileEncoding = 4; name = drive_info.hpp; path = include/libtorrent/aux_/drive_info.hpp; sourceTree = SOURCE_ROOT; };
+		9576BCC5015642519A0C90D1 /* request_blocks.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = request_blocks.cpp; path = src/request_blocks.cpp; sourceTree = SOURCE_ROOT; };
+		961B698799174BDB9D996356 /* assert.hpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.h; fileEncoding = 4; name = assert.hpp; path = include/libtorrent/assert.hpp; sourceTree = SOURCE_ROOT; };
+		964F5314A7DA45F2A1B6DB43 /* sample_infohashes.hpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.h; fileEncoding = 4; name = sample_infohashes.hpp; path = include/libtorrent/kademlia/sample_infohashes.hpp; sourceTree = SOURCE_ROOT; };
+		96DD0F9E97BE49FB9DF6AFF1 /* piece_picker.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = piece_picker.cpp; path = src/piece_picker.cpp; sourceTree = SOURCE_ROOT; };
+		9710ABCB9FDB4AE8B6882572 /* fingerprint.hpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.h; fileEncoding = 4; name = fingerprint.hpp; path = include/libtorrent/fingerprint.hpp; sourceTree = SOURCE_ROOT; };
+		973267B636094F2CA1711BA3 /* netlink_utils.hpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.h; fileEncoding = 4; name = netlink_utils.hpp; path = include/libtorrent/aux_/netlink_utils.hpp; sourceTree = SOURCE_ROOT; };
+		97AFC7A2B1004AD58C0CC314 /* packet_pool.hpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.h; fileEncoding = 4; name = packet_pool.hpp; path = include/libtorrent/aux_/packet_pool.hpp; sourceTree = SOURCE_ROOT; };
+		97F5076ABD2B4CA5932D735F /* error_code.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = error_code.cpp; path = src/error_code.cpp; sourceTree = SOURCE_ROOT; };
+		987348374E33481DB4395E55 /* netlink.hpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.h; fileEncoding = 4; name = netlink.hpp; path = include/libtorrent/netlink.hpp; sourceTree = SOURCE_ROOT; };
+		98C38F21F2284153A823DF47 /* resolve_links.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = resolve_links.cpp; path = src/resolve_links.cpp; sourceTree = SOURCE_ROOT; };
+		98C680D800824AC589422C76 /* bandwidth_socket.hpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.h; fileEncoding = 4; name = bandwidth_socket.hpp; path = include/libtorrent/aux_/bandwidth_socket.hpp; sourceTree = SOURCE_ROOT; };
+		98ED11C3687D446A88213697 /* web_peer_connection.hpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.h; fileEncoding = 4; name = web_peer_connection.hpp; path = include/libtorrent/web_peer_connection.hpp; sourceTree = SOURCE_ROOT; };
+		98F7E6DDE3124D918C2A4440 /* ffs.hpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.h; fileEncoding = 4; name = ffs.hpp; path = include/libtorrent/aux_/ffs.hpp; sourceTree = SOURCE_ROOT; };
+		9924EB58341C4CF6BB816871 /* http_stream.hpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.h; fileEncoding = 4; name = http_stream.hpp; path = include/libtorrent/http_stream.hpp; sourceTree = SOURCE_ROOT; };
+		995915F7369F4088B7378AD8 /* socket_type.hpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.h; fileEncoding = 4; name = socket_type.hpp; path = include/libtorrent/aux_/socket_type.hpp; sourceTree = SOURCE_ROOT; };
+		99687BF9113344C9B6139BC3 /* create_torrent.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = create_torrent.cpp; path = src/create_torrent.cpp; sourceTree = SOURCE_ROOT; };
+		9B2EAC2951674114A3791DF5 /* piece_picker.hpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.h; fileEncoding = 4; name = piece_picker.hpp; path = include/libtorrent/piece_picker.hpp; sourceTree = SOURCE_ROOT; };
+		9C261341D31B47468AF26AD7 /* put_data.hpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.h; fileEncoding = 4; name = put_data.hpp; path = include/libtorrent/kademlia/put_data.hpp; sourceTree = SOURCE_ROOT; };
+		9C4294B9B93A4EDFAFC143AC /* piece_block_progress.hpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.h; fileEncoding = 4; name = piece_block_progress.hpp; path = include/libtorrent/piece_block_progress.hpp; sourceTree = SOURCE_ROOT; };
+		9C61B15FD6B84BD194E652C8 /* resolver.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = resolver.cpp; path = src/resolver.cpp; sourceTree = SOURCE_ROOT; };
+		9D0B0BA81D0D4091A8BDC031 /* keypair.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = keypair.cpp; path = src/ed25519/keypair.cpp; sourceTree = SOURCE_ROOT; };
+		9D761FB818A249DDB4BF7620 /* peer_connection_handle.hpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.h; fileEncoding = 4; name = peer_connection_handle.hpp; path = include/libtorrent/peer_connection_handle.hpp; sourceTree = SOURCE_ROOT; };
+		9EC7356E7D7D43A98DC155FD /* routing_table.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = routing_table.cpp; path = src/kademlia/routing_table.cpp; sourceTree = SOURCE_ROOT; };
+		9EDEA2A291564AB4937EA5E3 /* buffer.hpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.h; fileEncoding = 4; name = buffer.hpp; path = include/libtorrent/aux_/buffer.hpp; sourceTree = SOURCE_ROOT; };
+		9FB0F4DF8B594C1C90BDEABE /* dht_observer.hpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.h; fileEncoding = 4; name = dht_observer.hpp; path = include/libtorrent/kademlia/dht_observer.hpp; sourceTree = SOURCE_ROOT; };
+		A10BA3ECF7EB4F91834EE0BA /* i2p_stream.hpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.h; fileEncoding = 4; name = i2p_stream.hpp; path = include/libtorrent/i2p_stream.hpp; sourceTree = SOURCE_ROOT; };
+		A16DD12B762E4A01A5B75198 /* close_reason.hpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.h; fileEncoding = 4; name = close_reason.hpp; path = include/libtorrent/close_reason.hpp; sourceTree = SOURCE_ROOT; };
+		A30D771910A34A2983A5DAAF /* smart_ban.hpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.h; fileEncoding = 4; name = smart_ban.hpp; path = include/libtorrent/extensions/smart_ban.hpp; sourceTree = SOURCE_ROOT; };
+		A3151F86EF384871AB48F6B4 /* hash_picker.hpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.h; fileEncoding = 4; name = hash_picker.hpp; path = include/libtorrent/hash_picker.hpp; sourceTree = SOURCE_ROOT; };
+		A39D0D4E093145B3ACAE37F8 /* xml_parse.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = xml_parse.cpp; path = src/xml_parse.cpp; sourceTree = SOURCE_ROOT; };
+		A41E1A8D8A5D4D66B6D852E5 /* fwd.hpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.h; fileEncoding = 4; name = fwd.hpp; path = include/libtorrent/fwd.hpp; sourceTree = SOURCE_ROOT; };
+		A661F57E5F5640C59B40CEC8 /* polymorphic_socket.hpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.h; fileEncoding = 4; name = polymorphic_socket.hpp; path = include/libtorrent/aux_/polymorphic_socket.hpp; sourceTree = SOURCE_ROOT; };
+		A690A147D1FB4224BFD07FF7 /* web_connection_base.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = web_connection_base.cpp; path = src/web_connection_base.cpp; sourceTree = SOURCE_ROOT; };
+		A6D6C6F1D1F549B9A088935D /* add_torrent_params.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = add_torrent_params.cpp; path = src/add_torrent_params.cpp; sourceTree = SOURCE_ROOT; };
+		A7BA97A23B174A41A15D1B10 /* keepalive.hpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.h; fileEncoding = 4; name = keepalive.hpp; path = include/libtorrent/aux_/keepalive.hpp; sourceTree = SOURCE_ROOT; };
+		A7DF28D878234750A9CB34BC /* range.hpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.h; fileEncoding = 4; name = range.hpp; path = include/libtorrent/aux_/range.hpp; sourceTree = SOURCE_ROOT; };
+		A7E1894E243F47AE9786009A /* session_status.hpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.h; fileEncoding = 4; name = session_status.hpp; path = include/libtorrent/session_status.hpp; sourceTree = SOURCE_ROOT; };
+		A7F2DC0B1E1F4F1A8B93BFE7 /* socket_type.hpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.h; fileEncoding = 4; name = socket_type.hpp; path = include/libtorrent/socket_type.hpp; sourceTree = SOURCE_ROOT; };
+		A8261553C05242B294FD8491 /* bitfield.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = bitfield.cpp; path = src/bitfield.cpp; sourceTree = SOURCE_ROOT; };
+		A89F462430A040A790A2891D /* i2p_stream.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = i2p_stream.cpp; path = src/i2p_stream.cpp; sourceTree = SOURCE_ROOT; };
+		A8A05B174EF941118BC8BFB4 /* http_seed_connection.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = http_seed_connection.cpp; path = src/http_seed_connection.cpp; sourceTree = SOURCE_ROOT; };
+		A8F328165AE647D5A681BD6A /* node_id.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = node_id.cpp; path = src/kademlia/node_id.cpp; sourceTree = SOURCE_ROOT; };
+		A99B52A657BC44B599A9BA73 /* client_data.hpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.h; fileEncoding = 4; name = client_data.hpp; path = include/libtorrent/client_data.hpp; sourceTree = SOURCE_ROOT; };
+		A99BF05601904EADBB695174 /* enum_net.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = enum_net.cpp; path = src/enum_net.cpp; sourceTree = SOURCE_ROOT; };
+		AA056793D3CF415ABECEED7A /* session_params.hpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.h; fileEncoding = 4; name = session_params.hpp; path = include/libtorrent/session_params.hpp; sourceTree = SOURCE_ROOT; };
+		AA20E59163CA40B4890A6D78 /* cpuid.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = cpuid.cpp; path = src/cpuid.cpp; sourceTree = SOURCE_ROOT; };
+		AA4170021B2A4EF592FEF74B /* verify.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = verify.cpp; path = src/ed25519/verify.cpp; sourceTree = SOURCE_ROOT; };
+		AB9BC5CFC8264A3AB50CDE56 /* node.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = node.cpp; path = src/kademlia/node.cpp; sourceTree = SOURCE_ROOT; };
+		AC3E0A28E2984B709B965CC8 /* web_connection_base.hpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.h; fileEncoding = 4; name = web_connection_base.hpp; path = include/libtorrent/web_connection_base.hpp; sourceTree = SOURCE_ROOT; };
+		AD02EBBFDBBB46D0813B55D5 /* peer_class_set.hpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.h; fileEncoding = 4; name = peer_class_set.hpp; path = include/libtorrent/peer_class_set.hpp; sourceTree = SOURCE_ROOT; };
+		ADE2111D0219432193B609CE /* peer_request.hpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.h; fileEncoding = 4; name = peer_request.hpp; path = include/libtorrent/peer_request.hpp; sourceTree = SOURCE_ROOT; };
+		AE4BC5F9B79A470C970FA5A0 /* strview_less.hpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.h; fileEncoding = 4; name = strview_less.hpp; path = include/libtorrent/aux_/strview_less.hpp; sourceTree = SOURCE_ROOT; };
+		AEEE3CF257EF46C9871A942B /* torrent_peer_allocator.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = torrent_peer_allocator.cpp; path = src/torrent_peer_allocator.cpp; sourceTree = SOURCE_ROOT; };
+		AF38701163B245C187044937 /* disabled_disk_io.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = disabled_disk_io.cpp; path = src/disabled_disk_io.cpp; sourceTree = SOURCE_ROOT; };
+		AF80A0047A7C4AAB9B8E7974 /* file_storage.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = file_storage.cpp; path = src/file_storage.cpp; sourceTree = SOURCE_ROOT; };
+		AFA94B1CCA7D4150B2A25B5B /* session_call.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = session_call.cpp; path = src/session_call.cpp; sourceTree = SOURCE_ROOT; };
+		B01C2DE5C93442E5893AAA44 /* dht_state.hpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.h; fileEncoding = 4; name = dht_state.hpp; path = include/libtorrent/kademlia/dht_state.hpp; sourceTree = SOURCE_ROOT; };
+		B09BCC9F53E448D7BCD3C7CC /* libtorrent-rasterbar.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = "libtorrent-rasterbar.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		B2E1B73BAFEB4B2BAA5CA98C /* ip_notifier.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = ip_notifier.cpp; path = src/ip_notifier.cpp; sourceTree = SOURCE_ROOT; };
+		B2E6B3E30C1047FCB43FEB5A /* signal_error_code.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = signal_error_code.cpp; path = deps/try_signal/signal_error_code.cpp; sourceTree = SOURCE_ROOT; };
+		B320A1AB56BB41D081FD548E /* mmap_disk_io.hpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.h; fileEncoding = 4; name = mmap_disk_io.hpp; path = include/libtorrent/mmap_disk_io.hpp; sourceTree = SOURCE_ROOT; };
+		B3DCECE31E38440EB8BDF1D4 /* bandwidth_queue_entry.hpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.h; fileEncoding = 4; name = bandwidth_queue_entry.hpp; path = include/libtorrent/aux_/bandwidth_queue_entry.hpp; sourceTree = SOURCE_ROOT; };
+		B46A0A7407974883B426A52C /* disk_buffer_holder.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = disk_buffer_holder.cpp; path = src/disk_buffer_holder.cpp; sourceTree = SOURCE_ROOT; };
+		B48CEC5427604D8AB4A97F58 /* truncate.hpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.h; fileEncoding = 4; name = truncate.hpp; path = include/libtorrent/truncate.hpp; sourceTree = SOURCE_ROOT; };
+		B4E9EF050F69483599A15F6A /* utp_socket_manager.hpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.h; fileEncoding = 4; name = utp_socket_manager.hpp; path = include/libtorrent/aux_/utp_socket_manager.hpp; sourceTree = SOURCE_ROOT; };
+		B55B92D81BC14DCEA4597799 /* torrent_peer.hpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.h; fileEncoding = 4; name = torrent_peer.hpp; path = include/libtorrent/torrent_peer.hpp; sourceTree = SOURCE_ROOT; };
+		B5B388BA867E4F3898F72BD8 /* fe.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = fe.cpp; path = src/ed25519/fe.cpp; sourceTree = SOURCE_ROOT; };
+		B713AEB03FD0457A9C9CE1E1 /* node_entry.hpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.h; fileEncoding = 4; name = node_entry.hpp; path = include/libtorrent/kademlia/node_entry.hpp; sourceTree = SOURCE_ROOT; };
+		B7A8D54EB8CC42308F920E10 /* ip_filter.hpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.h; fileEncoding = 4; name = ip_filter.hpp; path = include/libtorrent/ip_filter.hpp; sourceTree = SOURCE_ROOT; };
+		B827A53C73D34D91BB0F0ED4 /* refresh.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = refresh.cpp; path = src/kademlia/refresh.cpp; sourceTree = SOURCE_ROOT; };
+		B84CC786BBBC4B37B6FDF88C /* session_stats.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = session_stats.cpp; path = src/session_stats.cpp; sourceTree = SOURCE_ROOT; };
+		B948337813D44A5481774F73 /* peer_class.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = peer_class.cpp; path = src/peer_class.cpp; sourceTree = SOURCE_ROOT; };
+		B9B56E7C214D42E0BD2B3F21 /* sha512.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = sha512.cpp; path = src/ed25519/sha512.cpp; sourceTree = SOURCE_ROOT; };
+		BB59F9ED099B42658C393470 /* bloom_filter.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = bloom_filter.cpp; path = src/bloom_filter.cpp; sourceTree = SOURCE_ROOT; };
+		BB6C275FBB354509A2277407 /* deprecated.hpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.h; fileEncoding = 4; name = deprecated.hpp; path = include/libtorrent/aux_/deprecated.hpp; sourceTree = SOURCE_ROOT; };
+		BBBB09A7833E46C2B54A786D /* hasher.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = hasher.cpp; path = src/hasher.cpp; sourceTree = SOURCE_ROOT; };
+		BC29203C79414FE595FFFF37 /* ip_helpers.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = ip_helpers.cpp; path = src/ip_helpers.cpp; sourceTree = SOURCE_ROOT; };
+		BC35C69071F94558A230C91C /* session_params.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = session_params.cpp; path = src/session_params.cpp; sourceTree = SOURCE_ROOT; };
+		BC69241976704760B1887DEF /* request_blocks.hpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.h; fileEncoding = 4; name = request_blocks.hpp; path = include/libtorrent/request_blocks.hpp; sourceTree = SOURCE_ROOT; };
+		BD2800F740244817A3220D41 /* peer_connection_interface.hpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.h; fileEncoding = 4; name = peer_connection_interface.hpp; path = include/libtorrent/peer_connection_interface.hpp; sourceTree = SOURCE_ROOT; };
+		BD5580F41FDC4C4CBE63C42A /* gzip.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = gzip.cpp; path = src/gzip.cpp; sourceTree = SOURCE_ROOT; };
+		BE3753AAF5204AE8B1C0C23B /* sha1.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = sha1.cpp; path = src/sha1.cpp; sourceTree = SOURCE_ROOT; };
+		BE8BB74684924CA19C95A507 /* torrent_impl.hpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.h; fileEncoding = 4; name = torrent_impl.hpp; path = include/libtorrent/aux_/torrent_impl.hpp; sourceTree = SOURCE_ROOT; };
+		BF78D8D7ADBD4924A7E5D433 /* portmap.hpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.h; fileEncoding = 4; name = portmap.hpp; path = include/libtorrent/aux_/portmap.hpp; sourceTree = SOURCE_ROOT; };
+		C0E01E72D4D6487099AE8245 /* magnet_uri.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = magnet_uri.cpp; path = src/magnet_uri.cpp; sourceTree = SOURCE_ROOT; };
+		C15BFB024FFE4C6380B49BAC /* find_data.hpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.h; fileEncoding = 4; name = find_data.hpp; path = include/libtorrent/kademlia/find_data.hpp; sourceTree = SOURCE_ROOT; };
+		C1DDF8A830BB49AC8BBF80BD /* lsd.hpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.h; fileEncoding = 4; name = lsd.hpp; path = include/libtorrent/lsd.hpp; sourceTree = SOURCE_ROOT; };
+		C1E2D898E791489AB71B70E6 /* time.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = time.cpp; path = src/time.cpp; sourceTree = SOURCE_ROOT; };
+		C1FB8E08B101466AAF28DD99 /* instantiate_connection.hpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.h; fileEncoding = 4; name = instantiate_connection.hpp; path = include/libtorrent/aux_/instantiate_connection.hpp; sourceTree = SOURCE_ROOT; };
+		C3016147A7AD41AF9A9AD419 /* peer_class_set.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = peer_class_set.cpp; path = src/peer_class_set.cpp; sourceTree = SOURCE_ROOT; };
+		C34E080A555E41D8B4D1B4A5 /* directory.hpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.h; fileEncoding = 4; name = directory.hpp; path = include/libtorrent/aux_/directory.hpp; sourceTree = SOURCE_ROOT; };
+		C364CB3957CA49E790400C3C /* file_progress.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = file_progress.cpp; path = src/file_progress.cpp; sourceTree = SOURCE_ROOT; };
+		C3ADFA7728634C0BBF02BD91 /* platform_util.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = platform_util.cpp; path = src/platform_util.cpp; sourceTree = SOURCE_ROOT; };
+		C43013ABDB5841C092A3B482 /* copy_ptr.hpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.h; fileEncoding = 4; name = copy_ptr.hpp; path = include/libtorrent/copy_ptr.hpp; sourceTree = SOURCE_ROOT; };
+		C4BED81CA09E4D41B157803C /* dht_storage.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = dht_storage.cpp; path = src/kademlia/dht_storage.cpp; sourceTree = SOURCE_ROOT; };
+		C534CAFDCAD24FAEA0F02B94 /* natpmp.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = natpmp.cpp; path = src/natpmp.cpp; sourceTree = SOURCE_ROOT; };
+		C5AF8B53D820449FA0010953 /* rpc_manager.hpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.h; fileEncoding = 4; name = rpc_manager.hpp; path = include/libtorrent/kademlia/rpc_manager.hpp; sourceTree = SOURCE_ROOT; };
+		C63CE4DD6F804778A6A1F88E /* rpc_manager.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = rpc_manager.cpp; path = src/kademlia/rpc_manager.cpp; sourceTree = SOURCE_ROOT; };
+		C7044C9944DD4FD8998B8906 /* byteswap.hpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.h; fileEncoding = 4; name = byteswap.hpp; path = include/libtorrent/aux_/byteswap.hpp; sourceTree = SOURCE_ROOT; };
+		C7C84052E9A24639B0949B6E /* session_settings.hpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.h; fileEncoding = 4; name = session_settings.hpp; path = include/libtorrent/aux_/session_settings.hpp; sourceTree = SOURCE_ROOT; };
+		C7DB94C237D048BC947F60F1 /* io.hpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.h; fileEncoding = 4; name = io.hpp; path = include/libtorrent/io.hpp; sourceTree = SOURCE_ROOT; };
+		C8000867D2834D1A9BAF79DE /* torrent_status.hpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.h; fileEncoding = 4; name = torrent_status.hpp; path = include/libtorrent/torrent_status.hpp; sourceTree = SOURCE_ROOT; };
+		C883EE5CDC98400FACE09F07 /* noexcept_movable.hpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.h; fileEncoding = 4; name = noexcept_movable.hpp; path = include/libtorrent/aux_/noexcept_movable.hpp; sourceTree = SOURCE_ROOT; };
+		C998185584FF46EF861E9EDB /* mmap.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = mmap.cpp; path = src/mmap.cpp; sourceTree = SOURCE_ROOT; };
+		C9CA6C218235481986A5B6F5 /* CMakeLists.txt */ = {isa = PBXFileReference; explicitFileType = sourcecode.text; fileEncoding = 4; lastKnownFileType = text; path = CMakeLists.txt; sourceTree = SOURCE_ROOT; };
+		CAE9E91884A642A39A78E8E4 /* posix_storage.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = posix_storage.cpp; path = src/posix_storage.cpp; sourceTree = SOURCE_ROOT; };
+		CAFA32844ED54C7892806CA6 /* peer_connection_handle.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = peer_connection_handle.cpp; path = src/peer_connection_handle.cpp; sourceTree = SOURCE_ROOT; };
+		CD3C259FA7BE4F55AB9B869F /* add_scalar.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = add_scalar.cpp; path = src/ed25519/add_scalar.cpp; sourceTree = SOURCE_ROOT; };
+		CD75663AA31244F9BC7F52CF /* get_item.hpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.h; fileEncoding = 4; name = get_item.hpp; path = include/libtorrent/kademlia/get_item.hpp; sourceTree = SOURCE_ROOT; };
+		CDD91F169CEB417989259D34 /* receive_buffer.hpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.h; fileEncoding = 4; name = receive_buffer.hpp; path = include/libtorrent/aux_/receive_buffer.hpp; sourceTree = SOURCE_ROOT; };
+		CE2B67F8478C4CBAA36E7D25 /* torrent_info.hpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.h; fileEncoding = 4; name = torrent_info.hpp; path = include/libtorrent/torrent_info.hpp; sourceTree = SOURCE_ROOT; };
+		CEF6AB0DE399491E8C8DE3E7 /* observer.hpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.h; fileEncoding = 4; name = observer.hpp; path = include/libtorrent/kademlia/observer.hpp; sourceTree = SOURCE_ROOT; };
+		CFB2147B9A3744908F785D26 /* utp_socket_manager.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = utp_socket_manager.cpp; path = src/utp_socket_manager.cpp; sourceTree = SOURCE_ROOT; };
+		D01247BF013C450CAB195ADA /* link.hpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.h; fileEncoding = 4; name = link.hpp; path = include/libtorrent/link.hpp; sourceTree = SOURCE_ROOT; };
+		D1E539513A01486A9471EB9C /* random.hpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.h; fileEncoding = 4; name = random.hpp; path = include/libtorrent/random.hpp; sourceTree = SOURCE_ROOT; };
+		D371CD5BE10140EEBBADB093 /* posix_part_file.hpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.h; fileEncoding = 4; name = posix_part_file.hpp; path = include/libtorrent/aux_/posix_part_file.hpp; sourceTree = SOURCE_ROOT; };
+		D492507758424A2CBDD87958 /* tracker_manager.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = tracker_manager.cpp; path = src/tracker_manager.cpp; sourceTree = SOURCE_ROOT; };
+		D4CEDDB329CB4456B65B9018 /* ut_pex.hpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.h; fileEncoding = 4; name = ut_pex.hpp; path = include/libtorrent/extensions/ut_pex.hpp; sourceTree = SOURCE_ROOT; };
+		D5EC803DD9264CDA948DEDF3 /* utp_stream.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = utp_stream.cpp; path = src/utp_stream.cpp; sourceTree = SOURCE_ROOT; };
+		D612D18A36244398BA6EA776 /* file_layout.hpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.h; fileEncoding = 4; name = file_layout.hpp; path = include/libtorrent/file_layout.hpp; sourceTree = SOURCE_ROOT; };
+		D6DB3DBED16545D182B90D5C /* file.hpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.h; fileEncoding = 4; name = file.hpp; path = include/libtorrent/file.hpp; sourceTree = SOURCE_ROOT; };
+		D8C1C12CE8C94388A7BAEC55 /* sha256.hpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.h; fileEncoding = 4; name = sha256.hpp; path = include/libtorrent/sha256.hpp; sourceTree = SOURCE_ROOT; };
+		D8CCD39B977D491DB2A6EDA1 /* packet_buffer.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = packet_buffer.cpp; path = src/packet_buffer.cpp; sourceTree = SOURCE_ROOT; };
+		D8E34FB3CB754E3A94895FDB /* peer.hpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.h; fileEncoding = 4; name = peer.hpp; path = include/libtorrent/peer.hpp; sourceTree = SOURCE_ROOT; };
+		D95CA744131D4E41A0EAE84D /* stat_cache.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = stat_cache.cpp; path = src/stat_cache.cpp; sourceTree = SOURCE_ROOT; };
+		DA3D03A017DF4949A3F2807C /* choker.hpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.h; fileEncoding = 4; name = choker.hpp; path = include/libtorrent/choker.hpp; sourceTree = SOURCE_ROOT; };
+		DA4F89AFDBA44C7BB125CF0E /* settings_pack.hpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.h; fileEncoding = 4; name = settings_pack.hpp; path = include/libtorrent/settings_pack.hpp; sourceTree = SOURCE_ROOT; };
+		DB741E2DDDA14EB0A6DD7C47 /* put_data.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = put_data.cpp; path = src/kademlia/put_data.cpp; sourceTree = SOURCE_ROOT; };
+		DB757AEC9DD349C183C65E56 /* magnet_uri.hpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.h; fileEncoding = 4; name = magnet_uri.hpp; path = include/libtorrent/magnet_uri.hpp; sourceTree = SOURCE_ROOT; };
+		DC03670DEC5048C3BFD6FCB3 /* path.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = path.cpp; path = src/path.cpp; sourceTree = SOURCE_ROOT; };
+		DC8802C8511845F0AF93D9BA /* config.hpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.h; fileEncoding = 4; name = config.hpp; path = include/libtorrent/config.hpp; sourceTree = SOURCE_ROOT; };
+		DD5FE2584ED44AEAB9E33D9E /* bandwidth_limit.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = bandwidth_limit.cpp; path = src/bandwidth_limit.cpp; sourceTree = SOURCE_ROOT; };
+		DD803F2DD5C94E8DBDAE2800 /* enum_net.hpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.h; fileEncoding = 4; name = enum_net.hpp; path = include/libtorrent/enum_net.hpp; sourceTree = SOURCE_ROOT; };
+		DDA5814EA36D46F6B35D3FE9 /* numeric_cast.hpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.h; fileEncoding = 4; name = numeric_cast.hpp; path = include/libtorrent/aux_/numeric_cast.hpp; sourceTree = SOURCE_ROOT; };
+		DEEB094B77914D77A62F1D8A /* lsd.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = lsd.cpp; path = src/lsd.cpp; sourceTree = SOURCE_ROOT; };
+		DF24DB2C8E354F6196958DE3 /* identify_client.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = identify_client.cpp; path = src/identify_client.cpp; sourceTree = SOURCE_ROOT; };
+		E03E427C9C27445A8E5DF5B5 /* session.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = session.cpp; path = src/session.cpp; sourceTree = SOURCE_ROOT; };
+		E0733293DCA64323AA155D22 /* stat.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = stat.cpp; path = src/stat.cpp; sourceTree = SOURCE_ROOT; };
+		E0E0B3640D6B41EF9135E3DB /* hasher512.hpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.h; fileEncoding = 4; name = hasher512.hpp; path = include/libtorrent/aux_/hasher512.hpp; sourceTree = SOURCE_ROOT; };
+		E10DA693ED864547ADBFE879 /* ge.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = ge.cpp; path = src/ed25519/ge.cpp; sourceTree = SOURCE_ROOT; };
+		E13D447AA38540CC8BD9E48A /* disk_io_thread_pool.hpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.h; fileEncoding = 4; name = disk_io_thread_pool.hpp; path = include/libtorrent/aux_/disk_io_thread_pool.hpp; sourceTree = SOURCE_ROOT; };
+		E186278FD6A94D57A891661C /* torrent_peer.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = torrent_peer.cpp; path = src/torrent_peer.cpp; sourceTree = SOURCE_ROOT; };
+		E3C3CB309C8449AA9DEDB97A /* udp_tracker_connection.hpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.h; fileEncoding = 4; name = udp_tracker_connection.hpp; path = include/libtorrent/udp_tracker_connection.hpp; sourceTree = SOURCE_ROOT; };
+		E3E70B247E954949BD3A6250 /* dev_random.hpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.h; fileEncoding = 4; name = dev_random.hpp; path = include/libtorrent/aux_/dev_random.hpp; sourceTree = SOURCE_ROOT; };
+		E52FE25151D341CBA19CECE6 /* session_handle.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = session_handle.cpp; path = src/session_handle.cpp; sourceTree = SOURCE_ROOT; };
+		E5BF9F7FF9F64EC2BAABC41B /* socket_type.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = socket_type.cpp; path = src/socket_type.cpp; sourceTree = SOURCE_ROOT; };
+		E6236902342F4DB683A509BB /* announce_entry.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = announce_entry.cpp; path = src/announce_entry.cpp; sourceTree = SOURCE_ROOT; };
+		E6A3AF785C3B447BBD19F1F2 /* optional.hpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.h; fileEncoding = 4; name = optional.hpp; path = include/libtorrent/optional.hpp; sourceTree = SOURCE_ROOT; };
+		E73259EB3A594804B5504241 /* performance_counters.hpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.h; fileEncoding = 4; name = performance_counters.hpp; path = include/libtorrent/performance_counters.hpp; sourceTree = SOURCE_ROOT; };
+		E743513F94B645CABAD09221 /* sliding_average.hpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.h; fileEncoding = 4; name = sliding_average.hpp; path = include/libtorrent/sliding_average.hpp; sourceTree = SOURCE_ROOT; };
+		E7ABCB3076F54613963FB22B /* aligned_union.hpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.h; fileEncoding = 4; name = aligned_union.hpp; path = include/libtorrent/aux_/aligned_union.hpp; sourceTree = SOURCE_ROOT; };
+		E869C5E55C4A49CEA7D2480A /* http_connection.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = http_connection.cpp; path = src/http_connection.cpp; sourceTree = SOURCE_ROOT; };
+		E933D02F052342D2AE0A14AE /* bt_peer_connection.hpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.h; fileEncoding = 4; name = bt_peer_connection.hpp; path = include/libtorrent/bt_peer_connection.hpp; sourceTree = SOURCE_ROOT; };
+		E93A598F3F954C0BBD2D06B3 /* dht_settings.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = dht_settings.cpp; path = src/kademlia/dht_settings.cpp; sourceTree = SOURCE_ROOT; };
+		E98559CB388C48F2B2914A9A /* escape_string.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = escape_string.cpp; path = src/escape_string.cpp; sourceTree = SOURCE_ROOT; };
+		EB770CFD6A254503BC03C766 /* torrent_peer_allocator.hpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.h; fileEncoding = 4; name = torrent_peer_allocator.hpp; path = include/libtorrent/torrent_peer_allocator.hpp; sourceTree = SOURCE_ROOT; };
+		EBB1EC76D9784D809055E2C1 /* hasher512.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = hasher512.cpp; path = src/ed25519/hasher512.cpp; sourceTree = SOURCE_ROOT; };
+		EC3F328C7C4F414D8570811C /* lsd.hpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.h; fileEncoding = 4; name = lsd.hpp; path = include/libtorrent/aux_/lsd.hpp; sourceTree = SOURCE_ROOT; };
+		ED1E975ED9B34B7DBBBA55D8 /* mmap_disk_io.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = mmap_disk_io.cpp; path = src/mmap_disk_io.cpp; sourceTree = SOURCE_ROOT; };
+		ED5BA2458F614CB0B16AE94F /* http_tracker_connection.hpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.h; fileEncoding = 4; name = http_tracker_connection.hpp; path = include/libtorrent/http_tracker_connection.hpp; sourceTree = SOURCE_ROOT; };
+		EEF8EDFF25124115A587B933 /* proxy_base.hpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.h; fileEncoding = 4; name = proxy_base.hpp; path = include/libtorrent/proxy_base.hpp; sourceTree = SOURCE_ROOT; };
+		EF0AC8A63F194812AC265F26 /* write_resume_data.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = write_resume_data.cpp; path = src/write_resume_data.cpp; sourceTree = SOURCE_ROOT; };
+		EF623373EEB14014B31EA659 /* session_handle.hpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.h; fileEncoding = 4; name = session_handle.hpp; path = include/libtorrent/session_handle.hpp; sourceTree = SOURCE_ROOT; };
+		F0103ABFF6D54329AE882EE4 /* ed25519.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = ed25519.cpp; path = src/kademlia/ed25519.cpp; sourceTree = SOURCE_ROOT; };
+		F0283946898E49CFB419068A /* merkle.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = merkle.cpp; path = src/merkle.cpp; sourceTree = SOURCE_ROOT; };
+		F0DBFC4745CC48A0993CCDEA /* ip_helpers.hpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.h; fileEncoding = 4; name = ip_helpers.hpp; path = include/libtorrent/aux_/ip_helpers.hpp; sourceTree = SOURCE_ROOT; };
+		F0EAA0AE51F84FF2B5429181 /* find_data.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = find_data.cpp; path = src/kademlia/find_data.cpp; sourceTree = SOURCE_ROOT; };
+		F31DD24BF1224F4C9B915242 /* receive_buffer.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = receive_buffer.cpp; path = src/receive_buffer.cpp; sourceTree = SOURCE_ROOT; };
+		F351B999B08942679B41F630 /* http_connection.hpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.h; fileEncoding = 4; name = http_connection.hpp; path = include/libtorrent/http_connection.hpp; sourceTree = SOURCE_ROOT; };
+		F3B0A572EF764ABAAD0F2599 /* alert.hpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.h; fileEncoding = 4; name = alert.hpp; path = include/libtorrent/alert.hpp; sourceTree = SOURCE_ROOT; };
+		F46350D6BAB54B229F6EB4ED /* peer_id.hpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.h; fileEncoding = 4; name = peer_id.hpp; path = include/libtorrent/peer_id.hpp; sourceTree = SOURCE_ROOT; };
+		F46DC0FD0FC64B858D06FAA2 /* alert_manager.hpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.h; fileEncoding = 4; name = alert_manager.hpp; path = include/libtorrent/aux_/alert_manager.hpp; sourceTree = SOURCE_ROOT; };
+		F50F191B07DA4037AF6D02CA /* mmap_storage.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = mmap_storage.cpp; path = src/mmap_storage.cpp; sourceTree = SOURCE_ROOT; };
+		F5E3557046374E72B18ED909 /* session_impl.hpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.h; fileEncoding = 4; name = session_impl.hpp; path = include/libtorrent/aux_/session_impl.hpp; sourceTree = SOURCE_ROOT; };
+		F6774EE56C6C45738BAE48AB /* io.hpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.h; fileEncoding = 4; name = io.hpp; path = include/libtorrent/aux_/io.hpp; sourceTree = SOURCE_ROOT; };
+		F685CBECF27944D7B6B04E4B /* http_seed_connection.hpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.h; fileEncoding = 4; name = http_seed_connection.hpp; path = include/libtorrent/http_seed_connection.hpp; sourceTree = SOURCE_ROOT; };
+		F72412BEFB4A4FF79BF6868F /* units.hpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.h; fileEncoding = 4; name = units.hpp; path = include/libtorrent/units.hpp; sourceTree = SOURCE_ROOT; };
+		F862D96D7517427E8EC65AF6 /* performance_counters.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = performance_counters.cpp; path = src/performance_counters.cpp; sourceTree = SOURCE_ROOT; };
+		F9478DEC51C94E84B860F229 /* hash_picker.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = hash_picker.cpp; path = src/hash_picker.cpp; sourceTree = SOURCE_ROOT; };
+		FA16470831404AB69AD00825 /* io_service.hpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.h; fileEncoding = 4; name = io_service.hpp; path = include/libtorrent/io_service.hpp; sourceTree = SOURCE_ROOT; };
+		FA619CEF9EBB4919B0D58F52 /* load_torrent.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = load_torrent.cpp; path = src/load_torrent.cpp; sourceTree = SOURCE_ROOT; };
+		FB7594502576462DAE77EFAC /* key_exchange.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = key_exchange.cpp; path = src/ed25519/key_exchange.cpp; sourceTree = SOURCE_ROOT; };
+		FB7D3DE4522044F1A14BCEEE /* hasher.hpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.h; fileEncoding = 4; name = hasher.hpp; path = include/libtorrent/hasher.hpp; sourceTree = SOURCE_ROOT; };
+		FC3C6C627DF54597ADE06FC7 /* bandwidth_queue_entry.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = bandwidth_queue_entry.cpp; path = src/bandwidth_queue_entry.cpp; sourceTree = SOURCE_ROOT; };
+		FCD40DAE8A7449FAB8C87AA0 /* escape_string.hpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.h; fileEncoding = 4; name = escape_string.hpp; path = include/libtorrent/aux_/escape_string.hpp; sourceTree = SOURCE_ROOT; };
+		FE6178FF1FE64E17A0318002 /* web_peer_connection.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = web_peer_connection.cpp; path = src/web_peer_connection.cpp; sourceTree = SOURCE_ROOT; };
+		FF303B9312234BE5AB120421 /* piece_block.hpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.h; fileEncoding = 4; name = piece_block.hpp; path = include/libtorrent/piece_block.hpp; sourceTree = SOURCE_ROOT; };
+		FFAC85AF2F7A42B1853D48DA /* span.hpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.h; fileEncoding = 4; name = span.hpp; path = include/libtorrent/span.hpp; sourceTree = SOURCE_ROOT; };
+		FFBF64CD2EFF47DB841CA339 /* part_file.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = part_file.cpp; path = src/part_file.cpp; sourceTree = SOURCE_ROOT; };
+		FFFA0C0E34734B1C81B9707B /* sha1_hash.hpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.h; fileEncoding = 4; name = sha1_hash.hpp; path = include/libtorrent/sha1_hash.hpp; sourceTree = SOURCE_ROOT; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		A564109517744E2984FEE690 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		36E5BADB3477495F909AB47E /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				B09BCC9F53E448D7BCD3C7CC /* libtorrent-rasterbar.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		496855F4983F474E85E268BA /* Source Files */ = {
+			isa = PBXGroup;
+			children = (
+				B2E6B3E30C1047FCB43FEB5A /* signal_error_code.cpp */,
+				5F69DACE0B4B439DAA9731F5 /* try_signal.cpp */,
+				A6D6C6F1D1F549B9A088935D /* add_torrent_params.cpp */,
+				3DCFD940BD62474A803156EF /* alert.cpp */,
+				40F46712517F4063B34BA5E0 /* alert_manager.cpp */,
+				E6236902342F4DB683A509BB /* announce_entry.cpp */,
+				80D1C14EF9AE4454B9599DE4 /* assert.cpp */,
+				DD5FE2584ED44AEAB9E33D9E /* bandwidth_limit.cpp */,
+				9194ED50C46A49EC9F7245F9 /* bandwidth_manager.cpp */,
+				FC3C6C627DF54597ADE06FC7 /* bandwidth_queue_entry.cpp */,
+				86507A5F0E1E4C3D85F15C6F /* bdecode.cpp */,
+				A8261553C05242B294FD8491 /* bitfield.cpp */,
+				BB59F9ED099B42658C393470 /* bloom_filter.cpp */,
+				3D5EC40DF61A48578DECFED6 /* bt_peer_connection.cpp */,
+				88AC7D4F501C449A8F7CD406 /* chained_buffer.cpp */,
+				79C31AB69E774354A6E9E071 /* choker.cpp */,
+				0A9FA1C0FAF6411D8D3402EE /* close_reason.cpp */,
+				8469A23F8CBF425BA7261C97 /* copy_file.cpp */,
+				AA20E59163CA40B4890A6D78 /* cpuid.cpp */,
+				52092AACB1A44DCEA6E4E16F /* crc32c.cpp */,
+				99687BF9113344C9B6139BC3 /* create_torrent.cpp */,
+				3EF3B487C6F84954B1D422D7 /* directory.cpp */,
+				AF38701163B245C187044937 /* disabled_disk_io.cpp */,
+				B46A0A7407974883B426A52C /* disk_buffer_holder.cpp */,
+				47E2586397694EEC853E9369 /* disk_buffer_pool.cpp */,
+				0539F5AB222F4D77AA25F362 /* disk_interface.cpp */,
+				1FCAFD44FDB14019B7466534 /* disk_io_thread_pool.cpp */,
+				8A83D2C126D94BEE9096AB6E /* disk_job_fence.cpp */,
+				5CD6E407814243DBB995F1C5 /* disk_job_pool.cpp */,
+				5BBB14B7174A4E99BBE880C6 /* drive_info.cpp */,
+				CD3C259FA7BE4F55AB9B869F /* add_scalar.cpp */,
+				B5B388BA867E4F3898F72BD8 /* fe.cpp */,
+				E10DA693ED864547ADBFE879 /* ge.cpp */,
+				EBB1EC76D9784D809055E2C1 /* hasher512.cpp */,
+				FB7594502576462DAE77EFAC /* key_exchange.cpp */,
+				9D0B0BA81D0D4091A8BDC031 /* keypair.cpp */,
+				4B07C88EFF404727907023AD /* sc.cpp */,
+				B9B56E7C214D42E0BD2B3F21 /* sha512.cpp */,
+				83C5F1F10C1144F7B2E8BDCA /* sign.cpp */,
+				AA4170021B2A4EF592FEF74B /* verify.cpp */,
+				34A398C89F4F42808DD9A6AA /* entry.cpp */,
+				A99BF05601904EADBB695174 /* enum_net.cpp */,
+				97F5076ABD2B4CA5932D735F /* error_code.cpp */,
+				E98559CB388C48F2B2914A9A /* escape_string.cpp */,
+				40CB31135EBF445BAF3EC8BF /* ffs.cpp */,
+				28E92BCFC5884EC5AAD9803D /* file.cpp */,
+				C364CB3957CA49E790400C3C /* file_progress.cpp */,
+				AF80A0047A7C4AAB9B8E7974 /* file_storage.cpp */,
+				52BB63232AFB4565AFACC397 /* file_view_pool.cpp */,
+				89F4EBB4B83D48F781B36EDC /* fingerprint.cpp */,
+				414C35F04B1D4BC0A8A4D106 /* generate_peer_id.cpp */,
+				BD5580F41FDC4C4CBE63C42A /* gzip.cpp */,
+				F9478DEC51C94E84B860F229 /* hash_picker.cpp */,
+				BBBB09A7833E46C2B54A786D /* hasher.cpp */,
+				785807D1A6DB449AAE0F87D0 /* hex.cpp */,
+				E869C5E55C4A49CEA7D2480A /* http_connection.cpp */,
+				66E19992F0CF4B698F55CC79 /* http_parser.cpp */,
+				A8A05B174EF941118BC8BFB4 /* http_seed_connection.cpp */,
+				156D8BBDCB3C4FD18BC921F8 /* http_tracker_connection.cpp */,
+				A89F462430A040A790A2891D /* i2p_stream.cpp */,
+				DF24DB2C8E354F6196958DE3 /* identify_client.cpp */,
+				6E3AB66BFA274E3E989EBBCF /* instantiate_connection.cpp */,
+				341B832722D84889AAC464C7 /* ip_filter.cpp */,
+				BC29203C79414FE595FFFF37 /* ip_helpers.cpp */,
+				B2E1B73BAFEB4B2BAA5CA98C /* ip_notifier.cpp */,
+				5D53243763FD47F89DD49658 /* ip_voter.cpp */,
+				E93A598F3F954C0BBD2D06B3 /* dht_settings.cpp */,
+				6833D120D08B4934ACCB1809 /* dht_state.cpp */,
+				C4BED81CA09E4D41B157803C /* dht_storage.cpp */,
+				57A58DD5A6744DD0B2364CA9 /* dht_tracker.cpp */,
+				50503A7085ED48D986010839 /* dos_blocker.cpp */,
+				F0103ABFF6D54329AE882EE4 /* ed25519.cpp */,
+				F0EAA0AE51F84FF2B5429181 /* find_data.cpp */,
+				5438287968C24E0788FEC7E4 /* get_item.cpp */,
+				5D1EA59D9B204FC68DDF9450 /* get_peers.cpp */,
+				1A86902945814B008C12D881 /* item.cpp */,
+				1B2F7A146D1743469AFCF503 /* msg.cpp */,
+				AB9BC5CFC8264A3AB50CDE56 /* node.cpp */,
+				4CF9D6569DA744A689DB3A69 /* node_entry.cpp */,
+				A8F328165AE647D5A681BD6A /* node_id.cpp */,
+				DB741E2DDDA14EB0A6DD7C47 /* put_data.cpp */,
+				B827A53C73D34D91BB0F0ED4 /* refresh.cpp */,
+				9EC7356E7D7D43A98DC155FD /* routing_table.cpp */,
+				C63CE4DD6F804778A6A1F88E /* rpc_manager.cpp */,
+				870957D56CB84B0AB8E5E0E7 /* sample_infohashes.cpp */,
+				3900803217B9440090AF85A2 /* traversal_algorithm.cpp */,
+				8E23CD7BDA6144AB9FA09DED /* listen_socket_handle.cpp */,
+				FA619CEF9EBB4919B0D58F52 /* load_torrent.cpp */,
+				DEEB094B77914D77A62F1D8A /* lsd.cpp */,
+				C0E01E72D4D6487099AE8245 /* magnet_uri.cpp */,
+				F0283946898E49CFB419068A /* merkle.cpp */,
+				583FDCD1655D442580868C12 /* merkle_tree.cpp */,
+				C998185584FF46EF861E9EDB /* mmap.cpp */,
+				ED1E975ED9B34B7DBBBA55D8 /* mmap_disk_io.cpp */,
+				1F5D0157A36E40DC9D185520 /* mmap_disk_job.cpp */,
+				F50F191B07DA4037AF6D02CA /* mmap_storage.cpp */,
+				C534CAFDCAD24FAEA0F02B94 /* natpmp.cpp */,
+				D8CCD39B977D491DB2A6EDA1 /* packet_buffer.cpp */,
+				59BE8451F01C4DF3980B13B3 /* parse_url.cpp */,
+				FFBF64CD2EFF47DB841CA339 /* part_file.cpp */,
+				DC03670DEC5048C3BFD6FCB3 /* path.cpp */,
+				7295F8C2DA2F4EF697F37274 /* pe_crypto.cpp */,
+				B948337813D44A5481774F73 /* peer_class.cpp */,
+				C3016147A7AD41AF9A9AD419 /* peer_class_set.cpp */,
+				8CAFCAAA751643AC8020E6DF /* peer_connection.cpp */,
+				CAFA32844ED54C7892806CA6 /* peer_connection_handle.cpp */,
+				0EDA883B7A484D8FA5C633B9 /* peer_info.cpp */,
+				035028BC49DD477BB4C94CFB /* peer_list.cpp */,
+				F862D96D7517427E8EC65AF6 /* performance_counters.cpp */,
+				96DD0F9E97BE49FB9DF6AFF1 /* piece_picker.cpp */,
+				C3ADFA7728634C0BBF02BD91 /* platform_util.cpp */,
+				83B47CA967CA44B4A6ACDEF6 /* posix_disk_io.cpp */,
+				1411C2F2BE364637A7CB0FD9 /* posix_part_file.cpp */,
+				CAE9E91884A642A39A78E8E4 /* posix_storage.cpp */,
+				3C185627843A4D8C98E09B2C /* proxy_base.cpp */,
+				74B052DAFEE340959406A03E /* proxy_settings.cpp */,
+				3AE17564F90942EDBAB9AEE0 /* puff.cpp */,
+				355EBBBC69174216B4FECDD2 /* random.cpp */,
+				4679671D0D8F4B52B4D644FA /* read_resume_data.cpp */,
+				F31DD24BF1224F4C9B915242 /* receive_buffer.cpp */,
+				9576BCC5015642519A0C90D1 /* request_blocks.cpp */,
+				98C38F21F2284153A823DF47 /* resolve_links.cpp */,
+				9C61B15FD6B84BD194E652C8 /* resolver.cpp */,
+				E03E427C9C27445A8E5DF5B5 /* session.cpp */,
+				AFA94B1CCA7D4150B2A25B5B /* session_call.cpp */,
+				E52FE25151D341CBA19CECE6 /* session_handle.cpp */,
+				7DB7CA5A3946405FB8A9FDF2 /* session_impl.cpp */,
+				BC35C69071F94558A230C91C /* session_params.cpp */,
+				35E782B12DC44932BA1C8D48 /* session_settings.cpp */,
+				B84CC786BBBC4B37B6FDF88C /* session_stats.cpp */,
+				6BB88E10AAFB444886B3B9B3 /* settings_pack.cpp */,
+				BE3753AAF5204AE8B1C0C23B /* sha1.cpp */,
+				3B91CD5E6E1749DEA35EE283 /* sha1_hash.cpp */,
+				25FAE1CF737246FA84D4AA35 /* sha256.cpp */,
+				5399D0F03D274EC8B991F0CB /* smart_ban.cpp */,
+				0C8966BDF52A4848AF792C5B /* socket_io.cpp */,
+				E5BF9F7FF9F64EC2BAABC41B /* socket_type.cpp */,
+				762AD9F71C7541B6A9010241 /* socks5_stream.cpp */,
+				33B86A48597E479CB8A361D2 /* ssl.cpp */,
+				194633621B07413D8EB52B90 /* stack_allocator.cpp */,
+				E0733293DCA64323AA155D22 /* stat.cpp */,
+				D95CA744131D4E41A0EAE84D /* stat_cache.cpp */,
+				666C38F86A7C4FAD99E75A38 /* storage_utils.cpp */,
+				8F35F3C7365D4A188F7C9745 /* string_util.cpp */,
+				C1E2D898E791489AB71B70E6 /* time.cpp */,
+				01588FEF969F45F1845BB627 /* timestamp_history.cpp */,
+				19565815A0A34FA59FFF17DE /* torrent.cpp */,
+				1970E865AD5143A9897DC19A /* torrent_handle.cpp */,
+				8110F94069B34EC8B82D8728 /* torrent_info.cpp */,
+				E186278FD6A94D57A891661C /* torrent_peer.cpp */,
+				AEEE3CF257EF46C9871A942B /* torrent_peer_allocator.cpp */,
+				01CAAA4F1B5E4B3E931DA7CA /* torrent_status.cpp */,
+				D492507758424A2CBDD87958 /* tracker_manager.cpp */,
+				2B0D39D9EB4E4C25BA03988B /* truncate.cpp */,
+				92BA0E2D248640A49AB89B0A /* udp_socket.cpp */,
+				7A884BC502594EA6A275FDE4 /* udp_tracker_connection.cpp */,
+				286FCD68D7F14015A8AD8CD0 /* upnp.cpp */,
+				79F17B6440764E77A8C7EDC7 /* ut_metadata.cpp */,
+				2499C09E8812470E89F87362 /* ut_pex.cpp */,
+				08D89FD0591349DEB2BAA1A0 /* utf8.cpp */,
+				CFB2147B9A3744908F785D26 /* utp_socket_manager.cpp */,
+				D5EC803DD9264CDA948DEDF3 /* utp_stream.cpp */,
+				29BC49F5E86444758CCFDD5A /* version.cpp */,
+				A690A147D1FB4224BFD07FF7 /* web_connection_base.cpp */,
+				FE6178FF1FE64E17A0318002 /* web_peer_connection.cpp */,
+				EF0AC8A63F194812AC265F26 /* write_resume_data.cpp */,
+				A39D0D4E093145B3ACAE37F8 /* xml_parse.cpp */,
+			);
+			name = "Source Files";
+			sourceTree = "<group>";
+		};
+		515AA3B4F78C4D4EAEC5D979 /* Header Files */ = {
+			isa = PBXGroup;
+			children = (
+				30F4E125EEB14E5E952B930A /* add_torrent_params.hpp */,
+				03735AB85C3E46AE8D50F426 /* address.hpp */,
+				F3B0A572EF764ABAAD0F2599 /* alert.hpp */,
+				90DD5233855748358A40D68F /* alert_types.hpp */,
+				180FC2D7CEEC42E4AE3E5DA6 /* announce_entry.hpp */,
+				961B698799174BDB9D996356 /* assert.hpp */,
+				F46DC0FD0FC64B858D06FAA2 /* alert_manager.hpp */,
+				89F47041FDE44CA18BC91745 /* aligned_storage.hpp */,
+				E7ABCB3076F54613963FB22B /* aligned_union.hpp */,
+				89A74A5B826D429FA9F29505 /* alloca.hpp */,
+				4BD0FEA2B81345DEA000FECF /* allocating_handler.hpp */,
+				2F39E6351E164BED85B5645B /* apply_pad_files.hpp */,
+				049E3B9F49414F6C9E8FDE39 /* array.hpp */,
+				3DE26841816F4672BE93FEE4 /* bandwidth_limit.hpp */,
+				3F4F5A79400141B497DE5F61 /* bandwidth_manager.hpp */,
+				B3DCECE31E38440EB8BDF1D4 /* bandwidth_queue_entry.hpp */,
+				98C680D800824AC589422C76 /* bandwidth_socket.hpp */,
+				5F28183D7BBA45A786865EFF /* bind_to_device.hpp */,
+				9EDEA2A291564AB4937EA5E3 /* buffer.hpp */,
+				C7044C9944DD4FD8998B8906 /* byteswap.hpp */,
+				5120F0C253434777B7C8D2B2 /* chained_buffer.hpp */,
+				59C007A575154B7FB0742DE9 /* cpuid.hpp */,
+				57A916A9F9D14C3BAF324E36 /* deferred_handler.hpp */,
+				BB6C275FBB354509A2277407 /* deprecated.hpp */,
+				4F2B348952A64997B89C0373 /* deque.hpp */,
+				E3E70B247E954949BD3A6250 /* dev_random.hpp */,
+				C34E080A555E41D8B4D1B4A5 /* directory.hpp */,
+				52DD3088153D4D628F2EAA82 /* disable_warnings_pop.hpp */,
+				344870F806394E688655B88B /* disable_warnings_push.hpp */,
+				0965403D3A874F419846BE5F /* disk_buffer_pool.hpp */,
+				E13D447AA38540CC8BD9E48A /* disk_io_thread_pool.hpp */,
+				8374D97C7ADD44C4A758C485 /* disk_job_fence.hpp */,
+				7D4A366508A94EBDA3DC1231 /* disk_job_pool.hpp */,
+				93B24312251E447F81695BBA /* drive_info.hpp */,
+				2B88A6CBF7E2454FB20201AB /* ed25519.hpp */,
+				FCD40DAE8A7449FAB8C87AA0 /* escape_string.hpp */,
+				1CAE3E4EF67F49339C0116DC /* export.hpp */,
+				98F7E6DDE3124D918C2A4440 /* ffs.hpp */,
+				6AD09F1FD31649A9B78C5EA2 /* file_descriptor.hpp */,
+				1E7CF68F62174E5BB1C37A02 /* file_progress.hpp */,
+				340BBD2DD0D3477FBF16049C /* file_view_pool.hpp */,
+				3EFBA5933FC44D48873CEBE3 /* has_block.hpp */,
+				E0E0B3640D6B41EF9135E3DB /* hasher512.hpp */,
+				06EFDD41252948B88DB0BB30 /* heterogeneous_queue.hpp */,
+				C1FB8E08B101466AAF28DD99 /* instantiate_connection.hpp */,
+				04879190AB564B6FA76282D4 /* invariant_check.hpp */,
+				F6774EE56C6C45738BAE48AB /* io.hpp */,
+				F0DBFC4745CC48A0993CCDEA /* ip_helpers.hpp */,
+				64C0A8A465F4456D96B1AD1A /* ip_notifier.hpp */,
+				A7BA97A23B174A41A15D1B10 /* keepalive.hpp */,
+				8219CC672D2E4ED9B5AA6D88 /* listen_socket_handle.hpp */,
+				EC3F328C7C4F414D8570811C /* lsd.hpp */,
+				8AE6DF3CDB6A4529B6AADA04 /* merkle.hpp */,
+				1BFA44CF4F4C4BF090991509 /* merkle_tree.hpp */,
+				4C587C3A906D4C0A9467E5AF /* mmap_disk_job.hpp */,
+				973267B636094F2CA1711BA3 /* netlink_utils.hpp */,
+				C883EE5CDC98400FACE09F07 /* noexcept_movable.hpp */,
+				DDA5814EA36D46F6B35D3FE9 /* numeric_cast.hpp */,
+				6B1C710A685747C0A4BE059A /* packet_buffer.hpp */,
+				97AFC7A2B1004AD58C0CC314 /* packet_pool.hpp */,
+				102FA8CC98AE4CBFB0471274 /* path.hpp */,
+				A661F57E5F5640C59B40CEC8 /* polymorphic_socket.hpp */,
+				448BCF324AD94B498FA1E8BB /* pool.hpp */,
+				BF78D8D7ADBD4924A7E5D433 /* portmap.hpp */,
+				D371CD5BE10140EEBBADB093 /* posix_part_file.hpp */,
+				35F1D5983D3A4A1BB0D5E172 /* proxy_settings.hpp */,
+				A7DF28D878234750A9CB34BC /* range.hpp */,
+				CDD91F169CEB417989259D34 /* receive_buffer.hpp */,
+				66AD3C0D72A34AEAB4E182FE /* resolver.hpp */,
+				110C10703FD5461294884B84 /* resolver_interface.hpp */,
+				3653EB883BD94C2787642077 /* scope_end.hpp */,
+				5CF94258D5724906B07A81A3 /* session_call.hpp */,
+				F5E3557046374E72B18ED909 /* session_impl.hpp */,
+				51DE25DA93454730818244E0 /* session_interface.hpp */,
+				C7C84052E9A24639B0949B6E /* session_settings.hpp */,
+				6181C0B86FFE4478BF741F9F /* session_udp_sockets.hpp */,
+				55AD31DAF2E24E898A1DD56F /* set_socket_buffer.hpp */,
+				2E8BC54960D14275B30AAB08 /* set_traffic_class.hpp */,
+				995915F7369F4088B7378AD8 /* socket_type.hpp */,
+				67CA927505674D10A89F6CDB /* storage_free_list.hpp */,
+				521304A8D94644189571C9F5 /* storage_utils.hpp */,
+				5C3C27CC748A48D9B0C64CDC /* string_ptr.hpp */,
+				AE4BC5F9B79A470C970FA5A0 /* strview_less.hpp */,
+				2D105161F89842B88DE49E82 /* suggest_piece.hpp */,
+				8039E556101C4AAA900045CA /* throw.hpp */,
+				167A7412D739484DBAAE620E /* time.hpp */,
+				118A53109A3E451AA08CCED4 /* timestamp_history.hpp */,
+				BE8BB74684924CA19C95A507 /* torrent_impl.hpp */,
+				44B5B2BF81184EDB8BE20630 /* torrent_list.hpp */,
+				3AB4EB5F225C44E39E1C97AB /* unique_ptr.hpp */,
+				B4E9EF050F69483599A15F6A /* utp_socket_manager.hpp */,
+				3E9DFA99403E4F19AB410544 /* utp_stream.hpp */,
+				525BD31290D64090B0E71B4F /* vector.hpp */,
+				2076563AED154D7C9533ACD0 /* win_crypto_provider.hpp */,
+				5EA4E13CED17442BBD142D68 /* win_file_handle.hpp */,
+				846D719A76CE4BBD8364C710 /* win_util.hpp */,
+				16A91000F4D14FF98911BD6D /* bdecode.hpp */,
+				0F92B884A17942A1A80A025F /* bencode.hpp */,
+				3A1A29C344BF40739B34091B /* bitfield.hpp */,
+				3F4C177C56CA4B5FA6496F46 /* bloom_filter.hpp */,
+				E933D02F052342D2AE0A14AE /* bt_peer_connection.hpp */,
+				DA3D03A017DF4949A3F2807C /* choker.hpp */,
+				A99B52A657BC44B599A9BA73 /* client_data.hpp */,
+				A16DD12B762E4A01A5B75198 /* close_reason.hpp */,
+				DC8802C8511845F0AF93D9BA /* config.hpp */,
+				C43013ABDB5841C092A3B482 /* copy_ptr.hpp */,
+				4FC16E7BD03046B29355AD7A /* crc32c.hpp */,
+				1FC1514C75594A04835B415C /* create_torrent.hpp */,
+				8CF1765BE524410CBD3E7EC7 /* deadline_timer.hpp */,
+				9035B80F183144A3A4123FE2 /* debug.hpp */,
+				5FC1B4DD196B41DDB841A987 /* disk_buffer_holder.hpp */,
+				4CDA4251A7994B249E6A9DCA /* disk_interface.hpp */,
+				654FA4ABAB82432983A15805 /* disk_observer.hpp */,
+				0082B1CDE9454EABA0ADA2D1 /* download_priority.hpp */,
+				1F80A266DC59451295C2EEE9 /* entry.hpp */,
+				DD803F2DD5C94E8DBDAE2800 /* enum_net.hpp */,
+				7C92DED61BAE41B09944A2F7 /* error.hpp */,
+				419C4E76EABA498494DC6686 /* error_code.hpp */,
+				0C05E884CC844088A0F66BA0 /* extensions.hpp */,
+				A30D771910A34A2983A5DAAF /* smart_ban.hpp */,
+				638ED47957F94A9FBC598862 /* ut_metadata.hpp */,
+				D4CEDDB329CB4456B65B9018 /* ut_pex.hpp */,
+				D6DB3DBED16545D182B90D5C /* file.hpp */,
+				D612D18A36244398BA6EA776 /* file_layout.hpp */,
+				5CADF0E2CCF74486949DA2C7 /* file_storage.hpp */,
+				9710ABCB9FDB4AE8B6882572 /* fingerprint.hpp */,
+				82406210A9D743B198FE6E1C /* flags.hpp */,
+				A41E1A8D8A5D4D66B6D852E5 /* fwd.hpp */,
+				51A3B86600914114AC2EA387 /* gzip.hpp */,
+				A3151F86EF384871AB48F6B4 /* hash_picker.hpp */,
+				FB7D3DE4522044F1A14BCEEE /* hasher.hpp */,
+				28483FC863E140E59994F74E /* hex.hpp */,
+				F351B999B08942679B41F630 /* http_connection.hpp */,
+				7EB9BCC3C1CB463D97BD2BDE /* http_parser.hpp */,
+				F685CBECF27944D7B6B04E4B /* http_seed_connection.hpp */,
+				9924EB58341C4CF6BB816871 /* http_stream.hpp */,
+				ED5BA2458F614CB0B16AE94F /* http_tracker_connection.hpp */,
+				A10BA3ECF7EB4F91834EE0BA /* i2p_stream.hpp */,
+				9152490CBA9F471F9AA37310 /* identify_client.hpp */,
+				628A73B510024E15B94A6FF7 /* index_range.hpp */,
+				C7DB94C237D048BC947F60F1 /* io.hpp */,
+				FA16470831404AB69AD00825 /* io_service.hpp */,
+				B7A8D54EB8CC42308F920E10 /* ip_filter.hpp */,
+				4A9D2946E9CA417BB135DDA6 /* ip_voter.hpp */,
+				281A5240590740E6A32D6F24 /* announce_flags.hpp */,
+				9FB0F4DF8B594C1C90BDEABE /* dht_observer.hpp */,
+				70015CE927D64B959EA91558 /* dht_settings.hpp */,
+				B01C2DE5C93442E5893AAA44 /* dht_state.hpp */,
+				8E083461E593454B9CEF0841 /* dht_storage.hpp */,
+				53F69A84B2364ED683955752 /* dht_tracker.hpp */,
+				89648CFB4E5D4F42B7C861CB /* direct_request.hpp */,
+				51185756058C4AD9B6D994EF /* dos_blocker.hpp */,
+				42DD419781E540ADBC2F7EAF /* ed25519.hpp */,
+				C15BFB024FFE4C6380B49BAC /* find_data.hpp */,
+				CD75663AA31244F9BC7F52CF /* get_item.hpp */,
+				53E96726355B43B6A73893DF /* get_peers.hpp */,
+				892EC860E5714F8C85EF3531 /* io.hpp */,
+				1C5B570DF9BB41AE8CD3BAFD /* item.hpp */,
+				5A5F3F7CEE1346D0A7E189C4 /* msg.hpp */,
+				4D870D13D05E4469A218AF8E /* node.hpp */,
+				B713AEB03FD0457A9C9CE1E1 /* node_entry.hpp */,
+				2869519EDC0E411C94E5C385 /* node_id.hpp */,
+				CEF6AB0DE399491E8C8DE3E7 /* observer.hpp */,
+				9C261341D31B47468AF26AD7 /* put_data.hpp */,
+				7FF280CAE76C4A4797656B90 /* refresh.hpp */,
+				36FD9644341A450EA6B34F12 /* routing_table.hpp */,
+				C5AF8B53D820449FA0010953 /* rpc_manager.hpp */,
+				964F5314A7DA45F2A1B6DB43 /* sample_infohashes.hpp */,
+				5F6980EBE26E4165987C4F47 /* traversal_algorithm.hpp */,
+				1912AFFA0D1048CC94AB0119 /* types.hpp */,
+				205096DA5F504EEBBE3C4A73 /* libtorrent.hpp */,
+				D01247BF013C450CAB195ADA /* link.hpp */,
+				C1DDF8A830BB49AC8BBF80BD /* lsd.hpp */,
+				DB757AEC9DD349C183C65E56 /* magnet_uri.hpp */,
+				B320A1AB56BB41D081FD548E /* mmap_disk_io.hpp */,
+				4060689310834A25A584E0B7 /* mmap_storage.hpp */,
+				4ECB635FC3424C5E89997CDE /* natpmp.hpp */,
+				987348374E33481DB4395E55 /* netlink.hpp */,
+				149E4228746D45BEB37A7C03 /* operations.hpp */,
+				E6A3AF785C3B447BBD19F1F2 /* optional.hpp */,
+				09CB55FE3F1F455E92344C17 /* parse_url.hpp */,
+				53A794191AD646889D880A08 /* part_file.hpp */,
+				17CECF61536D431E89473BE2 /* pe_crypto.hpp */,
+				D8E34FB3CB754E3A94895FDB /* peer.hpp */,
+				1CB9C1CC41864033BDB2B424 /* peer_class.hpp */,
+				AD02EBBFDBBB46D0813B55D5 /* peer_class_set.hpp */,
+				317BADA12F544260B83B8318 /* peer_class_type_filter.hpp */,
+				78E126D3C0114B0FA0A7E25A /* peer_connection.hpp */,
+				9D761FB818A249DDB4BF7620 /* peer_connection_handle.hpp */,
+				BD2800F740244817A3220D41 /* peer_connection_interface.hpp */,
+				F46350D6BAB54B229F6EB4ED /* peer_id.hpp */,
+				2067A34EA35D4C2E953740C7 /* peer_info.hpp */,
+				8193C13B134344FA9C2AD63F /* peer_list.hpp */,
+				ADE2111D0219432193B609CE /* peer_request.hpp */,
+				E73259EB3A594804B5504241 /* performance_counters.hpp */,
+				9126151B283745BBB6C58C38 /* pex_flags.hpp */,
+				FF303B9312234BE5AB120421 /* piece_block.hpp */,
+				9C4294B9B93A4EDFAFC143AC /* piece_block_progress.hpp */,
+				9B2EAC2951674114A3791DF5 /* piece_picker.hpp */,
+				1D7E11E301884DDB8C52922D /* platform_util.hpp */,
+				133C43F8383F4C4792E2101D /* portmap.hpp */,
+				EEF8EDFF25124115A587B933 /* proxy_base.hpp */,
+				7B99E2560F6C423292051586 /* puff.hpp */,
+				D1E539513A01486A9471EB9C /* random.hpp */,
+				2776CAEBEE70487FA1ED7915 /* read_resume_data.hpp */,
+				BC69241976704760B1887DEF /* request_blocks.hpp */,
+				23525813F5604EDCA2FA0882 /* resolve_links.hpp */,
+				66E20D979AB641FEB3487AAC /* session.hpp */,
+				EF623373EEB14014B31EA659 /* session_handle.hpp */,
+				AA056793D3CF415ABECEED7A /* session_params.hpp */,
+				2E499680F25E4D4ABBB86AAE /* session_settings.hpp */,
+				00B9CC3F539347FFA3FD858A /* session_stats.hpp */,
+				A7E1894E243F47AE9786009A /* session_status.hpp */,
+				2C12194E7B8F4AD583C68E40 /* session_types.hpp */,
+				DA4F89AFDBA44C7BB125CF0E /* settings_pack.hpp */,
+				5B44997BEAAD48BDB4B6C47B /* sha1.hpp */,
+				FFFA0C0E34734B1C81B9707B /* sha1_hash.hpp */,
+				D8C1C12CE8C94388A7BAEC55 /* sha256.hpp */,
+				E743513F94B645CABAD09221 /* sliding_average.hpp */,
+				2870D5EBB9194BBBB91144A4 /* socket.hpp */,
+				6D431CA21D8C431EA88D9BDE /* socket_io.hpp */,
+				A7F2DC0B1E1F4F1A8B93BFE7 /* socket_type.hpp */,
+				83A608DEA7754DD2B2FCB601 /* socks5_stream.hpp */,
+				FFAC85AF2F7A42B1853D48DA /* span.hpp */,
+				6AF8BAC9151146FCB0EDFD09 /* ssl.hpp */,
+				3843BCC13DDB4D98ADA9BD4A /* ssl_stream.hpp */,
+				2C62D13F256348A8855A99E5 /* stack_allocator.hpp */,
+				7C680A9FF35E436B9FE52927 /* stat.hpp */,
+				4B0AC6E7821C4B26AF92F2B6 /* stat_cache.hpp */,
+				33B29F676A1A49F390D79A6B /* storage_defs.hpp */,
+				3C3EFD30CFC0444787580D3F /* string_util.hpp */,
+				10638DDCB5AF448A9A1D8B3F /* string_view.hpp */,
+				11E42D141DA64765AA0A290C /* tailqueue.hpp */,
+				4F15E56F658C4DFA9ECE6A7A /* time.hpp */,
+				1FF104A8999048AF99F0B356 /* torrent.hpp */,
+				4F55A54F80D74A93A007C9BC /* torrent_flags.hpp */,
+				437BC1E6D16B4B16A83E1336 /* torrent_handle.hpp */,
+				CE2B67F8478C4CBAA36E7D25 /* torrent_info.hpp */,
+				B55B92D81BC14DCEA4597799 /* torrent_peer.hpp */,
+				EB770CFD6A254503BC03C766 /* torrent_peer_allocator.hpp */,
+				C8000867D2834D1A9BAF79DE /* torrent_status.hpp */,
+				27E7C482ADF6439C984EA323 /* tracker_manager.hpp */,
+				B48CEC5427604D8AB4A97F58 /* truncate.hpp */,
+				011E83ECDA8843959AC88071 /* udp_socket.hpp */,
+				E3C3CB309C8449AA9DEDB97A /* udp_tracker_connection.hpp */,
+				473B6163575E4FAAA498B5CC /* union_endpoint.hpp */,
+				F72412BEFB4A4FF79BF6868F /* units.hpp */,
+				27B816863A2047B3B6256BC5 /* upnp.hpp */,
+				5DDE8C0EF6E74CF1A196D2DB /* utf8.hpp */,
+				72C57FFE5AB54F52A56AAC8A /* vector_utils.hpp */,
+				56D5E375DC8749B4B38E08DE /* version.hpp */,
+				AC3E0A28E2984B709B965CC8 /* web_connection_base.hpp */,
+				98ED11C3687D446A88213697 /* web_peer_connection.hpp */,
+				6A763C6B4B9F4F33B4320FC6 /* write_resume_data.hpp */,
+				73A9A879D6BA49CEB7C23E46 /* xml_parse.hpp */,
+			);
+			name = "Header Files";
+			sourceTree = "<group>";
+		};
+		6F25BDB121E14E7DB06EBDDF = {
+			isa = PBXGroup;
+			children = (
+				8037A0B56B364166965BD959 /* torrent-rasterbar */,
+				796510F5A8D04401B1FEB70D /* ALL_BUILD */,
+				36E5BADB3477495F909AB47E /* Products */,
+				908B89986FB54A76947D3BE1 /* Frameworks */,
+			);
+			sourceTree = "<group>";
+		};
+		796510F5A8D04401B1FEB70D /* ALL_BUILD */ = {
+			isa = PBXGroup;
+			children = (
+				F84089C7D2B3488199686146 /* CMake Rules */,
+				3B5F90B837264EFEB3235B28 /* CMakeLists.txt */,
+			);
+			name = ALL_BUILD;
+			sourceTree = "<group>";
+		};
+		8037A0B56B364166965BD959 /* torrent-rasterbar */ = {
+			isa = PBXGroup;
+			children = (
+				496855F4983F474E85E268BA /* Source Files */,
+				515AA3B4F78C4D4EAEC5D979 /* Header Files */,
+				C9CA6C218235481986A5B6F5 /* CMakeLists.txt */,
+			);
+			name = "torrent-rasterbar";
+			sourceTree = "<group>";
+		};
+		908B89986FB54A76947D3BE1 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		F84089C7D2B3488199686146 /* CMake Rules */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = "CMake Rules";
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		BFB7D81C12A84FBC981E99A4 /* torrent-rasterbar */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = AC2855EAFE214E16856E4B0A /* Build configuration list for PBXNativeTarget "torrent-rasterbar" */;
+			buildPhases = (
+				FE40485C35FF4A78B2814C38 /* Sources */,
+				A564109517744E2984FEE690 /* Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				CAA8FC8C27EC43B1B8648DB7 /* PBXTargetDependency */,
+			);
+			name = "torrent-rasterbar";
+			productName = "torrent-rasterbar";
+			productReference = B09BCC9F53E448D7BCD3C7CC /* libtorrent-rasterbar.a */;
+			productType = "com.apple.product-type.library.static";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		112EACC49393465FAE85F3D0 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 1500;
+			};
+			buildConfigurationList = D52FC50263144E65AB6A80E7 /* Build configuration list for PBXProject "libtorrent" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = 6F25BDB121E14E7DB06EBDDF;
+			projectDirPath = /Users/daniilvinogradov/Documents/Dev/iOS/LibTorrent/Thirdparty/libtorrent;
+			projectRoot = "";
+			targets = (
+				8BCDAC5C5C6E43309E9F87AA /* ALL_BUILD */,
+				60B5B85E2CBE4A1D88FA9D35 /* ZERO_CHECK */,
+				937C7C76FB1C4D5884CBE1E1 /* install */,
+				BFB7D81C12A84FBC981E99A4 /* torrent-rasterbar */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		345FCC046022AE7A2895B79A /* Generate CMakeFiles/ALL_BUILD */ = {
+			isa = PBXShellScriptBuildPhase;
+			alwaysOutOfDate = 1;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Generate CMakeFiles/ALL_BUILD";
+			outputPaths = (
+				"/Users/daniilvinogradov/Documents/Dev/iOS/LibTorrent/libtorrent-build/CMakeFiles/ALL_BUILD",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "set -e\nif test \"$CONFIGURATION\" = \"Debug\"; then :\n  cd /Users/daniilvinogradov/Documents/Dev/iOS/LibTorrent/libtorrent-build\n  echo Build\\ all\\ projects\nfi\nif test \"$CONFIGURATION\" = \"Release\"; then :\n  cd /Users/daniilvinogradov/Documents/Dev/iOS/LibTorrent/libtorrent-build\n  echo Build\\ all\\ projects\nfi\nif test \"$CONFIGURATION\" = \"MinSizeRel\"; then :\n  cd /Users/daniilvinogradov/Documents/Dev/iOS/LibTorrent/libtorrent-build\n  echo Build\\ all\\ projects\nfi\nif test \"$CONFIGURATION\" = \"RelWithDebInfo\"; then :\n  cd /Users/daniilvinogradov/Documents/Dev/iOS/LibTorrent/libtorrent-build\n  echo Build\\ all\\ projects\nfi\n";
+			showEnvVarsInLog = 0;
+		};
+		93426DA6A4AC2C2AC9CE883C /* CMake PostBuild Rules */ = {
+			isa = PBXShellScriptBuildPhase;
+			alwaysOutOfDate = 1;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			name = "CMake PostBuild Rules";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "set -e\nif test \"$CONFIGURATION\" = \"Debug\"; then :\n  cd /Users/daniilvinogradov/Documents/Dev/iOS/LibTorrent/libtorrent-build\n  /opt/homebrew/Cellar/cmake/3.27.6/bin/cmake -DBUILD_TYPE=$CONFIGURATION$EFFECTIVE_PLATFORM_NAME -P cmake_install.cmake\nfi\nif test \"$CONFIGURATION\" = \"Release\"; then :\n  cd /Users/daniilvinogradov/Documents/Dev/iOS/LibTorrent/libtorrent-build\n  /opt/homebrew/Cellar/cmake/3.27.6/bin/cmake -DBUILD_TYPE=$CONFIGURATION$EFFECTIVE_PLATFORM_NAME -P cmake_install.cmake\nfi\nif test \"$CONFIGURATION\" = \"MinSizeRel\"; then :\n  cd /Users/daniilvinogradov/Documents/Dev/iOS/LibTorrent/libtorrent-build\n  /opt/homebrew/Cellar/cmake/3.27.6/bin/cmake -DBUILD_TYPE=$CONFIGURATION$EFFECTIVE_PLATFORM_NAME -P cmake_install.cmake\nfi\nif test \"$CONFIGURATION\" = \"RelWithDebInfo\"; then :\n  cd /Users/daniilvinogradov/Documents/Dev/iOS/LibTorrent/libtorrent-build\n  /opt/homebrew/Cellar/cmake/3.27.6/bin/cmake -DBUILD_TYPE=$CONFIGURATION$EFFECTIVE_PLATFORM_NAME -P cmake_install.cmake\nfi\n";
+			showEnvVarsInLog = 0;
+		};
+		A9DAA7714326CB425DE8B29A /* Generate CMakeFiles/ZERO_CHECK */ = {
+			isa = PBXShellScriptBuildPhase;
+			alwaysOutOfDate = 1;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Generate CMakeFiles/ZERO_CHECK";
+			outputPaths = (
+				"/Users/daniilvinogradov/Documents/Dev/iOS/LibTorrent/libtorrent-build/CMakeFiles/ZERO_CHECK",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "set -e\nif test \"$CONFIGURATION\" = \"Debug\"; then :\n  cd /Users/daniilvinogradov/Documents/Dev/iOS/LibTorrent/libtorrent-build\n  make -f /Users/daniilvinogradov/Documents/Dev/iOS/LibTorrent/libtorrent-build/CMakeScripts/ReRunCMake.make\nfi\nif test \"$CONFIGURATION\" = \"Release\"; then :\n  cd /Users/daniilvinogradov/Documents/Dev/iOS/LibTorrent/libtorrent-build\n  make -f /Users/daniilvinogradov/Documents/Dev/iOS/LibTorrent/libtorrent-build/CMakeScripts/ReRunCMake.make\nfi\nif test \"$CONFIGURATION\" = \"MinSizeRel\"; then :\n  cd /Users/daniilvinogradov/Documents/Dev/iOS/LibTorrent/libtorrent-build\n  make -f /Users/daniilvinogradov/Documents/Dev/iOS/LibTorrent/libtorrent-build/CMakeScripts/ReRunCMake.make\nfi\nif test \"$CONFIGURATION\" = \"RelWithDebInfo\"; then :\n  cd /Users/daniilvinogradov/Documents/Dev/iOS/LibTorrent/libtorrent-build\n  make -f /Users/daniilvinogradov/Documents/Dev/iOS/LibTorrent/libtorrent-build/CMakeScripts/ReRunCMake.make\nfi\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		FE40485C35FF4A78B2814C38 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				F25CB1F1A7284E20A51F863F /* signal_error_code.cpp in Sources */,
+				1FDD289E09AF46519CCB6153 /* try_signal.cpp in Sources */,
+				BC1AFDB904C240FDA2FB47D9 /* add_torrent_params.cpp in Sources */,
+				02F709C20C48471F856A4DEC /* alert.cpp in Sources */,
+				6C5BB3ADE09C43F299ED913E /* alert_manager.cpp in Sources */,
+				057A6490FC5042BFAF8D90D1 /* announce_entry.cpp in Sources */,
+				5173BECCA3BC46C89321BA5D /* assert.cpp in Sources */,
+				4A382A1169E84D1BB1C02FBB /* bandwidth_limit.cpp in Sources */,
+				B48C76B6EAA54319BDC52FF9 /* bandwidth_manager.cpp in Sources */,
+				972EF8C07F414DB59008E6D3 /* bandwidth_queue_entry.cpp in Sources */,
+				29B16B005A1A49D3AF2E716A /* bdecode.cpp in Sources */,
+				0946F7973BC54C5097D8932D /* bitfield.cpp in Sources */,
+				515702FC50B941E88798D242 /* bloom_filter.cpp in Sources */,
+				21367FB4E8B144CC9A7FE993 /* bt_peer_connection.cpp in Sources */,
+				FDC0318A3A2E45C988F56384 /* chained_buffer.cpp in Sources */,
+				CA83CC5C020241CAB98B929A /* choker.cpp in Sources */,
+				276ADF5BF3EC4818B6B7AE5A /* close_reason.cpp in Sources */,
+				196087CF449B406E82E0D99F /* copy_file.cpp in Sources */,
+				03F73AE027C744E4AC4F3F32 /* cpuid.cpp in Sources */,
+				2F9E588C66FE495CAC6644E8 /* crc32c.cpp in Sources */,
+				A492D4B83D95488EBCFB8AB6 /* create_torrent.cpp in Sources */,
+				FF603F79D8DE436F8B8BCDFF /* directory.cpp in Sources */,
+				C43BBFE4481A484FA1BA7E62 /* disabled_disk_io.cpp in Sources */,
+				E5B03C9CB2BD41F7BE550B92 /* disk_buffer_holder.cpp in Sources */,
+				D7F9D4D0BD6441A8BCF8C26C /* disk_buffer_pool.cpp in Sources */,
+				B55C086B67A84CFE839CCCF5 /* disk_interface.cpp in Sources */,
+				CEEE192F95DD45EDB6CAD30C /* disk_io_thread_pool.cpp in Sources */,
+				B7418648469C42C2B7034974 /* disk_job_fence.cpp in Sources */,
+				68C06562759647628C8AC173 /* disk_job_pool.cpp in Sources */,
+				7F9A67F98CA742E28F9A8B19 /* drive_info.cpp in Sources */,
+				C09143E0ADD6493A8F3F0FA1 /* add_scalar.cpp in Sources */,
+				8E9A8C0280FE47D4894BFCDD /* fe.cpp in Sources */,
+				12EAF11A7CEC4FF5A1A431BB /* ge.cpp in Sources */,
+				746AE59DA4A74C49B9120AAE /* hasher512.cpp in Sources */,
+				84E38688C46345E48D3B2563 /* key_exchange.cpp in Sources */,
+				6AD1AA47188044B08D854864 /* keypair.cpp in Sources */,
+				4F4C51B8AC6D4742A20BDDFF /* sc.cpp in Sources */,
+				2C1FE94E80EB4427AFC6ACF2 /* sha512.cpp in Sources */,
+				765554504CB0450DAF9A3AE6 /* sign.cpp in Sources */,
+				AE8AECEF3BCB4860914848C1 /* verify.cpp in Sources */,
+				55B3C0D4F01B4DD397C7A3EF /* entry.cpp in Sources */,
+				C5755F3D91604F14A3407535 /* enum_net.cpp in Sources */,
+				AA8AF326597B4EAF84F6B5BD /* error_code.cpp in Sources */,
+				70D4CE8AA61549208BAF422F /* escape_string.cpp in Sources */,
+				A4F2A8739608474391C2F49B /* ffs.cpp in Sources */,
+				2F6D2C9A24F94714BA9B2975 /* file.cpp in Sources */,
+				0F30FED19C1C43069736FD8F /* file_progress.cpp in Sources */,
+				8781C317CE44483981ADF1FF /* file_storage.cpp in Sources */,
+				717F2A42FA754C15A2990B27 /* file_view_pool.cpp in Sources */,
+				D64056738DD543CF9051C8E1 /* fingerprint.cpp in Sources */,
+				664B8603919B4B4C8C54F59A /* generate_peer_id.cpp in Sources */,
+				0F26C059EF7442158EF21B72 /* gzip.cpp in Sources */,
+				B5F385C833334335A7CD9B05 /* hash_picker.cpp in Sources */,
+				0B8291D223DA407D89FBEFCD /* hasher.cpp in Sources */,
+				E7FDFE67E2B54C3FA2F6413C /* hex.cpp in Sources */,
+				7E4B2173135F4BE2B6C97C33 /* http_connection.cpp in Sources */,
+				C074842824354B988EE4F0EE /* http_parser.cpp in Sources */,
+				B353F28237624E6EBC1F30DE /* http_seed_connection.cpp in Sources */,
+				844327B233F942E293A8E123 /* http_tracker_connection.cpp in Sources */,
+				8FC8656E23A64DC2BE126F0C /* i2p_stream.cpp in Sources */,
+				90DCBDD5E8FD42FD80443BCF /* identify_client.cpp in Sources */,
+				A98C748B46B3490D87CE2FB2 /* instantiate_connection.cpp in Sources */,
+				FDE8005693A94219B96BB7C4 /* ip_filter.cpp in Sources */,
+				55CE7CB146E5431A9D5315E4 /* ip_helpers.cpp in Sources */,
+				FA01FDF3B63C44B2B87534DE /* ip_notifier.cpp in Sources */,
+				2338B9D8221046B983E62A58 /* ip_voter.cpp in Sources */,
+				8319D9E376B74592A8BC9753 /* dht_settings.cpp in Sources */,
+				C9E907BC1BEC47F584F0B2E7 /* dht_state.cpp in Sources */,
+				E420FE27E8004D0EB5F9C8D4 /* dht_storage.cpp in Sources */,
+				D7513BECAAD94E5591E2FBB4 /* dht_tracker.cpp in Sources */,
+				387B1A76250C4DD88C1E5D70 /* dos_blocker.cpp in Sources */,
+				064FA3CBBB4842339A6654DA /* ed25519.cpp in Sources */,
+				76908E414B764BCBB49EC188 /* find_data.cpp in Sources */,
+				789684C4B4F749F4A3744F0B /* get_item.cpp in Sources */,
+				B5D7E801E71B4D30981D5CD4 /* get_peers.cpp in Sources */,
+				30CA877040414FA8A669162C /* item.cpp in Sources */,
+				D901ECB410C843CCB792BD40 /* msg.cpp in Sources */,
+				73E7C9DDC6474D8F89A4C224 /* node.cpp in Sources */,
+				B58DF1985D6345CAA73C9A13 /* node_entry.cpp in Sources */,
+				3EB018D61AD54915BDEE2570 /* node_id.cpp in Sources */,
+				77D74D80940F489BA4848906 /* put_data.cpp in Sources */,
+				609D691E54894A80AC66EAD2 /* refresh.cpp in Sources */,
+				B5D1F751E8EF40ABB84C081A /* routing_table.cpp in Sources */,
+				A12C1B1A3509442DA41C1A59 /* rpc_manager.cpp in Sources */,
+				C07F86515686422482E5EDB7 /* sample_infohashes.cpp in Sources */,
+				66F4BD4298AB4BB89E5774EC /* traversal_algorithm.cpp in Sources */,
+				92BBF4A01BB1406D9798E472 /* listen_socket_handle.cpp in Sources */,
+				30E2E5D785DD4EE69C652AEC /* load_torrent.cpp in Sources */,
+				5F1AD25339BB4609A1DAB5D7 /* lsd.cpp in Sources */,
+				7EC9FEB1C7634294981D8DDE /* magnet_uri.cpp in Sources */,
+				AA316B5C5CBA482B98E4F40F /* merkle.cpp in Sources */,
+				67FAF10C29404005BC632F8E /* merkle_tree.cpp in Sources */,
+				BC05A3CEDCFF493D92D7E478 /* mmap.cpp in Sources */,
+				9127DB78FF4C459B9BDA8C3C /* mmap_disk_io.cpp in Sources */,
+				5F41F97FD1D74B87BB16CB77 /* mmap_disk_job.cpp in Sources */,
+				C754476A55F14951A6F11275 /* mmap_storage.cpp in Sources */,
+				D5C4CCC55C764020A72A0723 /* natpmp.cpp in Sources */,
+				357B7CD6B8DE46499CED4592 /* packet_buffer.cpp in Sources */,
+				A54FBC0653ED452BAD86F7B7 /* parse_url.cpp in Sources */,
+				A599E1F265A140498C6883BE /* part_file.cpp in Sources */,
+				19587D31B616418490FE7A64 /* path.cpp in Sources */,
+				0A4ADCCA79D44DD4B32C37DB /* pe_crypto.cpp in Sources */,
+				635507D706FA456B89DFE867 /* peer_class.cpp in Sources */,
+				B755D7C77D8F45C38A8633DF /* peer_class_set.cpp in Sources */,
+				E415163AB3A54B26809440DE /* peer_connection.cpp in Sources */,
+				FD96496003424E26BE4167B8 /* peer_connection_handle.cpp in Sources */,
+				297477B72C99445C9BD6F3A5 /* peer_info.cpp in Sources */,
+				94451EAC75E74BF69405CF9B /* peer_list.cpp in Sources */,
+				CAB2FF2654C045FE8EB7555A /* performance_counters.cpp in Sources */,
+				21BDDD341EF84E5C990BEA10 /* piece_picker.cpp in Sources */,
+				DBF9EC2CBC4742CD9F768756 /* platform_util.cpp in Sources */,
+				C8B49C5F3C624362B100A6E6 /* posix_disk_io.cpp in Sources */,
+				8A658F5CD3694261B4812AF6 /* posix_part_file.cpp in Sources */,
+				2C6B65569F854212A7968A16 /* posix_storage.cpp in Sources */,
+				4C2567BFD84F44F0B93FA2EC /* proxy_base.cpp in Sources */,
+				D48401F7182141CD99EBB083 /* proxy_settings.cpp in Sources */,
+				E6B079950CA249849146A3A3 /* puff.cpp in Sources */,
+				9AD6D8C063134DBC89A33F6E /* random.cpp in Sources */,
+				09A595E229EE4FB6AB77C49E /* read_resume_data.cpp in Sources */,
+				123FD71E720C4B5B8F409EDD /* receive_buffer.cpp in Sources */,
+				D46D64382CF94FA4B61A1B05 /* request_blocks.cpp in Sources */,
+				C4229E5E06DB490AACD63092 /* resolve_links.cpp in Sources */,
+				0F82CBC7E5534FE497C47ED3 /* resolver.cpp in Sources */,
+				0CE0A5F25E5640398CA5CF23 /* session.cpp in Sources */,
+				5687816918514EE0858E8551 /* session_call.cpp in Sources */,
+				7BB23EC13909466A802508A4 /* session_handle.cpp in Sources */,
+				57AEE6141C214DEDA2F4F8D3 /* session_impl.cpp in Sources */,
+				7711631670E944128ED4FF06 /* session_params.cpp in Sources */,
+				2F9BE8BF5DFC4F24B426CFE1 /* session_settings.cpp in Sources */,
+				47B064C1D3CE4C41BA6C07E9 /* session_stats.cpp in Sources */,
+				5DB02E6CFBAB41A392D35CEC /* settings_pack.cpp in Sources */,
+				95FB627D22B74B89B16EAEEF /* sha1.cpp in Sources */,
+				103353BEEDFD4EF89625B07D /* sha1_hash.cpp in Sources */,
+				B72FEB217318437E972D5482 /* sha256.cpp in Sources */,
+				49615EE1326E422190C01A0B /* smart_ban.cpp in Sources */,
+				7BDA0DECEA5C421D8188637C /* socket_io.cpp in Sources */,
+				9AF25E8C841549E6A082352C /* socket_type.cpp in Sources */,
+				C4F96B25478748FAA8D53929 /* socks5_stream.cpp in Sources */,
+				59947986EF70428F9C5C7747 /* ssl.cpp in Sources */,
+				B8CC200B32A24242B26FEF1C /* stack_allocator.cpp in Sources */,
+				BAE6E1DD68EC48DBB987781B /* stat.cpp in Sources */,
+				A128EEC5543C44869FFFA643 /* stat_cache.cpp in Sources */,
+				FEDDAE2C37814C3E9529DD5F /* storage_utils.cpp in Sources */,
+				567B20B87D414E508D47619C /* string_util.cpp in Sources */,
+				155826CFD343441280949A74 /* time.cpp in Sources */,
+				9CD648EA4D1240FFAC2466A2 /* timestamp_history.cpp in Sources */,
+				2D3D52970C344A2BB0AA3BFE /* torrent.cpp in Sources */,
+				C92F5B60CAD44C3DBB783023 /* torrent_handle.cpp in Sources */,
+				7064C4857FEF4972B1D29187 /* torrent_info.cpp in Sources */,
+				5E0B6DA95703409493287883 /* torrent_peer.cpp in Sources */,
+				7B32983B7A8143F9A52605E4 /* torrent_peer_allocator.cpp in Sources */,
+				38003526606B41C6B14ED0F8 /* torrent_status.cpp in Sources */,
+				B110B362EBA245F0A1AF1A58 /* tracker_manager.cpp in Sources */,
+				A04EE6B3706B485B85B66096 /* truncate.cpp in Sources */,
+				3B45514DEA8B4602B4415BD6 /* udp_socket.cpp in Sources */,
+				ECD2B08189FC45C2B0DBDF9F /* udp_tracker_connection.cpp in Sources */,
+				6E3107213E6348619EA834C3 /* upnp.cpp in Sources */,
+				6382B4E922564243B008310E /* ut_metadata.cpp in Sources */,
+				C08CFB6E4FC442FDA3AF77A1 /* ut_pex.cpp in Sources */,
+				EE673CA2ABF34F3D8D83DEF0 /* utf8.cpp in Sources */,
+				40BBEDEEC80144609B9CCF24 /* utp_socket_manager.cpp in Sources */,
+				1817DB38A88C4218B9299043 /* utp_stream.cpp in Sources */,
+				F65EBDA1820548AC978ADE8F /* version.cpp in Sources */,
+				AA622C6C828F4B5191CBAC6B /* web_connection_base.cpp in Sources */,
+				950E2AD82D6245E39CC52C4A /* web_peer_connection.cpp in Sources */,
+				1B80B969F38F4A5C8196CFD0 /* write_resume_data.cpp in Sources */,
+				51CD32EE6EF242888087AABA /* xml_parse.cpp in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		48CFCC231F1040F699CF91C8 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = BFB7D81C12A84FBC981E99A4 /* torrent-rasterbar */;
+			targetProxy = 298C37D44CE246DD870A8038 /* PBXContainerItemProxy */;
+		};
+		62926C5C52494C258B2144B2 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 8BCDAC5C5C6E43309E9F87AA /* ALL_BUILD */;
+			targetProxy = 18B47BCB1DB841F684CABA47 /* PBXContainerItemProxy */;
+		};
+		69B467F5D65B493AB42F1AA8 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 60B5B85E2CBE4A1D88FA9D35 /* ZERO_CHECK */;
+			targetProxy = 3045E2921BB54D5ABF451D78 /* PBXContainerItemProxy */;
+		};
+		CAA8FC8C27EC43B1B8648DB7 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 60B5B85E2CBE4A1D88FA9D35 /* ZERO_CHECK */;
+			targetProxy = 6F65A2B911184F72AD3B947C /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		05CE1660361D4BD8B8BAD565 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALLOW_TARGET_PLATFORM_SPECIALIZATION = YES;
+				ARCHS = "$(ARCHS_STANDARD)";
+				SDKROOT = auto;
+				SUPPORTED_PLATFORMS = "xrsimulator xros watchsimulator watchos macosx iphonesimulator iphoneos driverkit appletvsimulator appletvos";
+				SUPPORTS_MACCATALYST = YES;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SYMROOT = "/Users/daniilvinogradov/Documents/Dev/iOS/LibTorrent/libtorrent-build/build";
+			};
+			name = Release;
+		};
+		0798BD452DAD4DB687F916DE /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALLOW_TARGET_PLATFORM_SPECIALIZATION = YES;
+				ARCHS = "$(ARCHS_STANDARD)";
+				SDKROOT = auto;
+				SUPPORTED_PLATFORMS = "xrsimulator xros watchsimulator watchos macosx iphonesimulator iphoneos driverkit appletvsimulator appletvos";
+				SUPPORTS_MACCATALYST = YES;
+				SYMROOT = "/Users/daniilvinogradov/Documents/Dev/iOS/LibTorrent/libtorrent-build/build";
+			};
+			name = Debug;
+		};
+		089308D1CBFD45B593D841C7 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = arm64;
+				COMBINE_HIDPI_IMAGES = YES;
+				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
+				GCC_INLINES_ARE_PRIVATE_EXTERN = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"'CMAKE_INTDIR=\"$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)\"'",
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				INSTALL_PATH = "";
+				ONLY_ACTIVE_ARCH = NO;
+				OTHER_LDFLAGS = " $(inherited)";
+				OTHER_REZFLAGS = "";
+				PRODUCT_NAME = ZERO_CHECK;
+				SECTORDER_FLAGS = "";
+				USE_HEADERMAP = NO;
+				WARNING_CFLAGS = "$(inherited)";
+			};
+			name = Debug;
+		};
+		170B1C7F3EBA43EEB2D4DD4C /* MinSizeRel */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD)";
+				COMBINE_HIDPI_IMAGES = YES;
+				CONFIGURATION_BUILD_DIR = "/Users/daniilvinogradov/Documents/Dev/iOS/LibTorrent/libtorrent-build/MinSizeRel";
+				EXECUTABLE_PREFIX = lib;
+				EXECUTABLE_SUFFIX = .a;
+				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
+				GCC_INLINES_ARE_PRIVATE_EXTERN = NO;
+				GCC_OPTIMIZATION_LEVEL = s;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"'CMAKE_INTDIR=\"$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)\"'",
+					BOOST_ASIO_ENABLE_CANCELIO,
+					BOOST_ASIO_NO_DEPRECATED,
+					TORRENT_BUILDING_LIBRARY,
+					BOOST_EXCEPTION_DISABLE,
+					BOOST_ASIO_HAS_STD_CHRONO,
+					"'_FILE_OFFSET_BITS=64'",
+					TORRENT_USE_OPENSSL,
+					TORRENT_USE_LIBCRYPTO,
+					TORRENT_SSL_PEERS,
+					OPENSSL_NO_SSL2,
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				HEADER_SEARCH_PATHS = (
+					/Users/daniilvinogradov/Documents/Dev/iOS/LibTorrent/Thirdparty/libtorrent/include,
+					/Users/daniilvinogradov/Documents/Dev/iOS/LibTorrent/Thirdparty/libtorrent/deps/try_signal,
+					"$(inherited)",
+				);
+				INSTALL_PATH = "";
+				LIBRARY_STYLE = STATIC;
+				ONLY_ACTIVE_ARCH = NO;
+				OTHER_CPLUSPLUSFLAGS = (
+					"-DNDEBUG",
+					"'-std=gnu++14'",
+					"-fvisibility=hidden",
+					"-fvisibility-inlines-hidden",
+					"-Weverything",
+					"'-Wno-c++98-compat-pedantic'",
+					"'-Wno-c++11-compat-pedantic'",
+					"-Wno-padded",
+					"-Wno-alloca",
+					"-Wno-global-constructors",
+					"-Wno-exit-time-destructors",
+					"-Wno-weak-vtables",
+					"'-Wno-return-std-move-in-c++11'",
+					"-Wno-unknown-warning-option",
+					"-fexceptions",
+				);
+				OTHER_LIBTOOLFLAGS = "";
+				OTHER_REZFLAGS = "";
+				PRODUCT_NAME = "torrent-rasterbar";
+				SECTORDER_FLAGS = "";
+				SYSTEM_HEADER_SEARCH_PATHS = (
+					"/opt/homebrew/Cellar/openssl@3/3.1.3/include",
+					/opt/homebrew/include,
+					"$(inherited)",
+				);
+				TARGET_TEMP_DIR = "/Users/daniilvinogradov/Documents/Dev/iOS/LibTorrent/libtorrent-build/build/torrent-rasterbar.build/$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)";
+				USE_HEADERMAP = NO;
+				WARNING_CFLAGS = "$(inherited)";
+			};
+			name = MinSizeRel;
+		};
+		17B10CDEB2CD4B06B734DA17 /* RelWithDebInfo */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = arm64;
+				COMBINE_HIDPI_IMAGES = YES;
+				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
+				GCC_INLINES_ARE_PRIVATE_EXTERN = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"'CMAKE_INTDIR=\"$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)\"'",
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				INSTALL_PATH = "";
+				ONLY_ACTIVE_ARCH = NO;
+				OTHER_LDFLAGS = " $(inherited)";
+				OTHER_REZFLAGS = "";
+				PRODUCT_NAME = ZERO_CHECK;
+				SECTORDER_FLAGS = "";
+				USE_HEADERMAP = NO;
+				WARNING_CFLAGS = "$(inherited)";
+			};
+			name = RelWithDebInfo;
+		};
+		3466F6C55AAF4E18B98E8198 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD)";
+				COMBINE_HIDPI_IMAGES = YES;
+				CONFIGURATION_BUILD_DIR = "/Users/daniilvinogradov/Documents/Dev/iOS/LibTorrent/libtorrent-build/Release";
+				EXECUTABLE_PREFIX = lib;
+				EXECUTABLE_SUFFIX = .a;
+				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
+				GCC_INLINES_ARE_PRIVATE_EXTERN = NO;
+				GCC_OPTIMIZATION_LEVEL = 3;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"'CMAKE_INTDIR=\"$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)\"'",
+					BOOST_ASIO_ENABLE_CANCELIO,
+					BOOST_ASIO_NO_DEPRECATED,
+					TORRENT_BUILDING_LIBRARY,
+					BOOST_EXCEPTION_DISABLE,
+					BOOST_ASIO_HAS_STD_CHRONO,
+					"'_FILE_OFFSET_BITS=64'",
+					TORRENT_USE_OPENSSL,
+					TORRENT_USE_LIBCRYPTO,
+					TORRENT_SSL_PEERS,
+					OPENSSL_NO_SSL2,
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				HEADER_SEARCH_PATHS = (
+					/Users/daniilvinogradov/Documents/Dev/iOS/LibTorrent/Thirdparty/libtorrent/include,
+					/Users/daniilvinogradov/Documents/Dev/iOS/LibTorrent/Thirdparty/libtorrent/deps/try_signal,
+					"$(inherited)",
+				);
+				INSTALL_PATH = "";
+				LIBRARY_STYLE = STATIC;
+				ONLY_ACTIVE_ARCH = NO;
+				OTHER_CPLUSPLUSFLAGS = (
+					"-DNDEBUG",
+					"'-std=gnu++14'",
+					"-fvisibility=hidden",
+					"-fvisibility-inlines-hidden",
+					"-Weverything",
+					"'-Wno-c++98-compat-pedantic'",
+					"'-Wno-c++11-compat-pedantic'",
+					"-Wno-padded",
+					"-Wno-alloca",
+					"-Wno-global-constructors",
+					"-Wno-exit-time-destructors",
+					"-Wno-weak-vtables",
+					"'-Wno-return-std-move-in-c++11'",
+					"-Wno-unknown-warning-option",
+					"-fexceptions",
+				);
+				OTHER_LIBTOOLFLAGS = "";
+				OTHER_REZFLAGS = "";
+				PRODUCT_NAME = "torrent-rasterbar";
+				SECTORDER_FLAGS = "";
+				SYSTEM_HEADER_SEARCH_PATHS = (
+					"/opt/homebrew/Cellar/openssl@3/3.1.3/include",
+					/opt/homebrew/include,
+					"$(inherited)",
+				);
+				TARGET_TEMP_DIR = "/Users/daniilvinogradov/Documents/Dev/iOS/LibTorrent/libtorrent-build/build/torrent-rasterbar.build/$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)";
+				USE_HEADERMAP = NO;
+				WARNING_CFLAGS = "$(inherited)";
+			};
+			name = Release;
+		};
+		3CACC2C8EC914703A16EED54 /* RelWithDebInfo */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = arm64;
+				COMBINE_HIDPI_IMAGES = YES;
+				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
+				GCC_INLINES_ARE_PRIVATE_EXTERN = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"'CMAKE_INTDIR=\"$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)\"'",
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				INSTALL_PATH = "";
+				ONLY_ACTIVE_ARCH = NO;
+				OTHER_LDFLAGS = " $(inherited)";
+				OTHER_REZFLAGS = "";
+				PRODUCT_NAME = ALL_BUILD;
+				SECTORDER_FLAGS = "";
+				USE_HEADERMAP = NO;
+				WARNING_CFLAGS = "$(inherited)";
+			};
+			name = RelWithDebInfo;
+		};
+		4F00A2273C1A48EA9CA2887B /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = arm64;
+				COMBINE_HIDPI_IMAGES = YES;
+				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
+				GCC_INLINES_ARE_PRIVATE_EXTERN = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"'CMAKE_INTDIR=\"$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)\"'",
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				INSTALL_PATH = "";
+				ONLY_ACTIVE_ARCH = NO;
+				OTHER_LDFLAGS = " $(inherited)";
+				OTHER_REZFLAGS = "";
+				PRODUCT_NAME = install;
+				SECTORDER_FLAGS = "";
+				USE_HEADERMAP = NO;
+				WARNING_CFLAGS = "$(inherited)";
+			};
+			name = Release;
+		};
+		5779C96C10E947A8880FFE27 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD)";
+				COMBINE_HIDPI_IMAGES = YES;
+				CONFIGURATION_BUILD_DIR = "/Users/daniilvinogradov/Documents/Dev/iOS/LibTorrent/libtorrent-build/Debug";
+				EXECUTABLE_PREFIX = lib;
+				EXECUTABLE_SUFFIX = .a;
+				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
+				GCC_INLINES_ARE_PRIVATE_EXTERN = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"'CMAKE_INTDIR=\"$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)\"'",
+					TORRENT_USE_ASSERTS,
+					BOOST_ASIO_ENABLE_CANCELIO,
+					BOOST_ASIO_NO_DEPRECATED,
+					TORRENT_BUILDING_LIBRARY,
+					BOOST_EXCEPTION_DISABLE,
+					BOOST_ASIO_HAS_STD_CHRONO,
+					"'_FILE_OFFSET_BITS=64'",
+					TORRENT_USE_OPENSSL,
+					TORRENT_USE_LIBCRYPTO,
+					TORRENT_SSL_PEERS,
+					OPENSSL_NO_SSL2,
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				HEADER_SEARCH_PATHS = (
+					/Users/daniilvinogradov/Documents/Dev/iOS/LibTorrent/Thirdparty/libtorrent/include,
+					/Users/daniilvinogradov/Documents/Dev/iOS/LibTorrent/Thirdparty/libtorrent/deps/try_signal,
+					"$(inherited)",
+				);
+				INSTALL_PATH = "";
+				LIBRARY_STYLE = STATIC;
+				ONLY_ACTIVE_ARCH = NO;
+				OTHER_CPLUSPLUSFLAGS = (
+					"'-std=gnu++14'",
+					"-fvisibility=hidden",
+					"-fvisibility-inlines-hidden",
+					"-Weverything",
+					"'-Wno-c++98-compat-pedantic'",
+					"'-Wno-c++11-compat-pedantic'",
+					"-Wno-padded",
+					"-Wno-alloca",
+					"-Wno-global-constructors",
+					"-Wno-exit-time-destructors",
+					"-Wno-weak-vtables",
+					"'-Wno-return-std-move-in-c++11'",
+					"-Wno-unknown-warning-option",
+					"-fexceptions",
+				);
+				OTHER_LIBTOOLFLAGS = "";
+				OTHER_REZFLAGS = "";
+				PRODUCT_NAME = "torrent-rasterbar";
+				SECTORDER_FLAGS = "";
+				SYSTEM_HEADER_SEARCH_PATHS = (
+					"/opt/homebrew/Cellar/openssl@3/3.1.3/include",
+					/opt/homebrew/include,
+					"$(inherited)",
+				);
+				TARGET_TEMP_DIR = "/Users/daniilvinogradov/Documents/Dev/iOS/LibTorrent/libtorrent-build/build/torrent-rasterbar.build/$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)";
+				USE_HEADERMAP = NO;
+				WARNING_CFLAGS = "$(inherited)";
+			};
+			name = Debug;
+		};
+		7A68BE98AC734274BC7D7428 /* MinSizeRel */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = arm64;
+				COMBINE_HIDPI_IMAGES = YES;
+				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
+				GCC_INLINES_ARE_PRIVATE_EXTERN = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"'CMAKE_INTDIR=\"$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)\"'",
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				INSTALL_PATH = "";
+				ONLY_ACTIVE_ARCH = NO;
+				OTHER_LDFLAGS = " $(inherited)";
+				OTHER_REZFLAGS = "";
+				PRODUCT_NAME = ALL_BUILD;
+				SECTORDER_FLAGS = "";
+				USE_HEADERMAP = NO;
+				WARNING_CFLAGS = "$(inherited)";
+			};
+			name = MinSizeRel;
+		};
+		81FB26A2A6A449D89BE9471E /* MinSizeRel */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALLOW_TARGET_PLATFORM_SPECIALIZATION = YES;
+				ARCHS = "$(ARCHS_STANDARD)";
+				SDKROOT = auto;
+				SUPPORTED_PLATFORMS = "xrsimulator xros watchsimulator watchos macosx iphonesimulator iphoneos driverkit appletvsimulator appletvos";
+				SUPPORTS_MACCATALYST = YES;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SYMROOT = "/Users/daniilvinogradov/Documents/Dev/iOS/LibTorrent/libtorrent-build/build";
+			};
+			name = MinSizeRel;
+		};
+		9F2E86104FC8499887E366AD /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = arm64;
+				COMBINE_HIDPI_IMAGES = YES;
+				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
+				GCC_INLINES_ARE_PRIVATE_EXTERN = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"'CMAKE_INTDIR=\"$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)\"'",
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				INSTALL_PATH = "";
+				ONLY_ACTIVE_ARCH = NO;
+				OTHER_LDFLAGS = " $(inherited)";
+				OTHER_REZFLAGS = "";
+				PRODUCT_NAME = install;
+				SECTORDER_FLAGS = "";
+				USE_HEADERMAP = NO;
+				WARNING_CFLAGS = "$(inherited)";
+			};
+			name = Debug;
+		};
+		A7393298DBF844A2A0AA077B /* MinSizeRel */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = arm64;
+				COMBINE_HIDPI_IMAGES = YES;
+				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
+				GCC_INLINES_ARE_PRIVATE_EXTERN = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"'CMAKE_INTDIR=\"$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)\"'",
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				INSTALL_PATH = "";
+				ONLY_ACTIVE_ARCH = NO;
+				OTHER_LDFLAGS = " $(inherited)";
+				OTHER_REZFLAGS = "";
+				PRODUCT_NAME = install;
+				SECTORDER_FLAGS = "";
+				USE_HEADERMAP = NO;
+				WARNING_CFLAGS = "$(inherited)";
+			};
+			name = MinSizeRel;
+		};
+		ADDE55ED7AEC43688C098059 /* RelWithDebInfo */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD)";
+				COMBINE_HIDPI_IMAGES = YES;
+				CONFIGURATION_BUILD_DIR = "/Users/daniilvinogradov/Documents/Dev/iOS/LibTorrent/libtorrent-build/RelWithDebInfo";
+				EXECUTABLE_PREFIX = lib;
+				EXECUTABLE_SUFFIX = .a;
+				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
+				GCC_INLINES_ARE_PRIVATE_EXTERN = NO;
+				GCC_OPTIMIZATION_LEVEL = 2;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"'CMAKE_INTDIR=\"$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)\"'",
+					BOOST_ASIO_ENABLE_CANCELIO,
+					BOOST_ASIO_NO_DEPRECATED,
+					TORRENT_BUILDING_LIBRARY,
+					BOOST_EXCEPTION_DISABLE,
+					BOOST_ASIO_HAS_STD_CHRONO,
+					"'_FILE_OFFSET_BITS=64'",
+					TORRENT_USE_OPENSSL,
+					TORRENT_USE_LIBCRYPTO,
+					TORRENT_SSL_PEERS,
+					OPENSSL_NO_SSL2,
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				HEADER_SEARCH_PATHS = (
+					/Users/daniilvinogradov/Documents/Dev/iOS/LibTorrent/Thirdparty/libtorrent/include,
+					/Users/daniilvinogradov/Documents/Dev/iOS/LibTorrent/Thirdparty/libtorrent/deps/try_signal,
+					"$(inherited)",
+				);
+				INSTALL_PATH = "";
+				LIBRARY_STYLE = STATIC;
+				ONLY_ACTIVE_ARCH = NO;
+				OTHER_CPLUSPLUSFLAGS = (
+					"-DNDEBUG",
+					"'-std=gnu++14'",
+					"-fvisibility=hidden",
+					"-fvisibility-inlines-hidden",
+					"-Weverything",
+					"'-Wno-c++98-compat-pedantic'",
+					"'-Wno-c++11-compat-pedantic'",
+					"-Wno-padded",
+					"-Wno-alloca",
+					"-Wno-global-constructors",
+					"-Wno-exit-time-destructors",
+					"-Wno-weak-vtables",
+					"'-Wno-return-std-move-in-c++11'",
+					"-Wno-unknown-warning-option",
+					"-fexceptions",
+				);
+				OTHER_LIBTOOLFLAGS = "";
+				OTHER_REZFLAGS = "";
+				PRODUCT_NAME = "torrent-rasterbar";
+				SECTORDER_FLAGS = "";
+				SYSTEM_HEADER_SEARCH_PATHS = (
+					"/opt/homebrew/Cellar/openssl@3/3.1.3/include",
+					/opt/homebrew/include,
+					"$(inherited)",
+				);
+				TARGET_TEMP_DIR = "/Users/daniilvinogradov/Documents/Dev/iOS/LibTorrent/libtorrent-build/build/torrent-rasterbar.build/$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)";
+				USE_HEADERMAP = NO;
+				WARNING_CFLAGS = "$(inherited)";
+			};
+			name = RelWithDebInfo;
+		};
+		B6051A20CF1E454FA75A0BD8 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = arm64;
+				COMBINE_HIDPI_IMAGES = YES;
+				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
+				GCC_INLINES_ARE_PRIVATE_EXTERN = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"'CMAKE_INTDIR=\"$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)\"'",
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				INSTALL_PATH = "";
+				ONLY_ACTIVE_ARCH = NO;
+				OTHER_LDFLAGS = " $(inherited)";
+				OTHER_REZFLAGS = "";
+				PRODUCT_NAME = ALL_BUILD;
+				SECTORDER_FLAGS = "";
+				USE_HEADERMAP = NO;
+				WARNING_CFLAGS = "$(inherited)";
+			};
+			name = Release;
+		};
+		BAA4574389FB461F827D6C90 /* RelWithDebInfo */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = arm64;
+				COMBINE_HIDPI_IMAGES = YES;
+				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
+				GCC_INLINES_ARE_PRIVATE_EXTERN = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"'CMAKE_INTDIR=\"$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)\"'",
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				INSTALL_PATH = "";
+				ONLY_ACTIVE_ARCH = NO;
+				OTHER_LDFLAGS = " $(inherited)";
+				OTHER_REZFLAGS = "";
+				PRODUCT_NAME = install;
+				SECTORDER_FLAGS = "";
+				USE_HEADERMAP = NO;
+				WARNING_CFLAGS = "$(inherited)";
+			};
+			name = RelWithDebInfo;
+		};
+		CDA5BB16F9A84C3CB8D90F49 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = arm64;
+				COMBINE_HIDPI_IMAGES = YES;
+				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
+				GCC_INLINES_ARE_PRIVATE_EXTERN = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"'CMAKE_INTDIR=\"$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)\"'",
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				INSTALL_PATH = "";
+				ONLY_ACTIVE_ARCH = NO;
+				OTHER_LDFLAGS = " $(inherited)";
+				OTHER_REZFLAGS = "";
+				PRODUCT_NAME = ZERO_CHECK;
+				SECTORDER_FLAGS = "";
+				USE_HEADERMAP = NO;
+				WARNING_CFLAGS = "$(inherited)";
+			};
+			name = Release;
+		};
+		D7408830DFFA4506BC7B56D1 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = arm64;
+				COMBINE_HIDPI_IMAGES = YES;
+				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
+				GCC_INLINES_ARE_PRIVATE_EXTERN = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"'CMAKE_INTDIR=\"$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)\"'",
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				INSTALL_PATH = "";
+				ONLY_ACTIVE_ARCH = NO;
+				OTHER_LDFLAGS = " $(inherited)";
+				OTHER_REZFLAGS = "";
+				PRODUCT_NAME = ALL_BUILD;
+				SECTORDER_FLAGS = "";
+				USE_HEADERMAP = NO;
+				WARNING_CFLAGS = "$(inherited)";
+			};
+			name = Debug;
+		};
+		D878F2EEC96D43F692E0990D /* RelWithDebInfo */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALLOW_TARGET_PLATFORM_SPECIALIZATION = YES;
+				ARCHS = "$(ARCHS_STANDARD)";
+				SDKROOT = auto;
+				SUPPORTED_PLATFORMS = "xrsimulator xros watchsimulator watchos macosx iphonesimulator iphoneos driverkit appletvsimulator appletvos";
+				SUPPORTS_MACCATALYST = YES;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SYMROOT = "/Users/daniilvinogradov/Documents/Dev/iOS/LibTorrent/libtorrent-build/build";
+			};
+			name = RelWithDebInfo;
+		};
+		F8265D33EE8F4135BD3E37D4 /* MinSizeRel */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = arm64;
+				COMBINE_HIDPI_IMAGES = YES;
+				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
+				GCC_INLINES_ARE_PRIVATE_EXTERN = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"'CMAKE_INTDIR=\"$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)\"'",
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				INSTALL_PATH = "";
+				ONLY_ACTIVE_ARCH = NO;
+				OTHER_LDFLAGS = " $(inherited)";
+				OTHER_REZFLAGS = "";
+				PRODUCT_NAME = ZERO_CHECK;
+				SECTORDER_FLAGS = "";
+				USE_HEADERMAP = NO;
+				WARNING_CFLAGS = "$(inherited)";
+			};
+			name = MinSizeRel;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		58F5E9E89CF647ED9098BE92 /* Build configuration list for PBXAggregateTarget "install" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				9F2E86104FC8499887E366AD /* Debug */,
+				4F00A2273C1A48EA9CA2887B /* Release */,
+				A7393298DBF844A2A0AA077B /* MinSizeRel */,
+				BAA4574389FB461F827D6C90 /* RelWithDebInfo */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		80CEB0CD10904C7782D6E6B7 /* Build configuration list for PBXAggregateTarget "ZERO_CHECK" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				089308D1CBFD45B593D841C7 /* Debug */,
+				CDA5BB16F9A84C3CB8D90F49 /* Release */,
+				F8265D33EE8F4135BD3E37D4 /* MinSizeRel */,
+				17B10CDEB2CD4B06B734DA17 /* RelWithDebInfo */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		9DDCEC0B0BDB481DB52412C8 /* Build configuration list for PBXAggregateTarget "ALL_BUILD" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				D7408830DFFA4506BC7B56D1 /* Debug */,
+				B6051A20CF1E454FA75A0BD8 /* Release */,
+				7A68BE98AC734274BC7D7428 /* MinSizeRel */,
+				3CACC2C8EC914703A16EED54 /* RelWithDebInfo */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		AC2855EAFE214E16856E4B0A /* Build configuration list for PBXNativeTarget "torrent-rasterbar" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				5779C96C10E947A8880FFE27 /* Debug */,
+				3466F6C55AAF4E18B98E8198 /* Release */,
+				170B1C7F3EBA43EEB2D4DD4C /* MinSizeRel */,
+				ADDE55ED7AEC43688C098059 /* RelWithDebInfo */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		D52FC50263144E65AB6A80E7 /* Build configuration list for PBXProject "libtorrent" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				0798BD452DAD4DB687F916DE /* Debug */,
+				05CE1660361D4BD8B8BAD565 /* Release */,
+				81FB26A2A6A449D89BE9471E /* MinSizeRel */,
+				D878F2EEC96D43F692E0990D /* RelWithDebInfo */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 112EACC49393465FAE85F3D0 /* Project object */;
+}
