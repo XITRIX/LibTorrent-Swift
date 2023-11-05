@@ -1,3 +1,5 @@
 
 libtorrent-build/build
 libtorrent-rasterbar.a
+xcuserdata
+.DS_Store
