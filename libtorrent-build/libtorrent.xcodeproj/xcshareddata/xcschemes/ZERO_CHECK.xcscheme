@@ -14,7 +14,7 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "60B5B85E2CBE4A1D88FA9D35"
+               BlueprintIdentifier = "044954BA94D847B48A2612DC"
                BuildableName = "ZERO_CHECK"
                BlueprintName = "ZERO_CHECK"
                ReferencedContainer = "container:../../libtorrent-build/libtorrent.xcodeproj">
@@ -49,7 +49,7 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "60B5B85E2CBE4A1D88FA9D35"
+            BlueprintIdentifier = "044954BA94D847B48A2612DC"
             BuildableName = "ZERO_CHECK"
             BlueprintName = "ZERO_CHECK"
             ReferencedContainer = "container:../../libtorrent-build/libtorrent.xcodeproj">

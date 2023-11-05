@@ -1,7 +1,7 @@
 cmake_policy(SET CMP0007 NEW)
 cmake_policy(SET CMP0011 NEW)
 
-include("/Users/daniilvinogradov/Documents/Dev/iOS/LibTorrent/libtorrent-build/torrent-rasterbar-pkgconfig/MinSizeRel/compile-settings-expanded.cmake")
+include("/Users/daniilvinogradov/Documents/Dev/iOS/iTorrent/Submodules/LibTorrent-Swift/libtorrent-build/torrent-rasterbar-pkgconfig/MinSizeRel/compile-settings-expanded.cmake")
 
 function (cmake_list_to_pkg_config _result _list _prefix)
 	set(_tmp_list "${_list}")
@@ -56,5 +56,5 @@ cmake_list_to_pkg_config(_interface_include_dirs "${_TARGET_INTERFACE_INCLUDE_DI
 set(_interface_compile_options "${_TARGET_INTERFACE_COMPILE_OPTIONS}")
 string(REPLACE ";" " " _interface_compile_options "${_interface_compile_options}")
 
-configure_file("/Users/daniilvinogradov/Documents/Dev/iOS/LibTorrent/Thirdparty/libtorrent/cmake/Modules/GeneratePkgConfig/pkg-config.cmake.in" "/Users/daniilvinogradov/Documents/Dev/iOS/LibTorrent/libtorrent-build/torrent-rasterbar-pkgconfig/libtorrent-rasterbar.pc" @ONLY)
-file(INSTALL "/Users/daniilvinogradov/Documents/Dev/iOS/LibTorrent/libtorrent-build/torrent-rasterbar-pkgconfig/libtorrent-rasterbar.pc" DESTINATION "/usr/local/lib/pkgconfig")
+configure_file("/Users/daniilvinogradov/Documents/Dev/iOS/iTorrent/Submodules/LibTorrent-Swift/Thirdparty/libtorrent/cmake/Modules/GeneratePkgConfig/pkg-config.cmake.in" "/Users/daniilvinogradov/Documents/Dev/iOS/iTorrent/Submodules/LibTorrent-Swift/libtorrent-build/torrent-rasterbar-pkgconfig/libtorrent-rasterbar.pc" @ONLY)
+file(INSTALL "/Users/daniilvinogradov/Documents/Dev/iOS/iTorrent/Submodules/LibTorrent-Swift/libtorrent-build/torrent-rasterbar-pkgconfig/libtorrent-rasterbar.pc" DESTINATION "/usr/local/lib/pkgconfig")

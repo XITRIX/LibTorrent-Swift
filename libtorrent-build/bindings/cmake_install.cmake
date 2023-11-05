@@ -1,4 +1,4 @@
-# Install script for directory: /Users/daniilvinogradov/Documents/Dev/iOS/LibTorrent/Thirdparty/libtorrent/bindings
+# Install script for directory: /Users/daniilvinogradov/Documents/Dev/iOS/iTorrent/Submodules/LibTorrent-Swift/Thirdparty/libtorrent/bindings
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)
@@ -34,8 +34,8 @@ endif()
 
 # Set default install directory permissions.
 if(NOT DEFINED CMAKE_OBJDUMP)
-  set(CMAKE_OBJDUMP "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/objdump")
+  set(CMAKE_OBJDUMP "/Applications/Xcode-beta.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/objdump")
 endif()
 
-set(CMAKE_BINARY_DIR "/Users/daniilvinogradov/Documents/Dev/iOS/LibTorrent/libtorrent-build")
+set(CMAKE_BINARY_DIR "/Users/daniilvinogradov/Documents/Dev/iOS/iTorrent/Submodules/LibTorrent-Swift/libtorrent-build")
 

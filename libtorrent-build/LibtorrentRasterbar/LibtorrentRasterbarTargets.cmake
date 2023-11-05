@@ -53,7 +53,7 @@ set_target_properties(LibtorrentRasterbar::torrent-rasterbar PROPERTIES
   INTERFACE_COMPILE_DEFINITIONS "\$<\$<CONFIG:Debug>:TORRENT_USE_ASSERTS>;BOOST_ASIO_ENABLE_CANCELIO;BOOST_ASIO_NO_DEPRECATED;TORRENT_USE_OPENSSL;TORRENT_USE_LIBCRYPTO;TORRENT_SSL_PEERS;OPENSSL_NO_SSL2"
   INTERFACE_COMPILE_FEATURES "cxx_std_14;cxx_attribute_deprecated;cxx_binary_literals;cxx_contextual_conversions;cxx_decltype_auto;cxx_digit_separators;cxx_generic_lambdas;cxx_lambda_init_captures;cxx_relaxed_constexpr;cxx_variable_templates"
   INTERFACE_COMPILE_OPTIONS "-fexceptions"
-  INTERFACE_INCLUDE_DIRECTORIES "/Users/daniilvinogradov/Documents/Dev/iOS/LibTorrent/Thirdparty/libtorrent/include"
+  INTERFACE_INCLUDE_DIRECTORIES "/Users/daniilvinogradov/Documents/Dev/iOS/iTorrent/Submodules/LibTorrent-Swift/Thirdparty/libtorrent/include"
   INTERFACE_LINK_LIBRARIES "Threads::Threads;-framework CoreFoundation;-framework SystemConfiguration;OpenSSL::SSL;Boost::headers"
 )
 
@@ -61,28 +61,28 @@ set_target_properties(LibtorrentRasterbar::torrent-rasterbar PROPERTIES
 set_property(TARGET LibtorrentRasterbar::torrent-rasterbar APPEND PROPERTY IMPORTED_CONFIGURATIONS DEBUG)
 set_target_properties(LibtorrentRasterbar::torrent-rasterbar PROPERTIES
   IMPORTED_LINK_INTERFACE_LANGUAGES_DEBUG "CXX"
-  IMPORTED_LOCATION_DEBUG "/Users/daniilvinogradov/Documents/Dev/iOS/LibTorrent/libtorrent-build/Debug/libtorrent-rasterbar.a"
+  IMPORTED_LOCATION_DEBUG "/Users/daniilvinogradov/Documents/Dev/iOS/iTorrent/Submodules/LibTorrent-Swift/libtorrent-build/Debug/libtorrent-rasterbar.a"
   )
 
 # Import target "LibtorrentRasterbar::torrent-rasterbar" for configuration "Release"
 set_property(TARGET LibtorrentRasterbar::torrent-rasterbar APPEND PROPERTY IMPORTED_CONFIGURATIONS RELEASE)
 set_target_properties(LibtorrentRasterbar::torrent-rasterbar PROPERTIES
   IMPORTED_LINK_INTERFACE_LANGUAGES_RELEASE "CXX"
-  IMPORTED_LOCATION_RELEASE "/Users/daniilvinogradov/Documents/Dev/iOS/LibTorrent/libtorrent-build/Release/libtorrent-rasterbar.a"
+  IMPORTED_LOCATION_RELEASE "/Users/daniilvinogradov/Documents/Dev/iOS/iTorrent/Submodules/LibTorrent-Swift/libtorrent-build/Release/libtorrent-rasterbar.a"
   )
 
 # Import target "LibtorrentRasterbar::torrent-rasterbar" for configuration "MinSizeRel"
 set_property(TARGET LibtorrentRasterbar::torrent-rasterbar APPEND PROPERTY IMPORTED_CONFIGURATIONS MINSIZEREL)
 set_target_properties(LibtorrentRasterbar::torrent-rasterbar PROPERTIES
   IMPORTED_LINK_INTERFACE_LANGUAGES_MINSIZEREL "CXX"
-  IMPORTED_LOCATION_MINSIZEREL "/Users/daniilvinogradov/Documents/Dev/iOS/LibTorrent/libtorrent-build/MinSizeRel/libtorrent-rasterbar.a"
+  IMPORTED_LOCATION_MINSIZEREL "/Users/daniilvinogradov/Documents/Dev/iOS/iTorrent/Submodules/LibTorrent-Swift/libtorrent-build/MinSizeRel/libtorrent-rasterbar.a"
   )
 
 # Import target "LibtorrentRasterbar::torrent-rasterbar" for configuration "RelWithDebInfo"
 set_property(TARGET LibtorrentRasterbar::torrent-rasterbar APPEND PROPERTY IMPORTED_CONFIGURATIONS RELWITHDEBINFO)
 set_target_properties(LibtorrentRasterbar::torrent-rasterbar PROPERTIES
   IMPORTED_LINK_INTERFACE_LANGUAGES_RELWITHDEBINFO "CXX"
-  IMPORTED_LOCATION_RELWITHDEBINFO "/Users/daniilvinogradov/Documents/Dev/iOS/LibTorrent/libtorrent-build/RelWithDebInfo/libtorrent-rasterbar.a"
+  IMPORTED_LOCATION_RELWITHDEBINFO "/Users/daniilvinogradov/Documents/Dev/iOS/iTorrent/Submodules/LibTorrent-Swift/libtorrent-build/RelWithDebInfo/libtorrent-rasterbar.a"
   )
 
 # This file does not depend on other imported targets which have
