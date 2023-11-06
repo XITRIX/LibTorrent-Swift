@@ -21,6 +21,7 @@ NS_ASSUME_NONNULL_BEGIN
 - (instancetype)initUnsafeWithFileAtURL:(NSURL *)fileURL;
 - (instancetype)initUnsafeWithFileWithData:(NSData *)data ;
 
+- (FileEntry *)getFileAt:(int)index;
 - (void)setFilePriority:(FilePriority)priority at:(NSInteger)fileIndex;
 - (void)setFilesPriority:(FilePriority)priority at:(NSArray<NSNumber *> *)fileIndexes;
 - (void)setAllFilesPriority:(FilePriority)priority;

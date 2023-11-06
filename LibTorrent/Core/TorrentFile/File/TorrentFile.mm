@@ -27,6 +27,13 @@
         }
         catch(std::exception const& ex)
         { return NULL; }
+
+        auto info = [self torrent_info];
+        auto files = info.files();
+        _priorities = [[NSMutableArray alloc] initWithCapacity:files.num_files()];
+        for (int i=0; i<files.num_files(); i++) {
+            [_priorities setObject:[NSNumber numberWithInt:FilePriorityDefaultPriority] atIndexedSubscript:i];
+        }
     }
     return self;
 }
@@ -111,7 +118,6 @@
     auto info = [self torrent_info];
     auto files = info.files();
     NSMutableArray *results = [[NSMutableArray alloc] init];
-    _priorities = [[NSMutableArray alloc] initWithCapacity:files.num_files()];
 
     for (int i=0; i<files.num_files(); i++) {
         auto path = files.file_path(i);
@@ -130,6 +136,23 @@
     }
 
     return [results copy];
+}
+
+- (FileEntry *)getFileAt:(int)index {
+    auto info = [self torrent_info];
+    auto files = info.files();
+
+    auto path = files.file_path(index);
+    auto size = files.file_size(index);
+
+    FileEntry *fileEntry = [[FileEntry alloc] init];
+    fileEntry.index = index;
+    fileEntry.isPrototype = true;
+    fileEntry.priority = (FilePriority) _priorities[index].intValue;
+    fileEntry.path = [NSString stringWithUTF8String:path.c_str()];
+    fileEntry.name = [fileEntry.path lastPathComponent];
+    fileEntry.size = size;
+    return fileEntry;
 }
 
 - (void)setFilePriority:(FilePriority)priority at:(NSInteger)fileIndex {
