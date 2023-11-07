@@ -1772,6 +1772,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ARCHS = arm64;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				SDKROOT = "/Applications/Xcode-beta.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX14.0.sdk";
 				SWIFT_COMPILATION_MODE = wholemodule;
 				SYMROOT = "/Users/daniilvinogradov/Documents/Dev/iOS/iTorrent/Submodules/LibTorrent-Swift/libtorrent-build/build";
@@ -1782,6 +1783,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ARCHS = arm64;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				SDKROOT = "/Applications/Xcode-beta.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX14.0.sdk";
 				SYMROOT = "/Users/daniilvinogradov/Documents/Dev/iOS/iTorrent/Submodules/LibTorrent-Swift/libtorrent-build/build";
 			};
@@ -1862,6 +1864,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ARCHS = arm64;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				SDKROOT = "/Applications/Xcode-beta.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX14.0.sdk";
 				SWIFT_COMPILATION_MODE = wholemodule;
 				SYMROOT = "/Users/daniilvinogradov/Documents/Dev/iOS/iTorrent/Submodules/LibTorrent-Swift/libtorrent-build/build";
@@ -2089,6 +2092,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ARCHS = arm64;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				SDKROOT = "/Applications/Xcode-beta.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX14.0.sdk";
 				SWIFT_COMPILATION_MODE = wholemodule;
 				SYMROOT = "/Users/daniilvinogradov/Documents/Dev/iOS/iTorrent/Submodules/LibTorrent-Swift/libtorrent-build/build";
