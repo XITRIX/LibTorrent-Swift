@@ -30,10 +30,32 @@
 
         auto info = [self torrent_info];
         auto files = info.files();
+
+        // Generate priorities array (should be replaced with filesCache and removed)
         _priorities = [[NSMutableArray alloc] initWithCapacity:files.num_files()];
         for (int i=0; i<files.num_files(); i++) {
             [_priorities setObject:[NSNumber numberWithInt:FilePriorityDefaultPriority] atIndexedSubscript:i];
         }
+
+        // Generate files cache
+        NSMutableArray *results = [[NSMutableArray alloc] init];
+
+        for (int i=0; i<files.num_files(); i++) {
+            auto path = files.file_path(i);
+            auto size = files.file_size(i);
+
+            FileEntry *fileEntry = [[FileEntry alloc] init];
+            fileEntry.index = i;
+            fileEntry.isPrototype = true;
+            fileEntry.priority = (FilePriority) _priorities[i].intValue;
+            fileEntry.path = [NSString stringWithUTF8String:path.c_str()];
+            fileEntry.name = [fileEntry.path lastPathComponent];
+            fileEntry.size = size;
+
+            [results addObject:fileEntry];
+        }
+
+        _filesCache = [results copy];
     }
     return self;
 }
@@ -115,60 +137,33 @@
 }
 
 - (NSArray<FileEntry *> *)files {
-    auto info = [self torrent_info];
-    auto files = info.files();
-    NSMutableArray *results = [[NSMutableArray alloc] init];
-
-    for (int i=0; i<files.num_files(); i++) {
-        auto path = files.file_path(i);
-        auto size = files.file_size(i);
-        [_priorities setObject:[NSNumber numberWithInt:FilePriorityDefaultPriority] atIndexedSubscript:i];
-
-        FileEntry *fileEntry = [[FileEntry alloc] init];
-        fileEntry.index = i;
-        fileEntry.isPrototype = true;
-        fileEntry.priority = FilePriorityDefaultPriority;
-        fileEntry.path = [NSString stringWithUTF8String:path.c_str()];
-        fileEntry.name = [fileEntry.path lastPathComponent];
-        fileEntry.size = size;
-
-        [results addObject:fileEntry];
-    }
-
-    return [results copy];
+    return _filesCache;
 }
 
 - (FileEntry *)getFileAt:(int)index {
-    auto info = [self torrent_info];
-    auto files = info.files();
-
-    auto path = files.file_path(index);
-    auto size = files.file_size(index);
-
-    FileEntry *fileEntry = [[FileEntry alloc] init];
-    fileEntry.index = index;
-    fileEntry.isPrototype = true;
-    fileEntry.priority = (FilePriority) _priorities[index].intValue;
-    fileEntry.path = [NSString stringWithUTF8String:path.c_str()];
-    fileEntry.name = [fileEntry.path lastPathComponent];
-    fileEntry.size = size;
-    return fileEntry;
+    auto file = self.files[index];
+    file.priority = (FilePriority) _priorities[index].intValue;
+    return file;
 }
 
 - (void)setFilePriority:(FilePriority)priority at:(NSInteger)fileIndex {
+    _filesCache[fileIndex].priority = priority;
     [_priorities setObject:[NSNumber numberWithInt:priority] atIndexedSubscript:fileIndex];
 }
 
 - (void)setFilesPriority:(FilePriority)priority at:(NSArray<NSNumber *> *)fileIndexes {
     std::vector<lt::download_priority_t> array;
     for (int i = 0; i < fileIndexes.count; i++) {
-        [_priorities setObject:[NSNumber numberWithInt:priority] atIndexedSubscript:i];
+        _filesCache[fileIndexes[i].integerValue].priority = priority;
+        [_priorities setObject:[NSNumber numberWithInt:priority] atIndexedSubscript: fileIndexes[i].integerValue];
     }
 }
 
 - (void)setAllFilesPriority:(FilePriority)priority {
-    for (int i = 0; i < _priorities.count; i++)
+    for (int i = 0; i < _priorities.count; i++) {
+        _filesCache[i].priority = priority;
         [_priorities setObject:[NSNumber numberWithInt:priority] atIndexedSubscript:i];
+    }
 }
 
 @end
