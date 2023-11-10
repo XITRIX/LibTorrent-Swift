@@ -20,6 +20,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (readwrite) NSString* name;
 @property (readwrite) TorrentHandleState state;
 @property (readwrite, nullable) NSString *creator;
+@property (readwrite, nullable) NSString *comment;
 @property (readwrite, nullable) NSDate *creationDate;
 @property (readwrite) double progress;
 @property (readwrite) double progressWanted;

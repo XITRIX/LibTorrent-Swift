@@ -31,6 +31,7 @@ NS_SWIFT_NAME(TorrentHandle.Snapshot)
 @property (readonly) NSString* name;
 @property (readonly) TorrentHandleState state;
 @property (readonly, nullable) NSString *creator;
+@property (readonly, nullable) NSString *comment;
 @property (readonly, nullable) NSDate *creationDate;
 @property (readonly) double progress;
 @property (readonly) double progressWanted;

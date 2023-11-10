@@ -92,6 +92,17 @@
     return NULL;
 }
 
+- (NSString * _Nullable)comment {
+    auto ts = _torrentHandle.status();
+
+    if (ts.has_metadata) {
+        auto info = _torrentHandle.torrent_file().get();
+        return [[NSString alloc] initWithFormat:@"%s", info->comment().c_str()];
+    }
+
+    return NULL;
+}
+
 - (NSDate * _Nullable)creationDate {
     auto ts = _torrentHandle.status();
 
@@ -451,6 +462,7 @@
     snapshot.name = self.name;
     snapshot.state = self.state;
     snapshot.creator = self.creator;
+    snapshot.comment = self.comment;
     snapshot.creationDate = self.creationDate;
     snapshot.progress = self.progress;
     snapshot.numberOfPeers = self.numberOfPeers;
