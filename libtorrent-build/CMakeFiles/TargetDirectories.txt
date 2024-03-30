@@ -1,5 +1,0 @@
-/Users/daniilvinogradov/Documents/Dev/iOS/iTorrent/Submodules/LibTorrent-Swift/libtorrent-build/CMakeFiles/torrent-rasterbar.dir
-/Users/daniilvinogradov/Documents/Dev/iOS/iTorrent/Submodules/LibTorrent-Swift/libtorrent-build/CMakeFiles/install.dir
-/Users/daniilvinogradov/Documents/Dev/iOS/iTorrent/Submodules/LibTorrent-Swift/libtorrent-build/CMakeFiles/ALL_BUILD.dir
-/Users/daniilvinogradov/Documents/Dev/iOS/iTorrent/Submodules/LibTorrent-Swift/libtorrent-build/CMakeFiles/ZERO_CHECK.dir
-/Users/daniilvinogradov/Documents/Dev/iOS/iTorrent/Submodules/LibTorrent-Swift/libtorrent-build/bindings/CMakeFiles/install.dir
