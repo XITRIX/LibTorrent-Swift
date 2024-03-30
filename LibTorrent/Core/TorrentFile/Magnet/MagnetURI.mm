@@ -23,7 +23,11 @@
 }
 
 - (TorrentHashes *)infoHashes {
+#if LIBTORRENT_VERSION_MAJOR > 1
     auto ih = _torrentParams.info_hashes;
+#else
+    auto ih = _torrentParams.info_hash;
+#endif
     return [[TorrentHashes alloc] initWith:ih];
 }
 

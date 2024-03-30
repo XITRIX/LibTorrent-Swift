@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		7C5FBE082BB8B80B0069E5A0 /* libiconv.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 7C5FBE072BB8B8010069E5A0 /* libiconv.tbd */; platformFilters = (ios, maccatalyst, macos, tvos, watchos, xros, ); };
 		7CF9C2BA2AF7EFC4009BBFA0 /* OpenSSL in Frameworks */ = {isa = PBXBuildFile; productRef = 7CF9C2B92AF7EFC4009BBFA0 /* OpenSSL */; };
 		D15147692AE6AE9C000407AE /* LibTorrent.h in Headers */ = {isa = PBXBuildFile; fileRef = D15147682AE6AE9C000407AE /* LibTorrent.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		D15147912AE7B5BA000407AE /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D15147902AE7B5BA000407AE /* SystemConfiguration.framework */; };
@@ -54,6 +55,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		7C5FBE072BB8B8010069E5A0 /* libiconv.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libiconv.tbd; path = usr/lib/libiconv.tbd; sourceTree = SDKROOT; };
 		D15147652AE6AE9C000407AE /* LibTorrent.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = LibTorrent.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		D15147682AE6AE9C000407AE /* LibTorrent.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LibTorrent.h; sourceTree = "<group>"; };
 		D151477F2AE6BBE3000407AE /* make.sh */ = {isa = PBXFileReference; lastKnownFileType = text.script.sh; path = make.sh; sourceTree = "<group>"; };
@@ -102,6 +104,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				7C5FBE082BB8B80B0069E5A0 /* libiconv.tbd in Frameworks */,
 				7CF9C2BA2AF7EFC4009BBFA0 /* OpenSSL in Frameworks */,
 				D15147932AE7B5CA000407AE /* CoreFoundation.framework in Frameworks */,
 				D151479F2AE7BE6D000407AE /* libtorrent-rasterbar.a in Frameworks */,
@@ -145,6 +148,7 @@
 		D15147782AE6B9BD000407AE /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				7C5FBE072BB8B8010069E5A0 /* libiconv.tbd */,
 				D15147922AE7B5CA000407AE /* CoreFoundation.framework */,
 				D15147902AE7B5BA000407AE /* SystemConfiguration.framework */,
 				D15147872AE6C297000407AE /* libtorrent-rasterbar.a */,

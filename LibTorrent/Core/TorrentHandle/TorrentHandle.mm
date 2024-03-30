@@ -16,6 +16,7 @@
 #import "libtorrent/magnet_uri.hpp"
 
 @implementation TorrentHashes
+#if LIBTORRENT_VERSION_MAJOR > 1
 - (instancetype)initWith:(lt::info_hash_t)infoHash {
     self = [self init];
     if (self) {
@@ -29,6 +30,21 @@
     }
     return self;
 }
+#else
+- (instancetype)initWith:(lt::sha1_hash)infoHash {
+    self = [self init];
+    if (self) {
+        _v1 = [[NSData alloc] initWithBytes:infoHash.data() length:infoHash.size()];
+        _v2 = NULL;
+        _hasV1 = true;
+        _hasV2 = false;
+
+        _best = _v1;
+    }
+    return self;
+}
+#endif
+
 - (BOOL)isEqual:(id)other
 {
     if (other == self) {
@@ -72,7 +88,11 @@
 }
 
 - (TorrentHashes *)infoHashes {
+#if LIBTORRENT_VERSION_MAJOR > 1
     auto ih = _torrentHandle.info_hashes();
+#else
+    auto ih = _torrentHandle.info_hash();
+#endif
     return [[TorrentHashes alloc] initWith:ih];
 }
 

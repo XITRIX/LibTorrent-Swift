@@ -30,6 +30,7 @@
         }
 
         for (const lt::announce_endpoint &endpoint : announceEntry.endpoints) {
+#if LIBTORRENT_VERSION_MAJOR > 1
             for (auto protocolVersion: protocols) {
                 auto info = endpoint.info_hashes.at(protocolVersion);
 
@@ -40,6 +41,13 @@
                 _messages = [[NSString alloc] initWithFormat:@"%s", info.message.c_str()];
             }
 
+#else
+            _working = endpoint.is_working();
+            _seeders = endpoint.scrape_complete;
+            _peers = endpoint.scrape_incomplete;
+            _leechs = endpoint.scrape_downloaded;
+            _messages = [[NSString alloc] initWithFormat:@"%s", endpoint.message.c_str()];
+#endif
         }
     }
     return self;

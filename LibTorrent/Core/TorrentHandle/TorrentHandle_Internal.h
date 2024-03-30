@@ -63,7 +63,11 @@ NS_ASSUME_NONNULL_BEGIN
 
 
 @interface TorrentHashes ()
+#if LIBTORRENT_VERSION_MAJOR > 1
 - (instancetype)initWith:(lt::info_hash_t)infoHash;
+#else
+- (instancetype)initWith:(lt::sha1_hash)infoHash;
+#endif
 @end
 
 NS_ASSUME_NONNULL_END

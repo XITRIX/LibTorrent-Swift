@@ -135,12 +135,13 @@ static NSString *FileEntriesQueueIdentifier = @"ru.xitrix.TorrentKit.Session.fil
 
     params.storage_mode = _settings.preallocateStorage ? lt::storage_mode_allocate : lt::storage_mode_sparse;
     params.save_path = [_downloadPath UTF8String];
-    auto th = _session->add_torrent(params);
-
-
-    [torrent configureAfterAdded: [[TorrentHandle alloc] initWith:th inSession:self]];
-
-    return YES;
+    try {
+        auto th = _session->add_torrent(params);
+        [torrent configureAfterAdded: [[TorrentHandle alloc] initWith:th inSession:self]];
+        return YES;
+    } catch(std::exception const& ex) {
+        return NO;
+    }
 }
 
 - (void)removeTorrent:(TorrentHandle *)torrent deleteFiles:(BOOL)deleteFiles {
@@ -296,7 +297,11 @@ static NSString *FileEntriesQueueIdentifier = @"ru.xitrix.TorrentKit.Session.fil
 }
 
 - (void)notifyDelegatesWithRemove:(lt::torrent_handle)th {
+#if LIBTORRENT_VERSION_MAJOR > 1
     TorrentHashes *hashesData = [[TorrentHashes alloc] initWith:th.info_hashes()];
+#else
+    TorrentHashes *hashesData = [[TorrentHashes alloc] initWith:th.info_hash()];
+#endif
     for (id<SessionDelegate>delegate in self.delegates) {
         [delegate torrentManager:self didRemoveTorrentWithHash:hashesData];
     }
@@ -372,7 +377,11 @@ static NSString *FileEntriesQueueIdentifier = @"ru.xitrix.TorrentKit.Session.fil
     bencode(std::back_inserter(ret), rd);
 
     lt::torrent_handle h = alert->handle;
+#if LIBTORRENT_VERSION_MAJOR > 1
     auto ih = h.info_hashes();
+#else
+    auto ih = h.info_hash();
+#endif
 
     auto data = [[TorrentHashes alloc] initWith:ih];
     auto nspath = [self fastResumePathForInfoHashes: data];
@@ -438,7 +447,12 @@ static NSString *FileEntriesQueueIdentifier = @"ru.xitrix.TorrentKit.Session.fil
 - (void)removeFastResumeFileWithInfo:(std::shared_ptr<const lt::torrent_info>)ti {
     if (ti == nullptr) { return; }
 
+#if LIBTORRENT_VERSION_MAJOR > 1
     auto hash = ti->info_hashes();
+#else
+    auto hash = ti->info_hash();
+#endif
+
     auto data = [[TorrentHashes alloc] initWith:hash];
 
     NSString *filePath = [self fastResumePathForInfoHashes:data];
