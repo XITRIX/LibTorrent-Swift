@@ -475,43 +475,46 @@
 }
 
 - (void)updateSnapshot {
+    if (!self.isValid) return;
+
     auto snapshot = [[TorrentHandleSnapshot alloc] init];
+    try {
+        snapshot.isValid = self.isValid;
+        snapshot.infoHash = self.infoHash;
+        snapshot.name = self.name;
+        snapshot.state = self.state;
+        snapshot.creator = self.creator;
+        snapshot.comment = self.comment;
+        snapshot.creationDate = self.creationDate;
+        snapshot.progress = self.progress;
+        snapshot.numberOfPeers = self.numberOfPeers;
+        snapshot.numberOfSeeds = self.numberOfSeeds;
+        snapshot.numberOfLeechers = self.numberOfLeechers;
+        snapshot.numberOfTotalPeers = self.numberOfTotalPeers;
+        snapshot.numberOfTotalSeeds = self.numberOfTotalSeeds;
+        snapshot.numberOfTotalLeechers = self.numberOfTotalLeechers;
+        snapshot.downloadRate = self.downloadRate;
+        snapshot.uploadRate = self.uploadRate;
+        snapshot.hasMetadata = self.hasMetadata;
+        snapshot.total = self.total;
+        snapshot.totalDone = self.totalDone;
+        snapshot.totalWanted = self.totalWanted;
+        snapshot.totalWantedDone = self.totalWantedDone;
+        snapshot.totalDownload = self.totalDownload;
+        snapshot.totalUpload = self.totalUpload;
+        snapshot.isPaused = self.isPaused;
+        snapshot.isFinished = self.isFinished;
+        snapshot.isSeed = self.isSeed;
+        snapshot.isSequential = self.isSequential;
+        snapshot.pieces = self.pieces;
+        snapshot.files = self.files;
+        snapshot.trackers = self.trackers;
+        snapshot.magnetLink = self.magnetLink;
+        snapshot.torrentFilePath = self.torrentFilePath;
+        snapshot.downloadPath = self.downloadPath;
 
-    snapshot.isValid = self.isValid;
-    snapshot.infoHash = self.infoHash;
-    snapshot.name = self.name;
-    snapshot.state = self.state;
-    snapshot.creator = self.creator;
-    snapshot.comment = self.comment;
-    snapshot.creationDate = self.creationDate;
-    snapshot.progress = self.progress;
-    snapshot.numberOfPeers = self.numberOfPeers;
-    snapshot.numberOfSeeds = self.numberOfSeeds;
-    snapshot.numberOfLeechers = self.numberOfLeechers;
-    snapshot.numberOfTotalPeers = self.numberOfTotalPeers;
-    snapshot.numberOfTotalSeeds = self.numberOfTotalSeeds;
-    snapshot.numberOfTotalLeechers = self.numberOfTotalLeechers;
-    snapshot.downloadRate = self.downloadRate;
-    snapshot.uploadRate = self.uploadRate;
-    snapshot.hasMetadata = self.hasMetadata;
-    snapshot.total = self.total;
-    snapshot.totalDone = self.totalDone;
-    snapshot.totalWanted = self.totalWanted;
-    snapshot.totalWantedDone = self.totalWantedDone;
-    snapshot.totalDownload = self.totalDownload;
-    snapshot.totalUpload = self.totalUpload;
-    snapshot.isPaused = self.isPaused;
-    snapshot.isFinished = self.isFinished;
-    snapshot.isSeed = self.isSeed;
-    snapshot.isSequential = self.isSequential;
-    snapshot.pieces = self.pieces;
-//    snapshot.files = self.files;
-    snapshot.trackers = self.trackers;
-    snapshot.magnetLink = self.magnetLink;
-    snapshot.torrentFilePath = self.torrentFilePath;
-    snapshot.downloadPath = self.downloadPath;
-
-    self.snapshot = snapshot;
+        self.snapshot = snapshot;
+    } catch(...) {}
 }
 
 @end
