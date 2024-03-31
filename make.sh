@@ -7,5 +7,5 @@ cmake ./Thirdparty/libtorrent \
     -G Xcode \
     -DBUILD_SHARED_LIBS=OFF \
     -DCMAKE_XCODE_ATTRIBUTE_ARCHS="\$(ARCHS_STANDARD)" \
-    -DCMAKE_XCODE_ATTRIBUTE_SUPPORTED_PLATFORMS="watchsimulator watchos macosx iphonesimulator iphoneos driverkit appletvsimulator appletvos"
+    -DCMAKE_XCODE_ATTRIBUTE_SUPPORTED_PLATFORMS="xrsimulator xros watchsimulator watchos macosx iphonesimulator iphoneos driverkit appletvsimulator appletvos"
 
