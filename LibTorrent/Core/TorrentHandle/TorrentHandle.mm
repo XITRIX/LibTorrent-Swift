@@ -55,7 +55,9 @@
         return NO;
     }
 
-    return [self.v1 isEqual:((TorrentHashes *)other).v1] && [self.v2 isEqual:((TorrentHashes *)other).v2];
+    return [self.best isEqual:((TorrentHashes *)other).best];
+
+//    return [self.v1 isEqual:((TorrentHashes *)other).v1] && [self.v2 isEqual:((TorrentHashes *)other).v2];
 }
 @end
 
