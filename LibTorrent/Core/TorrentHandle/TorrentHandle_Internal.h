@@ -9,6 +9,7 @@
 #import "TorrentHandle.h"
 
 #import "libtorrent/torrent_handle.hpp"
+#import "libtorrent/version.hpp"
 #import "Session.h"
 
 NS_ASSUME_NONNULL_BEGIN
@@ -16,7 +17,8 @@ NS_ASSUME_NONNULL_BEGIN
 @interface TorrentHandleSnapshot ()
 
 @property (readwrite) BOOL isValid;
-@property (readwrite) NSData *infoHash;
+//@property (readwrite) NSData *infoHash;
+@property (readwrite) TorrentHashes *infoHashes;
 @property (readwrite) NSString* name;
 @property (readwrite) TorrentHandleState state;
 @property (readwrite, nullable) NSString *creator;

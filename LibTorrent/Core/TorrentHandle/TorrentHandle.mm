@@ -81,13 +81,12 @@
 }
 
 - (NSUInteger)hash {
-    return self.infoHash.hash;
+    return self.infoHashes.best.hash;
 }
 
-- (NSData *)infoHash {
-    auto ih = _torrentHandle.info_hash();
-    return [[NSData alloc] initWithBytes:ih.data() length:ih.size()];
-}
+//- (NSData *)infoHash {
+//    return [self.infoHashes best];
+//}
 
 - (TorrentHashes *)infoHashes {
 #if LIBTORRENT_VERSION_MAJOR > 1
@@ -482,7 +481,8 @@
     auto snapshot = [[TorrentHandleSnapshot alloc] init];
     try {
         snapshot.isValid = self.isValid;
-        snapshot.infoHash = self.infoHash;
+//        snapshot.infoHash = self.infoHash;
+        snapshot.infoHashes = self.infoHashes;
         snapshot.name = self.name;
         snapshot.state = self.state;
         snapshot.creator = self.creator;

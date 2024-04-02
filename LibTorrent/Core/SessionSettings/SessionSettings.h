@@ -9,6 +9,12 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+typedef NS_ENUM(NSUInteger, SessionSettingsEncryptionPolicy) {
+    SessionSettingsEncryptionPolicyEnabled,
+    SessionSettingsEncryptionPolicyForced,
+    SessionSettingsEncryptionPolicyDisabled
+} NS_SWIFT_NAME(SessionSettings.EncryptionPolicy);
+
 NS_SWIFT_NAME(Session.Settings)
 @interface SessionSettings : NSObject
 
@@ -20,6 +26,14 @@ NS_SWIFT_NAME(Session.Settings)
 
 @property (readwrite, nonatomic) NSUInteger maxDownloadSpeed;
 @property (readwrite, nonatomic) NSUInteger maxUploadSpeed;
+
+@property (readwrite, nonatomic) BOOL isDhtEnabled;
+@property (readwrite, nonatomic) BOOL isLsdEnabled;
+@property (readwrite, nonatomic) BOOL isUtpEnabled;
+@property (readwrite, nonatomic) BOOL isUpnpEnabled;
+@property (readwrite, nonatomic) BOOL isNatEnabled;
+
+@property (readwrite, nonatomic) SessionSettingsEncryptionPolicy encryptionPolicy;
 
 @end
 

@@ -46,6 +46,7 @@
     if (ec.failed()) {
         NSLog(@"%s, error_code: %s", __FUNCTION__, ec.message().c_str());
     }
+    _params->storage_mode = session.settings.preallocateStorage ? lt::storage_mode_allocate : lt::storage_mode_sparse;
 }
 
 - (void)configureAfterAdded:(TorrentHandle *)torrentHandle { }

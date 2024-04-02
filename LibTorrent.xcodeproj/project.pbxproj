@@ -7,14 +7,11 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		7C5FBE082BB8B80B0069E5A0 /* libiconv.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 7C5FBE072BB8B8010069E5A0 /* libiconv.tbd */; platformFilters = (ios, maccatalyst, macos, tvos, watchos, xros, ); };
 		7C5FBE0A2BB8C1780069E5A0 /* LibTorrentVersion.mm in Sources */ = {isa = PBXBuildFile; fileRef = 7C5FBE092BB8C1780069E5A0 /* LibTorrentVersion.mm */; };
 		7C5FBE0C2BB8C18C0069E5A0 /* LibTorrentVersion.h in Headers */ = {isa = PBXBuildFile; fileRef = 7C5FBE0B2BB8C1860069E5A0 /* LibTorrentVersion.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		7CF9C2BA2AF7EFC4009BBFA0 /* OpenSSL in Frameworks */ = {isa = PBXBuildFile; productRef = 7CF9C2B92AF7EFC4009BBFA0 /* OpenSSL */; };
+		D1352D272BBC4F8100104E7B /* SessionSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1352D262BBC4F8100104E7B /* SessionSettings.swift */; };
 		D15147692AE6AE9C000407AE /* LibTorrent.h in Headers */ = {isa = PBXBuildFile; fileRef = D15147682AE6AE9C000407AE /* LibTorrent.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		D15147912AE7B5BA000407AE /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D15147902AE7B5BA000407AE /* SystemConfiguration.framework */; };
-		D15147932AE7B5CA000407AE /* CoreFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D15147922AE7B5CA000407AE /* CoreFoundation.framework */; };
-		D151479F2AE7BE6D000407AE /* libtorrent-rasterbar.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D151479E2AE7BE56000407AE /* libtorrent-rasterbar.a */; };
 		D15147D32AE7E521000407AE /* SessionSettings.mm in Sources */ = {isa = PBXBuildFile; fileRef = D15147B02AE7E521000407AE /* SessionSettings.mm */; };
 		D15147D52AE7E521000407AE /* SessionSettings.h in Headers */ = {isa = PBXBuildFile; fileRef = D15147B22AE7E521000407AE /* SessionSettings.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		D15147D72AE7E521000407AE /* TorrentHandle.h in Headers */ = {isa = PBXBuildFile; fileRef = D15147B52AE7E521000407AE /* TorrentHandle.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -43,7 +40,11 @@
 		D15148092AE7F859000407AE /* TorrentFile.swift in Sources */ = {isa = PBXBuildFile; fileRef = D15147C02AE7E521000407AE /* TorrentFile.swift */; };
 		D151480A2AE7F859000407AE /* MagnetURI.swift in Sources */ = {isa = PBXBuildFile; fileRef = D15147C62AE7E521000407AE /* MagnetURI.swift */; };
 		D151480B2AE7F85D000407AE /* Data+Hex.swift in Sources */ = {isa = PBXBuildFile; fileRef = D15147F02AE7E529000407AE /* Data+Hex.swift */; };
+		D17733DB2BBAF16F006FC81A /* CoreFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D17733DA2BBAF16F006FC81A /* CoreFoundation.framework */; platformFilters = (ios, maccatalyst, macos, tvos, watchos, xros, ); };
+		D17733DD2BBAF17A006FC81A /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D17733DC2BBAF179006FC81A /* SystemConfiguration.framework */; platformFilters = (ios, maccatalyst, macos, tvos, xros, ); };
+		D17733DE2BBAF1B7006FC81A /* libtorrent-rasterbar.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D151479E2AE7BE56000407AE /* libtorrent-rasterbar.a */; platformFilters = (driverkit, ios, macos, tvos, watchos, xros, ); };
 		D1975E722AE9C41C0087FDB8 /* OpenSSL in Frameworks */ = {isa = PBXBuildFile; productRef = D1975E712AE9C41C0087FDB8 /* OpenSSL */; };
+		D1B7639B2BBABD520051FD0B /* libiconv.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 7C5FBE072BB8B8010069E5A0 /* libiconv.tbd */; platformFilters = (ios, maccatalyst, macos, tvos, watchos, xros, ); };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -60,12 +61,11 @@
 		7C5FBE072BB8B8010069E5A0 /* libiconv.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libiconv.tbd; path = usr/lib/libiconv.tbd; sourceTree = SDKROOT; };
 		7C5FBE092BB8C1780069E5A0 /* LibTorrentVersion.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = LibTorrentVersion.mm; sourceTree = "<group>"; };
 		7C5FBE0B2BB8C1860069E5A0 /* LibTorrentVersion.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LibTorrentVersion.h; sourceTree = "<group>"; };
+		D1352D262BBC4F8100104E7B /* SessionSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionSettings.swift; sourceTree = "<group>"; };
 		D15147652AE6AE9C000407AE /* LibTorrent.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = LibTorrent.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		D15147682AE6AE9C000407AE /* LibTorrent.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LibTorrent.h; sourceTree = "<group>"; };
 		D151477F2AE6BBE3000407AE /* make.sh */ = {isa = PBXFileReference; lastKnownFileType = text.script.sh; path = make.sh; sourceTree = "<group>"; };
 		D15147872AE6C297000407AE /* libtorrent-rasterbar.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = "libtorrent-rasterbar.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		D15147902AE7B5BA000407AE /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS17.0.sdk/System/Library/Frameworks/SystemConfiguration.framework; sourceTree = DEVELOPER_DIR; };
-		D15147922AE7B5CA000407AE /* CoreFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreFoundation.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS17.0.sdk/System/Library/Frameworks/CoreFoundation.framework; sourceTree = DEVELOPER_DIR; };
 		D15147962AE7BE56000407AE /* libtorrent.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = libtorrent.xcodeproj; path = "libtorrent-build/libtorrent.xcodeproj"; sourceTree = "<group>"; };
 		D15147B02AE7E521000407AE /* SessionSettings.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = SessionSettings.mm; sourceTree = "<group>"; };
 		D15147B12AE7E521000407AE /* SessionSettings_Internal.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SessionSettings_Internal.h; sourceTree = "<group>"; };
@@ -101,6 +101,8 @@
 		D15147F32AE7E529000407AE /* NSData+Sha1Hash.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "NSData+Sha1Hash.mm"; sourceTree = "<group>"; };
 		D15147F42AE7E529000407AE /* ExceptionCatcher.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ExceptionCatcher.h; sourceTree = "<group>"; };
 		D15147F52AE7E529000407AE /* NSData+Sha1Hash.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSData+Sha1Hash.h"; sourceTree = "<group>"; };
+		D17733DA2BBAF16F006FC81A /* CoreFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreFoundation.framework; path = System/Library/Frameworks/CoreFoundation.framework; sourceTree = SDKROOT; };
+		D17733DC2BBAF179006FC81A /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -108,12 +110,12 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				7C5FBE082BB8B80B0069E5A0 /* libiconv.tbd in Frameworks */,
+				D17733DB2BBAF16F006FC81A /* CoreFoundation.framework in Frameworks */,
 				7CF9C2BA2AF7EFC4009BBFA0 /* OpenSSL in Frameworks */,
-				D15147932AE7B5CA000407AE /* CoreFoundation.framework in Frameworks */,
-				D151479F2AE7BE6D000407AE /* libtorrent-rasterbar.a in Frameworks */,
-				D15147912AE7B5BA000407AE /* SystemConfiguration.framework in Frameworks */,
+				D1B7639B2BBABD520051FD0B /* libiconv.tbd in Frameworks */,
+				D17733DD2BBAF17A006FC81A /* SystemConfiguration.framework in Frameworks */,
 				D1975E722AE9C41C0087FDB8 /* OpenSSL in Frameworks */,
+				D17733DE2BBAF1B7006FC81A /* libtorrent-rasterbar.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -152,9 +154,9 @@
 		D15147782AE6B9BD000407AE /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				D17733DC2BBAF179006FC81A /* SystemConfiguration.framework */,
+				D17733DA2BBAF16F006FC81A /* CoreFoundation.framework */,
 				7C5FBE072BB8B8010069E5A0 /* libiconv.tbd */,
-				D15147922AE7B5CA000407AE /* CoreFoundation.framework */,
-				D15147902AE7B5BA000407AE /* SystemConfiguration.framework */,
 				D15147872AE6C297000407AE /* libtorrent-rasterbar.a */,
 			);
 			name = Frameworks;
@@ -187,6 +189,7 @@
 				D15147B02AE7E521000407AE /* SessionSettings.mm */,
 				D15147B12AE7E521000407AE /* SessionSettings_Internal.h */,
 				D15147B22AE7E521000407AE /* SessionSettings.h */,
+				D1352D262BBC4F8100104E7B /* SessionSettings.swift */,
 			);
 			path = SessionSettings;
 			sourceTree = "<group>";
@@ -413,6 +416,7 @@
 				D15147F92AE7E529000407AE /* NSData+Hex.m in Sources */,
 				D15147ED2AE7E521000407AE /* Session.mm in Sources */,
 				D15148082AE7F852000407AE /* TorrentHandle.swift in Sources */,
+				D1352D272BBC4F8100104E7B /* SessionSettings.swift in Sources */,
 				D151480B2AE7F85D000407AE /* Data+Hex.swift in Sources */,
 				D15147EA2AE7E521000407AE /* FileEntry.m in Sources */,
 				7C5FBE0A2BB8C1780069E5A0 /* LibTorrentVersion.mm in Sources */,
