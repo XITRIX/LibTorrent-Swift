@@ -35,6 +35,12 @@ NS_SWIFT_NAME(Session.Settings)
 
 @property (readwrite, nonatomic) SessionSettingsEncryptionPolicy encryptionPolicy;
 
+@property (readwrite, nonatomic) NSInteger port;
+@property (readwrite, nonatomic) NSInteger portBindRetries;
+
+@property (readwrite, nonatomic) NSString* outgoingInterfaces;
+@property (readwrite, nonatomic) NSString* listenInterfaces;
+
 @end
 
 NS_ASSUME_NONNULL_END

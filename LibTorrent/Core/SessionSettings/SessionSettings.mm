@@ -25,7 +25,7 @@
     lt::settings_pack settings;
 
     // Must have
-    settings.set_int(lt::settings_pack::alert_mask, lt::alert_category::all);
+    settings.set_int(lt::settings_pack::alert_mask, lt::alert_category_t::all());
 
     // Settings pack
     settings.set_int(lt::settings_pack::active_limit, (int)_maxActiveTorrents);
@@ -56,6 +56,12 @@
             settings.set_int(lt::settings_pack::in_enc_policy, lt::settings_pack::pe_disabled);
             break;
     }
+
+    if (_portBindRetries >= 0)
+        settings.set_int(lt::settings_pack::max_retry_port_bind, (int)_portBindRetries);
+
+    settings.set_str(lt::settings_pack::outgoing_interfaces, [_outgoingInterfaces UTF8String]);
+    settings.set_str(lt::settings_pack::listen_interfaces, [_listenInterfaces UTF8String]);
 
     return settings;
 }
