@@ -321,6 +321,8 @@
 }
 
 - (void)setSequentialDownload:(BOOL)enabled {
+    if (!_torrentHandle.is_valid()) return;
+    
     if (enabled) {
         _torrentHandle.set_flags(lt::torrent_flags::sequential_download);
     } else {
