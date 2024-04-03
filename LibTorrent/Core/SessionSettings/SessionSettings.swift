@@ -8,3 +8,4 @@
 import Foundation
 
 extension Session.Settings.EncryptionPolicy: Codable {}
+extension Session.Settings.ProxyType: Codable {}

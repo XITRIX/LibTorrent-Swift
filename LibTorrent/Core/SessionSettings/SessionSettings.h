@@ -15,6 +15,15 @@ typedef NS_ENUM(NSUInteger, SessionSettingsEncryptionPolicy) {
     SessionSettingsEncryptionPolicyDisabled
 } NS_SWIFT_NAME(SessionSettings.EncryptionPolicy);
 
+
+typedef NS_ENUM(NSUInteger, SessionSettingsProxyType) {
+    SessionSettingsProxyTypeNone,
+    SessionSettingsProxyTypeSocks4,
+    SessionSettingsProxyTypeSocks5,
+    SessionSettingsProxyTypeHttp,
+    SessionSettingsProxyTypeI2p_proxy
+} NS_SWIFT_NAME(SessionSettings.ProxyType);
+
 NS_SWIFT_NAME(Session.Settings)
 @interface SessionSettings : NSObject
 
@@ -40,6 +49,14 @@ NS_SWIFT_NAME(Session.Settings)
 
 @property (readwrite, nonatomic) NSString* outgoingInterfaces;
 @property (readwrite, nonatomic) NSString* listenInterfaces;
+
+@property (readwrite, nonatomic) SessionSettingsProxyType proxyType;
+@property (readwrite, nonatomic) NSString* proxyHostname;
+@property (readwrite, nonatomic) NSInteger proxyHostPort;
+@property (readwrite, nonatomic) BOOL proxyAuthRequired;
+@property (readwrite, nonatomic) NSString* proxyUsername;
+@property (readwrite, nonatomic) NSString* proxyPassword;
+@property (readwrite, nonatomic) BOOL proxyPeerConnections;
 
 @end
 
