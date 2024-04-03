@@ -491,6 +491,7 @@
         snapshot.comment = self.comment;
         snapshot.creationDate = self.creationDate;
         snapshot.progress = self.progress;
+        snapshot.progressWanted = self.progressWanted;
         snapshot.numberOfPeers = self.numberOfPeers;
         snapshot.numberOfSeeds = self.numberOfSeeds;
         snapshot.numberOfLeechers = self.numberOfLeechers;
