@@ -44,6 +44,7 @@ NS_SWIFT_NAME(Session.Settings)
 
 @property (readwrite, nonatomic) SessionSettingsEncryptionPolicy encryptionPolicy;
 
+@property (readwrite, nonatomic) BOOL useDefaultPort;
 @property (readwrite, nonatomic) NSInteger port;
 @property (readwrite, nonatomic) NSInteger portBindRetries;
 
