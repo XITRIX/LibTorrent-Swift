@@ -444,10 +444,12 @@
 }
 
 - (void)setFilesPriority:(FilePriority)priority at:(NSArray<NSNumber *> *)fileIndexes {
-    std::vector<lt::download_priority_t> array;
+    auto priorities = _torrentHandle.get_file_priorities();
     for (int i = 0; i < fileIndexes.count; i++) {
-        _torrentHandle.file_priority((int)fileIndexes[i].integerValue, priority);
+        int index = (int)fileIndexes[i].integerValue;
+        priorities[index] = priority;
     }
+    _torrentHandle.prioritize_files(priorities);
     _torrentHandle.save_resume_data();
 }
 
