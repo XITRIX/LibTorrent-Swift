@@ -12,7 +12,7 @@ NS_ASSUME_NONNULL_BEGIN
 @interface TorrentTracker : NSObject
 
 @property (readonly) NSString *trackerUrl;
-@property (readonly) NSString *messages;
+@property (readonly, nullable) NSString *messages;
 @property (readonly) NSInteger seeders;
 @property (readonly) NSInteger peers;
 @property (readonly) NSInteger leechs;

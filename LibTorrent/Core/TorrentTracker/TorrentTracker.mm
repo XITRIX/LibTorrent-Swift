@@ -6,6 +6,7 @@
 //
 
 #import "TorrentTracker_Internal.h"
+#import "libtorrent/version.hpp"
 #import <vector>
 
 @implementation TorrentTracker
@@ -14,7 +15,7 @@
     self = [self init];
     if (self) {
         _trackerUrl = [[NSString alloc] initWithFormat:@"%s", announceEntry.url.c_str()];
-        _messages = @"MSG";
+        _messages = NULL;
         _seeders = -1;
         _peers = -1;
         _leechs = -1;
@@ -34,7 +35,7 @@
             for (auto protocolVersion: protocols) {
                 auto info = endpoint.info_hashes.at(protocolVersion);
 
-//                _working |= info.is_working();
+                _working |= endpoint.is_working();
                 _seeders = info.scrape_complete;
                 _peers = info.scrape_incomplete;
                 _leechs = info.scrape_downloaded;
