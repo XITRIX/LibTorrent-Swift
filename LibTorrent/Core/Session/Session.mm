@@ -279,6 +279,10 @@ static NSString *FileEntriesQueueIdentifier = @"ru.xitrix.TorrentKit.Session.fil
                 if (dynamic_cast<lt::torrent_alert *>(alert) != nullptr) {
                     auto th = ((lt::torrent_alert *)alert)->handle;
                     if (!th.is_valid()) { continue; }
+
+                    if (th.need_save_resume_data())
+                        th.save_resume_data();
+
                     [self notifyDelegatesWithUpdate:th];
                 }
             }
@@ -365,10 +369,8 @@ static NSString *FileEntriesQueueIdentifier = @"ru.xitrix.TorrentKit.Session.fil
 }
 
 - (void)torrentStateChanged:(lt::torrent_alert *)alert {
-    auto th = alert->handle;
-    if (!th.is_valid()) return;
-    
-    th.save_resume_data();
+//    auto th = alert->handle;
+//    if (!th.is_valid()) return;
 }
 
 - (void)torrentSaveFastResume:(lt::save_resume_data_alert *)alert {
