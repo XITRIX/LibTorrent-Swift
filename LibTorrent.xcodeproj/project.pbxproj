@@ -42,7 +42,7 @@
 		D151480B2AE7F85D000407AE /* Data+Hex.swift in Sources */ = {isa = PBXBuildFile; fileRef = D15147F02AE7E529000407AE /* Data+Hex.swift */; };
 		D17733DB2BBAF16F006FC81A /* CoreFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D17733DA2BBAF16F006FC81A /* CoreFoundation.framework */; platformFilters = (ios, maccatalyst, macos, tvos, watchos, xros, ); };
 		D17733DD2BBAF17A006FC81A /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D17733DC2BBAF179006FC81A /* SystemConfiguration.framework */; platformFilters = (ios, maccatalyst, macos, tvos, xros, ); };
-		D17733DE2BBAF1B7006FC81A /* libtorrent-rasterbar.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D151479E2AE7BE56000407AE /* libtorrent-rasterbar.a */; platformFilters = (driverkit, ios, macos, tvos, watchos, xros, ); };
+		D17733DE2BBAF1B7006FC81A /* libtorrent-rasterbar.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D151479E2AE7BE56000407AE /* libtorrent-rasterbar.a */; };
 		D1975E722AE9C41C0087FDB8 /* OpenSSL in Frameworks */ = {isa = PBXBuildFile; productRef = D1975E712AE9C41C0087FDB8 /* OpenSSL */; };
 		D1B7639B2BBABD520051FD0B /* libiconv.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 7C5FBE072BB8B8010069E5A0 /* libiconv.tbd */; platformFilters = (ios, maccatalyst, macos, tvos, watchos, xros, ); };
 /* End PBXBuildFile section */
