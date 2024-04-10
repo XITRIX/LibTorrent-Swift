@@ -59,7 +59,7 @@ NS_SWIFT_NAME(TorrentHandle.Snapshot)
 @property (readonly) NSArray<TorrentTracker *> *trackers;
 @property (readonly) NSString* magnetLink;
 @property (readonly, nullable) NSString* torrentFilePath;
-@property (readonly) NSString* downloadPath;
+@property (readonly, nullable) NSString* downloadPath;
 @end
 
 @interface TorrentHandle : TorrentHandleSnapshot

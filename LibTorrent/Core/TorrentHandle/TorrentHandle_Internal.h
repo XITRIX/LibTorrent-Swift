@@ -50,7 +50,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (readwrite) NSArray<TorrentTracker *> *trackers;
 @property (readwrite) NSString* magnetLink;
 @property (readwrite, nullable) NSString* torrentFilePath;
-@property (readwrite) NSString* downloadPath;
+@property (readwrite, nullable) NSString* downloadPath;
 @end
 
 @interface TorrentHandle ()
