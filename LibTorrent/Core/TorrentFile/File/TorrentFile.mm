@@ -69,6 +69,35 @@
         }
         catch(std::exception const& ex)
         { return NULL; }
+
+        auto info = [self torrent_info];
+        auto files = info.files();
+
+        // Generate priorities array (should be replaced with filesCache and removed)
+        _priorities = [[NSMutableArray alloc] initWithCapacity:files.num_files()];
+        for (int i=0; i<files.num_files(); i++) {
+            [_priorities setObject:[NSNumber numberWithInt:FilePriorityDefaultPriority] atIndexedSubscript:i];
+        }
+
+        // Generate files cache
+        NSMutableArray *results = [[NSMutableArray alloc] init];
+
+        for (int i=0; i<files.num_files(); i++) {
+            auto path = files.file_path(i);
+            auto size = files.file_size(i);
+
+            FileEntry *fileEntry = [[FileEntry alloc] init];
+            fileEntry.index = i;
+            fileEntry.isPrototype = true;
+            fileEntry.priority = (FilePriority) _priorities[i].intValue;
+            fileEntry.path = [NSString stringWithUTF8String:path.c_str()];
+            fileEntry.name = [fileEntry.path lastPathComponent];
+            fileEntry.size = size;
+
+            [results addObject:fileEntry];
+        }
+
+        _filesCache = [results copy];
     }
     return self;
 }
