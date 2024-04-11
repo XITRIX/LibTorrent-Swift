@@ -67,7 +67,7 @@
         try {
             if (!self.torrent_info.is_valid()) { return NULL; }
         }
-        catch(std::exception const& ex)
+        catch(...)
         { return NULL; }
 
         auto info = [self torrent_info];

@@ -25,7 +25,6 @@ public extension TorrentFile {
         do {
             let (data, _) = try await URLSession.shared.data(from: url)
             self.init(with: data)
-            if !isValid { return nil }
         } catch { return nil }
     }
 }

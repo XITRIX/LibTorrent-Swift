@@ -17,7 +17,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (readonly, nullable) NSMutableArray<NSNumber *> *priorities;
 @property (readonly, nullable) NSArray<FileEntry *> *filesCache;
 
-- (lt::torrent_info)torrent_info;
+@property (readonly) lt::torrent_info torrent_info;
 @end
 
 NS_ASSUME_NONNULL_END
