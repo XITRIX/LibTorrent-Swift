@@ -1,4 +1,5 @@
 #!/bin/zsh
+cd $(dirname $0)
 
 cmake ./Thirdparty/libtorrent \
     -B./libtorrent-build \
