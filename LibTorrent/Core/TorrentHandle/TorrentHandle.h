@@ -54,7 +54,7 @@ NS_SWIFT_NAME(TorrentHandle.Snapshot)
 @property (readonly) BOOL isFinished;
 @property (readonly) BOOL isSeed;
 @property (readonly) BOOL isSequential;
-@property (readonly) NSArray<NSNumber *> *pieces;
+@property (readonly, nullable) NSArray<NSNumber *> *pieces;
 @property (readonly) NSArray<FileEntry *> *files;
 @property (readonly) NSArray<TorrentTracker *> *trackers;
 @property (readonly) NSString* magnetLink;

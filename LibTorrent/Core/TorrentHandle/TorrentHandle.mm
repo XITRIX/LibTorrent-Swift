@@ -264,6 +264,9 @@
     auto stat = _torrentHandle.status();
     auto info = _torrentHandle.torrent_file().get();
 
+    if (!self.hasMetadata)
+        return NULL;
+
     auto array = [[NSMutableArray<NSNumber *> alloc] init];
     for (int i = 0; i < info->end_piece(); i++) {
         [array addObject: [NSNumber numberWithBool: stat.pieces.get_bit(i)]];
