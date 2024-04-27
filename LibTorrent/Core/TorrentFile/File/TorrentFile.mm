@@ -149,6 +149,13 @@
         if (ec.value() == 0) {
             *_params = resume;
         }
+
+        // Get files priorities from fast resume and apply to TorrentFile storage
+        if (_priorities.count == resume.file_priorities.size()) {
+            for (int i = 0; i < _priorities.count; i++) {
+                _priorities[i] = [NSNumber numberWithInt: resume.file_priorities[i]];
+            }
+        }
     }
 
     _params->ti = std::make_shared<lt::torrent_info>(ti);
