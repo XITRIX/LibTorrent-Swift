@@ -12,6 +12,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+NS_SWIFT_SENDABLE
 @interface TorrentFile : NSObject <Downloadable>
 @property (readonly, strong, nonatomic) NSData *fileData;
 @property (readonly) NSString *name;

@@ -12,6 +12,8 @@
 NS_ASSUME_NONNULL_BEGIN
 
 @class Session;
+
+NS_SWIFT_SENDABLE
 @protocol Downloadable <NSObject>
 
 @property (readonly) TorrentHashes *infoHashes;
