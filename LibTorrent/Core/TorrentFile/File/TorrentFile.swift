@@ -19,7 +19,8 @@ public extension TorrentFile {
     }
 }
 
-@available(iOS 13.0.0, *)
+@available(iOS 13.0, *)
+@available(tvOS 15.0, *)
 public extension TorrentFile {
     convenience init?(remote url: URL) async {
         do {
