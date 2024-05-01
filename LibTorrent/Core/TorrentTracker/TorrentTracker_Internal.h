@@ -6,7 +6,7 @@
 //
 
 #import "TorrentTracker.h"
-#import "TorrentHandle.h"
+#import "TorrentHandle_Internal.h"
 #import "libtorrent/announce_entry.hpp"
 
 NS_ASSUME_NONNULL_BEGIN

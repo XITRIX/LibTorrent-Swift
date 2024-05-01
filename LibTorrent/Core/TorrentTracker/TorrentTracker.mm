@@ -6,6 +6,7 @@
 //
 
 #import "TorrentTracker_Internal.h"
+#import "Session_Internal.h"
 #import "libtorrent/version.hpp"
 #import <vector>
 
@@ -33,10 +34,10 @@ NSDate* fromLTTimePoint32(const lt::time_point32 &timePoint)
 
         std::vector<int> protocols;
         if (torrentHandle.infoHashes.hasV1) {
-            protocols.push_back(0);
+            protocols.push_back(1);
         }
         if (torrentHandle.infoHashes.hasV2) {
-            protocols.push_back(1);
+            protocols.push_back(2);
         }
 
         int numUpdating = 0;
@@ -54,14 +55,21 @@ NSDate* fromLTTimePoint32(const lt::time_point32 &timePoint)
             for (auto protocolVersion: protocols) {
 #if LIBTORRENT_VERSION_MAJOR > 1
                 auto info = endpoint.info_hashes.at(protocolVersion);
+                auto hash = torrentHandle.torrentHandle.info_hashes().get_best();
 #else
                 auto info = endpoint;
+                auto hash = torrentHandle.torrentHandle.info_hash();
 #endif
                 TorrentTrackerEndpoint *status = [[TorrentTrackerEndpoint alloc] init];
                 status.name = [[NSString alloc] initWithUTF8String:endpointName.c_str()];
                 status.btVersion = protocolVersion;
-//                status.peers = endpointUpdateInfo.value(protocolVersion, status.numPeers);
-                status.peers = -1;
+
+                auto peersStorage = torrentHandle.session.updatedTrackerStatuses[hash][announceEntry.url][endpoint.local_endpoint];
+                if (peersStorage.find(protocolVersion) != peersStorage.end()) {
+                    status.peers = peersStorage[protocolVersion];
+                } else {
+                    status.peers = -1;
+                }
                 status.seeds = info.scrape_complete;
                 status.leeches = info.scrape_incomplete;
                 status.downloaded = info.scrape_downloaded;

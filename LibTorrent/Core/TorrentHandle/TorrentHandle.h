@@ -13,6 +13,8 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+@class Session;
+
 NS_SWIFT_NAME(TorrentHashes)
 @interface TorrentHashes : NSObject
 @property (readonly) BOOL hasV1;
@@ -64,6 +66,7 @@ NS_SWIFT_NAME(TorrentHandle.Snapshot)
 
 @interface TorrentHandle : TorrentHandleSnapshot
 
+@property (readonly) Session* session;
 @property (readonly) TorrentHandleSnapshot* snapshot;
 
 //@property (readonly) NSArray<NSNumber *> *pieces;
@@ -86,7 +89,6 @@ NS_SWIFT_NAME(TorrentHandle.Snapshot)
 - (void)removeTrackers:(NSArray<NSString *> *)urls;
 
 - (void)updateSnapshot;
-
 @end
 
 NS_ASSUME_NONNULL_END

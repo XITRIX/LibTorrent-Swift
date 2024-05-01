@@ -16,6 +16,7 @@
 #import "libtorrent/magnet_uri.hpp"
 
 @implementation TorrentHashes
+
 #if LIBTORRENT_VERSION_MAJOR > 1
 - (instancetype)initWith:(lt::info_hash_t)infoHash {
     self = [self init];
@@ -69,6 +70,7 @@
 - (instancetype)initWith:(lt::torrent_handle)torrentHandle inSession:(Session *)session {
     self = [self init];
     if (self) {
+        _session = session;
         _torrentHandle = torrentHandle;
         _torrentPath = session.torrentsPath;
         _sessionDownloadPath = session.downloadPath;

@@ -57,6 +57,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property lt::torrent_handle torrentHandle;
 @property NSString *torrentPath;
 @property NSString *sessionDownloadPath;
+@property Session *session;
 
 @property (readwrite) TorrentHandleSnapshot* snapshot;
 

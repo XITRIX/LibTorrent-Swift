@@ -36,6 +36,8 @@ static NSString *FileEntriesQueueIdentifier = @"ru.xitrix.TorrentKit.Session.fil
 
 @implementation Session : NSObject
 
+std::unordered_map<lt::sha1_hash, std::unordered_map<std::string, std::unordered_map<lt::tcp::endpoint, std::unordered_map<int, int>>>> updatedTrackerStatuses;
+
 // MARK: - Init
 - (instancetype)initWith:(NSString *)downloadPath torrentsPath:(NSString *)torrentsPath fastResumePath:(NSString *)fastResumePath settings:(SessionSettings *)settings {
     self = [super init];
@@ -247,8 +249,12 @@ static NSString *FileEntriesQueueIdentifier = @"ru.xitrix.TorrentKit.Session.fil
                         NSLog(@"TorrentKit - %s", alert->message().c_str());
                     } break;
 
-                    case lt::tracker_error_alert::alert_type: {
+                    case lt::tracker_announce_alert::alert_type:
+                    case lt::tracker_error_alert::alert_type:
+                    case lt::tracker_reply_alert::alert_type:
+                    case lt::tracker_warning_alert::alert_type: {
                         NSLog(@"TorrentKit - %s", alert->message().c_str());
+                        [self handleTrackerAlert: (lt::tracker_alert *)alert];
                     } break;
 
                     case lt::save_resume_data_alert::alert_type: {
@@ -348,6 +354,23 @@ static NSString *FileEntriesQueueIdentifier = @"ru.xitrix.TorrentKit.Session.fil
             [self saveMagnetURIWithContent:margnet_uri];
         }
     });
+}
+
+- (void)handleTrackerAlert:(lt::tracker_alert *)alert {
+    auto th = alert->handle;
+
+    if (alert->type() == lt::tracker_reply_alert::alert_type)
+    {
+        const int numPeers = static_cast<const lt::tracker_reply_alert *>(alert)->num_peers;
+#if LIBTORRENT_VERSION_MAJOR > 1        
+        auto hash = th.info_hashes().get_best();
+        const int protocolVersionNum = (static_cast<const lt::tracker_reply_alert *>(alert)->version == lt::protocol_version::V1) ? 1 : 2;
+#else
+        auto hash = th.info_hash();
+        const int protocolVersionNum = 1;
+#endif
+        updatedTrackerStatuses[hash][std::string(alert->tracker_url())][alert->local_endpoint][protocolVersionNum] = numPeers;
+    }
 }
 
 - (void)torrentRemoved:(lt::torrent_handle)handle {
@@ -500,6 +523,10 @@ static NSString *FileEntriesQueueIdentifier = @"ru.xitrix.TorrentKit.Session.fil
                     encoding:NSUTF8StringEncoding
                        error:&error];
     if (error) { NSLog(@"%@", error); }
+}
+
+- (std::unordered_map<lt::sha1_hash, std::unordered_map<std::string, std::unordered_map<lt::tcp::endpoint, std::unordered_map<int, int>>>>)updatedTrackerStatuses {
+    return updatedTrackerStatuses;
 }
 
 @end
