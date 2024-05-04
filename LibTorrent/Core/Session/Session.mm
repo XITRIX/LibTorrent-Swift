@@ -426,6 +426,12 @@ std::unordered_map<lt::sha1_hash, std::unordered_map<std::string, std::unordered
     if (![[NSFileManager defaultManager] fileExistsAtPath:filePath]) {
         lt::create_torrent new_torrent(*ti);
         std::vector<char> out_file;
+
+        NSString* appName = NSBundle.mainBundle.infoDictionary[(NSString*) kCFBundleNameKey];
+        NSString* appVersion = [NSBundle.mainBundle objectForInfoDictionaryKey: @"CFBundleShortVersionString"];
+        NSString* creator = [NSString stringWithFormat:@"%@ %@", appName, appVersion];
+
+        new_torrent.set_creator([creator cStringUsingEncoding: NSUTF8StringEncoding]);
         lt::bencode(std::back_inserter(out_file), new_torrent.generate());
 
         NSData *data = [NSData dataWithBytes:out_file.data() length:out_file.size()];
