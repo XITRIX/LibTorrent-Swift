@@ -101,7 +101,7 @@
 
 - (NSString *)name {
     auto ts = _torrentHandle.status();
-    return [[NSString alloc] initWithFormat:@"%s", ts.name.c_str()];
+    return [NSString stringWithCString:ts.name.c_str() encoding: NSUTF8StringEncoding];
 }
 
 - (NSString * _Nullable)creator {
