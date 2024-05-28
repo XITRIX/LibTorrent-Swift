@@ -7,5 +7,5 @@
 
 import Foundation
 
-extension TorrentHandle {
-}
+extension TorrentHandle {}
+extension TorrentHandle.State: Equatable {}

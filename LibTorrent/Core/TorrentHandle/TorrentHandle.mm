@@ -490,7 +490,6 @@
     auto snapshot = [[TorrentHandleSnapshot alloc] init];
     try {
         snapshot.isValid = self.isValid;
-//        snapshot.infoHash = self.infoHash;
         snapshot.infoHashes = self.infoHashes;
         snapshot.name = self.name;
         snapshot.state = self.state;
