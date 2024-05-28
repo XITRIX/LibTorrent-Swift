@@ -193,12 +193,12 @@
 
 - (uint64_t)downloadRate {
     auto status = _torrentHandle.status();
-    return status.download_payload_rate;
+    return status.download_rate;
 }
 
 - (uint64_t)uploadRate {
     auto status = _torrentHandle.status();
-    return status.upload_payload_rate;
+    return status.upload_rate;
 }
 
 - (BOOL)hasMetadata {
