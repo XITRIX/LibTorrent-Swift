@@ -24,6 +24,7 @@ NS_SWIFT_NAME(TorrentHashes)
 @property (readonly) NSData *best;
 @end
 
+NS_SWIFT_SENDABLE
 NS_SWIFT_NAME(TorrentHandle.Snapshot)
 @interface TorrentHandleSnapshot : NSObject
 

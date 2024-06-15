@@ -386,7 +386,7 @@
     auto ti = th.torrent_file();
     if (ti == nullptr) {
         NSLog(@"No metadata for torrent with name: %s", th.status().name.c_str());
-        return nil;
+        return [results copy];
     }
 
     std::vector<int64_t> progresses;
