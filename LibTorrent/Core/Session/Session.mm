@@ -72,7 +72,9 @@ std::unordered_map<lt::sha1_hash, std::unordered_map<std::string, std::unordered
 
 - (void)setSettings:(SessionSettings *)settings {
     _settings = settings;
+    _session->pause(); // Pause to break current connections in case networking settings will be changed
     _session->apply_settings(settings.settingsPack);
+    _session->resume();
 }
 
 - (void)dealloc {
