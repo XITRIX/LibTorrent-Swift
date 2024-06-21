@@ -436,7 +436,7 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin XCBuildConfiguration section */
-		7CE141542C1D2091008EA778 /* RelWithDebInfo-EU */ = {
+		7CE25BAC2C260534007B2FD7 /* Release-SIDE */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALLOW_TARGET_PLATFORM_SPECIALIZATION = YES;
@@ -505,9 +505,9 @@
 				WATCHOS_DEPLOYMENT_TARGET = 6.0;
 				XROS_DEPLOYMENT_TARGET = 1.0;
 			};
-			name = "RelWithDebInfo-EU";
+			name = "Release-SIDE";
 		};
-		7CE141552C1D2091008EA778 /* RelWithDebInfo-EU */ = {
+		7CE25BAD2C260534007B2FD7 /* Release-SIDE */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALLOW_TARGET_PLATFORM_SPECIALIZATION = YES;
@@ -550,9 +550,9 @@
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				TARGETED_DEVICE_FAMILY = "1,2,7";
 			};
-			name = "RelWithDebInfo-EU";
+			name = "Release-SIDE";
 		};
-		7CE141562C1D2098008EA778 /* Release-EU */ = {
+		7CE25BAE2C26053B007B2FD7 /* RelWithDebInfo-SIDE */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALLOW_TARGET_PLATFORM_SPECIALIZATION = YES;
@@ -589,7 +589,7 @@
 				COPY_PHASE_STRIP = NO;
 				CURRENT_PROJECT_VERSION = 1;
 				DEAD_CODE_STRIPPING = YES;
-				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEBUG_INFORMATION_FORMAT = dwarf;
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_USER_SCRIPT_SANDBOXING = YES;
@@ -621,9 +621,9 @@
 				WATCHOS_DEPLOYMENT_TARGET = 6.0;
 				XROS_DEPLOYMENT_TARGET = 1.0;
 			};
-			name = "Release-EU";
+			name = "RelWithDebInfo-SIDE";
 		};
-		7CE141572C1D2098008EA778 /* Release-EU */ = {
+		7CE25BAF2C26053B007B2FD7 /* RelWithDebInfo-SIDE */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALLOW_TARGET_PLATFORM_SPECIALIZATION = YES;
@@ -666,7 +666,7 @@
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				TARGETED_DEVICE_FAMILY = "1,2,7";
 			};
-			name = "Release-EU";
+			name = "RelWithDebInfo-SIDE";
 		};
 		D151476A2AE6AE9C000407AE /* Debug */ = {
 			isa = XCBuildConfiguration;
@@ -945,7 +945,7 @@
 				COPY_PHASE_STRIP = NO;
 				CURRENT_PROJECT_VERSION = 1;
 				DEAD_CODE_STRIPPING = YES;
-				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEBUG_INFORMATION_FORMAT = dwarf;
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_USER_SCRIPT_SANDBOXING = YES;
@@ -1032,9 +1032,9 @@
 			buildConfigurations = (
 				D151476A2AE6AE9C000407AE /* Debug */,
 				D151476B2AE6AE9C000407AE /* Release */,
-				7CE141562C1D2098008EA778 /* Release-EU */,
+				7CE25BAC2C260534007B2FD7 /* Release-SIDE */,
 				D1CAB8882AF3EDC000EB6AFF /* RelWithDebInfo */,
-				7CE141542C1D2091008EA778 /* RelWithDebInfo-EU */,
+				7CE25BAE2C26053B007B2FD7 /* RelWithDebInfo-SIDE */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
@@ -1044,9 +1044,9 @@
 			buildConfigurations = (
 				D151476D2AE6AE9C000407AE /* Debug */,
 				D151476E2AE6AE9C000407AE /* Release */,
-				7CE141572C1D2098008EA778 /* Release-EU */,
+				7CE25BAD2C260534007B2FD7 /* Release-SIDE */,
 				D1CAB8892AF3EDC000EB6AFF /* RelWithDebInfo */,
-				7CE141552C1D2091008EA778 /* RelWithDebInfo-EU */,
+				7CE25BAF2C26053B007B2FD7 /* RelWithDebInfo-SIDE */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
