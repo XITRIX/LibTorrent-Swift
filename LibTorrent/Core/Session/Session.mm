@@ -77,6 +77,14 @@ std::unordered_map<lt::sha1_hash, std::unordered_map<std::string, std::unordered
     _session->resume();
 }
 
+- (void)pause {
+    _session->pause();
+}
+
+- (void)resume {
+    _session->resume();
+}
+
 - (void)dealloc {
     delete _session;
 }
