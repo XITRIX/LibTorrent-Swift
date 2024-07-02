@@ -27,6 +27,18 @@ typedef NS_ENUM(NSUInteger, ErrorCode) {
 - (void)torrentManager:(Session *)manager didErrorOccur:(NSError *)error;
 @end
 
+@interface StorageModel : NSObject
+@property (readwrite, strong, nonatomic) NSUUID* uuid;
+@property (readwrite, strong, nonatomic) NSString* name;
+@property (readwrite, strong, nonatomic) NSData* pathBookmark;
+/// Resolved URL, if cannot be resolved - last cached value
+@property (readwrite, strong, nonatomic) NSURL* URL;
+/// Path exists and was resolved
+@property (readwrite, nonatomic) BOOL resolved;
+/// Path exists and allowed to be used
+@property (readwrite, nonatomic) BOOL allowed;
+@end
+
 @interface Session : NSObject
 
 @property (readwrite, strong, nonatomic) NSString *downloadPath;
@@ -37,7 +49,9 @@ typedef NS_ENUM(NSUInteger, ErrorCode) {
 
 @property (readonly) NSArray<TorrentHandle *> *torrents;
 
-- (instancetype)initWith:(NSString *)downloadPath torrentsPath:(NSString *)torrentsPath fastResumePath:(NSString *)fastResumePath settings:(SessionSettings *)settings;
+@property (readwrite) NSDictionary<NSUUID*, StorageModel*> *storages;
+
+- (instancetype)initWith:(NSString *)downloadPath torrentsPath:(NSString *)torrentsPath fastResumePath:(NSString *)fastResumePath settings:(SessionSettings *)settings storages:(NSDictionary<NSUUID*, StorageModel*>*)storages;
 
 - (NSString *)fastResumePathForInfoHashes:(TorrentHashes *)infoHashes;
 
@@ -47,6 +61,7 @@ typedef NS_ENUM(NSUInteger, ErrorCode) {
 - (void)restoreSession;
 
 - (BOOL)addTorrent:(id<Downloadable>)torrent;
+- (BOOL)addTorrent:(id<Downloadable>)torrent to: (NSUUID* _Nullable)storage;
 - (void)removeTorrent:(TorrentHandle *)torrent deleteFiles:(BOOL)deleteFiles;
 
 - (void)pause;

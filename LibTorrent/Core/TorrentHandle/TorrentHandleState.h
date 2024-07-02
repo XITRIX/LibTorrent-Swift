@@ -15,5 +15,8 @@ typedef NS_ENUM(NSUInteger, TorrentHandleState) {
     TorrentHandleStateSeeding,
 //    TorrentHandleStateAllocating, // deprecated
     TorrentHandleStateCheckingResumeData,
-    TorrentHandleStatePaused
+    TorrentHandleStatePaused,
+
+    // Custom state for storage error
+    TorrentHandleStateStorageError
 } NS_SWIFT_NAME(TorrentHandle.State);

@@ -46,6 +46,7 @@
 		D17733DE2BBAF1B7006FC81A /* libtorrent-rasterbar.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D151479E2AE7BE56000407AE /* libtorrent-rasterbar.a */; };
 		D1975E722AE9C41C0087FDB8 /* OpenSSL in Frameworks */ = {isa = PBXBuildFile; productRef = D1975E712AE9C41C0087FDB8 /* OpenSSL */; };
 		D1B7639B2BBABD520051FD0B /* libiconv.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 7C5FBE072BB8B8010069E5A0 /* libiconv.tbd */; platformFilters = (ios, maccatalyst, macos, tvos, watchos, xros, ); };
+		D1FFC95D2C357D1400233C2F /* Session.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1FFC95C2C357D0B00233C2F /* Session.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -104,6 +105,7 @@
 		D15147F52AE7E529000407AE /* NSData+Sha1Hash.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSData+Sha1Hash.h"; sourceTree = "<group>"; };
 		D17733DA2BBAF16F006FC81A /* CoreFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreFoundation.framework; path = System/Library/Frameworks/CoreFoundation.framework; sourceTree = SDKROOT; };
 		D17733DC2BBAF179006FC81A /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
+		D1FFC95C2C357D0B00233C2F /* Session.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Session.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -272,6 +274,7 @@
 		D15147CF2AE7E521000407AE /* Session */ = {
 			isa = PBXGroup;
 			children = (
+				D1FFC95C2C357D0B00233C2F /* Session.swift */,
 				D15147D02AE7E521000407AE /* Session.h */,
 				D15147D12AE7E521000407AE /* Session_Internal.h */,
 				D15147D22AE7E521000407AE /* Session.mm */,
@@ -415,6 +418,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				D15147FA2AE7E529000407AE /* NSData+Sha1Hash.mm in Sources */,
+				D1FFC95D2C357D1400233C2F /* Session.swift in Sources */,
 				D15147F82AE7E529000407AE /* ExceptionCatcher.mm in Sources */,
 				D15147F92AE7E529000407AE /* NSData+Hex.m in Sources */,
 				D15147ED2AE7E521000407AE /* Session.mm in Sources */,

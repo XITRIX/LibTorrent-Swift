@@ -34,18 +34,22 @@ static NSErrorDomain ErrorDomain = @"ru.xitrix.TorrentKit.Session.error";
 static NSString *EventsQueueIdentifier = @"ru.xitrix.TorrentKit.Session.events.queue";
 static NSString *FileEntriesQueueIdentifier = @"ru.xitrix.TorrentKit.Session.files.queue";
 
+@implementation StorageModel : NSObject
+@end
+
 @implementation Session : NSObject
 
 std::unordered_map<lt::sha1_hash, std::unordered_map<std::string, std::unordered_map<lt::tcp::endpoint, std::unordered_map<int, int>>>> updatedTrackerStatuses;
 
 // MARK: - Init
-- (instancetype)initWith:(NSString *)downloadPath torrentsPath:(NSString *)torrentsPath fastResumePath:(NSString *)fastResumePath settings:(SessionSettings *)settings {
+- (instancetype)initWith:(NSString *)downloadPath torrentsPath:(NSString *)torrentsPath fastResumePath:(NSString *)fastResumePath settings:(SessionSettings *)settings storages:(NSDictionary<NSUUID*, StorageModel*>*)storages {
     self = [super init];
     if (self) {
         _downloadPath = downloadPath;
         _torrentsPath = torrentsPath;
         _fastResumePath = fastResumePath;
         _settings = settings;
+        _storages = storages;
 
         NSError * error;
         [[NSFileManager defaultManager] createDirectoryAtPath:downloadPath withIntermediateDirectories:YES attributes:nil error:&error];
@@ -134,6 +138,10 @@ std::unordered_map<lt::sha1_hash, std::unordered_map<std::string, std::unordered
 }
 
 - (BOOL)addTorrent:(id<Downloadable>)torrent {
+    return [self addTorrent:torrent to:NULL];
+}
+
+- (BOOL)addTorrent:(id<Downloadable>)torrent to: (NSUUID* _Nullable)storage {
     lt::add_torrent_params params;
 
     try {
@@ -145,8 +153,15 @@ std::unordered_map<lt::sha1_hash, std::unordered_map<std::string, std::unordered
         return NO;
     }
 
+    // Set custom or default save path
+    if (storage != NULL && [_storages objectForKey:storage] != NULL) {
+        params.save_path = [[_storages objectForKey:storage].URL.path UTF8String];
+    } else if (params.save_path.length() == 0) {
+        params.save_path = [_downloadPath UTF8String];
+    }
+
     params.storage_mode = _settings.preallocateStorage ? lt::storage_mode_allocate : lt::storage_mode_sparse;
-    params.save_path = [_downloadPath UTF8String];
+
     try {
         auto th = _session->add_torrent(params);
         [torrent configureAfterAdded: [[TorrentHandle alloc] initWith:th inSession:self]];
@@ -270,6 +285,10 @@ std::unordered_map<lt::sha1_hash, std::unordered_map<std::string, std::unordered
                     case lt::save_resume_data_alert::alert_type: {
                         [self torrentSaveFastResume:(lt::save_resume_data_alert *)alert];
                         continue; // Not sure if need notify update
+                    } break;
+
+                    case lt::fastresume_rejected_alert::alert_type: {
+
                     } break;
 
                         // Skip log alerts
@@ -407,16 +426,34 @@ std::unordered_map<lt::sha1_hash, std::unordered_map<std::string, std::unordered
 }
 
 - (void)torrentSaveFastResume:(lt::save_resume_data_alert *)alert {
-    std::vector<char> ret;
-    lt::entry rd = lt::write_resume_data(alert->params);
-    bencode(std::back_inserter(ret), rd);
-
     lt::torrent_handle h = alert->handle;
+    if (!h.is_valid()) return;
+
 #if LIBTORRENT_VERSION_MAJOR > 1
     auto ih = h.info_hashes();
 #else
     auto ih = h.info_hash();
 #endif
+
+    std::vector<char> ret;
+    lt::entry rd = lt::write_resume_data(alert->params);
+    rd["storage_uuid"] = "";
+
+    auto savePath = [NSString stringWithUTF8String: h.status().save_path.c_str()];
+    if (savePath != _downloadPath) {
+        for (StorageModel *storage in _storages.allValues) {
+            auto path = storage.URL.path;
+            if ([path isEqualToString:savePath]) {
+                rd["storage_uuid"] = storage.uuid.UUIDString.UTF8String;
+
+                // Do not save fast resume if storage is not allowed
+                if (!storage.allowed) return;
+                break;
+            }
+        }
+    }
+
+    bencode(std::back_inserter(ret), rd);
 
     auto data = [[TorrentHashes alloc] initWith:ih];
     auto nspath = [self fastResumePathForInfoHashes: data];

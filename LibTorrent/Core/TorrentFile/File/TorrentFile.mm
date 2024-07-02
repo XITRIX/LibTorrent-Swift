@@ -149,10 +149,31 @@
         std::vector<char> buf{std::istream_iterator<char>(ifs)
         , std::istream_iterator<char>()};
 
+        lt::load_torrent_limits cfg = {};
         lt::error_code ec;
-        auto resume = lt::read_resume_data(buf, ec);
+
+        lt::bdecode_node rd = lt::bdecode(buf, ec, NULL, cfg.max_decode_depth
+            , cfg.max_decode_tokens);
+
+        auto resume = lt::read_resume_data(rd, ec, cfg.max_pieces);
+
         if (ec.value() == 0) {
             *_params = resume;
+        } else {
+            *_params = lt::add_torrent_params();
+        }
+
+        // Set save_path as empty, so if it will be resolved later, we can check by empty string
+        // If not resolved just set it as default iTorrent storage path
+        _params->save_path = "";
+
+        // Try to resolve storage path
+        auto storageID = [NSString stringWithUTF8String: std::string(rd.dict_find_string_value("storage_uuid")).c_str()];
+        if (ec.value() == 0 && storageID.length != 0) {
+            auto storageUUID = [[NSUUID alloc] initWithUUIDString:storageID];
+            auto URL = [session.storages objectForKey:storageUUID].URL;
+            auto path = URL.path.UTF8String;
+            _params->save_path = path;
         }
 
         // Get files priorities from fast resume and apply to TorrentFile storage

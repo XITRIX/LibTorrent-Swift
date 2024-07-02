@@ -294,23 +294,19 @@
     return filePath;
 }
 
-- (NSString *)downloadPath {
+- (NSURL *)downloadPath {
     if (!self.isValid || !self.hasMetadata) return NULL;
-
-    auto fileInfo = _torrentHandle.torrent_file().get();
-    NSString *fileName = [NSString stringWithFormat:@"%s", fileInfo->name().c_str()];
-    NSString *filePath = [_sessionDownloadPath stringByAppendingPathComponent:fileName];
-
-    if (![[NSFileManager defaultManager] fileExistsAtPath:filePath])
-        return NULL;
-
-    return filePath;
+    
+    auto savePath = _torrentHandle.status().save_path;
+//    auto url = [NSString stringWithFormat:@"file://%s", savePath.c_str()];
+//    return [NSURL URLWithString: url].URLByStandardizingPath;
+    auto path = [NSString stringWithUTF8String: savePath.c_str()];
+    return [NSURL fileURLWithPath: path];
 }
 
 // MARK: - Functions
 
 - (void)resume {
-//    _torrentHandle.set_flags(lt::torrent_flags::auto_managed);
     _torrentHandle.unset_flags(lt::torrent_flags::auto_managed);
     _torrentHandle.resume();
 }
