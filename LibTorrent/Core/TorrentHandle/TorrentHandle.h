@@ -14,9 +14,10 @@
 NS_ASSUME_NONNULL_BEGIN
 
 @class Session;
+@class StorageModel;
 
 NS_SWIFT_NAME(TorrentHashes)
-@interface TorrentHashes : NSObject
+@interface TorrentHashes : NSObject<NSCopying>
 @property (readonly) BOOL hasV1;
 @property (readonly) BOOL hasV2;
 @property (readonly) NSData *v1;
@@ -63,6 +64,8 @@ NS_SWIFT_NAME(TorrentHandle.Snapshot)
 @property (readonly) NSString* magnetLink;
 @property (readonly, nullable) NSString* torrentFilePath;
 @property (readonly) NSURL* downloadPath;
+@property (readonly, nullable) NSUUID* storageUUID;
+@property (readonly) BOOL isStorageMissing;
 @end
 
 @interface TorrentHandle : TorrentHandleSnapshot
@@ -79,6 +82,7 @@ NS_SWIFT_NAME(TorrentHandle.Snapshot)
 - (void)resume;
 - (void)pause;
 - (void)rehash;
+- (void)reload;
 
 - (void)setSequentialDownload:(BOOL)enabled;
 

@@ -14,6 +14,14 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+@interface TorrentHashes ()
+@property (readwrite) BOOL hasV1;
+@property (readwrite) BOOL hasV2;
+@property (readwrite) NSData *v1;
+@property (readwrite) NSData *v2;
+@property (readwrite) NSData *best;
+@end
+
 @interface TorrentHandleSnapshot ()
 
 @property (readwrite) BOOL isValid;
@@ -51,6 +59,8 @@ NS_ASSUME_NONNULL_BEGIN
 @property (readwrite) NSString* magnetLink;
 @property (readwrite, nullable) NSString* torrentFilePath;
 @property (readwrite, nullable) NSURL* downloadPath;
+@property (readwrite, nullable) NSUUID* storageUUID;
+@property (readwrite) BOOL isStorageMissing;
 @end
 
 @interface TorrentHandle ()

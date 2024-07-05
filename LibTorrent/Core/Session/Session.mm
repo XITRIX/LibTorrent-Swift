@@ -6,6 +6,7 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "LibTorrent/LibTorrent-Swift.h"
 
 #import "Session_Internal.h"
 #import "Downloadable.h"
@@ -59,6 +60,7 @@ std::unordered_map<lt::sha1_hash, std::unordered_map<std::string, std::unordered
         _session = new lt::session(_settings.settingsPack);
 
         _filesQueue = dispatch_queue_create([FileEntriesQueueIdentifier UTF8String], DISPATCH_QUEUE_SERIAL);
+        _torrentsMap = [[NSMutableDictionary alloc] init];
         _delegates = [NSHashTable weakObjectsHashTable];
 
         // restore session
@@ -104,13 +106,7 @@ std::unordered_map<lt::sha1_hash, std::unordered_map<std::string, std::unordered
 
 // MARK: - Public
 - (NSArray<TorrentHandle *> *)torrents {
-    auto torrents = _session->get_torrents();
-    NSMutableArray *result = [[NSMutableArray alloc] initWithCapacity:torrents.size()];
-    for (int i = 0; i < torrents.size(); i++) {
-        auto torrent = [[TorrentHandle alloc] initWith:torrents[i] inSession:self];
-        [result setObject:torrent atIndexedSubscript:i];
-    }
-    return result;
+    return _torrentsMap.allValues;
 }
 
 - (void)restoreSession {
@@ -137,11 +133,11 @@ std::unordered_map<lt::sha1_hash, std::unordered_map<std::string, std::unordered
     [self.delegates removeObject:delegate];
 }
 
-- (BOOL)addTorrent:(id<Downloadable>)torrent {
+- (TorrentHandle* _Nullable)addTorrent:(id<Downloadable>)torrent {
     return [self addTorrent:torrent to:NULL];
 }
 
-- (BOOL)addTorrent:(id<Downloadable>)torrent to: (NSUUID* _Nullable)storage {
+- (TorrentHandle* _Nullable)addTorrent:(id<Downloadable>)torrent to: (NSUUID* _Nullable)storage {
     lt::add_torrent_params params;
 
     try {
@@ -150,13 +146,19 @@ std::unordered_map<lt::sha1_hash, std::unordered_map<std::string, std::unordered
         NSError *error = [self errorWithCode:ErrorCodeBadFile message:@"Failed to add torrent"];
         NSLog(@"%@", error);
 //        [self notifyDelegatesAboutError:error];
-        return NO;
+        return NULL;
     }
 
     // Set custom or default save path
+    StorageModel* storageModel = NULL;
     if (storage != NULL && [_storages objectForKey:storage] != NULL) {
-        params.save_path = [[_storages objectForKey:storage].URL.path UTF8String];
-    } else if (params.save_path.length() == 0) {
+        storageModel = [_storages objectForKey:storage];
+        params.save_path = [storageModel.URL.path UTF8String];
+    } else if (params.save_path.length() != 0) {
+        auto storageUUID = [[NSUUID alloc] initWithUUIDString: [[NSString alloc] initWithUTF8String: params.save_path.c_str()]];
+        storageModel = [_storages objectForKey:storageUUID];
+        params.save_path = storageModel.URL.path.UTF8String;
+    } else {
         params.save_path = [_downloadPath UTF8String];
     }
 
@@ -164,15 +166,18 @@ std::unordered_map<lt::sha1_hash, std::unordered_map<std::string, std::unordered
 
     try {
         auto th = _session->add_torrent(params);
-        [torrent configureAfterAdded: [[TorrentHandle alloc] initWith:th inSession:self]];
-        return YES;
+        auto torrentHandle = [[TorrentHandle alloc] initWith:th inSession:self];
+        [torrent configureAfterAdded: torrentHandle];
+        torrentHandle.storageUUID = storageModel.uuid;
+        [self notifyDelegatesWithAdd: torrentHandle];
+        return torrentHandle;
     } catch(std::exception const& ex) {
-        return NO;
+        return NULL;
     }
 }
 
 - (void)removeTorrent:(TorrentHandle *)torrent deleteFiles:(BOOL)deleteFiles {
-    [self notifyDelegatesWithRemove:torrent.torrentHandle];
+    [self notifyDelegatesWithRemove:torrent];
     [self removeStoredTorrentOrMagnet:torrent.torrentHandle];
 
     // Remove torrrent from session
@@ -259,19 +264,20 @@ std::unordered_map<lt::sha1_hash, std::unordered_map<std::string, std::unordered
                     } break;
 
                     case lt::torrent_error_alert::alert_type: {
-                        NSLog(@"TorrentKit - %s", alert->message().c_str());
+                        NSLog(@"TorrentKit torrent_error - %s", alert->message().c_str());
+                        [self torrentInputOutputError:(lt::torrent_alert *) alert];
                     } break;
 
                     case lt::file_error_alert::alert_type: {
-                        NSLog(@"TorrentKit - %s", alert->message().c_str());
+                        NSLog(@"TorrentKit file_error - %s", alert->message().c_str());
                     } break;
 
                     case lt::session_error_alert::alert_type: {
-                        NSLog(@"TorrentKit - %s", alert->message().c_str());
+                        NSLog(@"TorrentKit session_error - %s", alert->message().c_str());
                     } break;
 
                     case lt::peer_error_alert::alert_type: {
-                        NSLog(@"TorrentKit - %s", alert->message().c_str());
+                        NSLog(@"TorrentKit peer_error - %s", alert->message().c_str());
                     } break;
 
                     case lt::tracker_announce_alert::alert_type:
@@ -328,18 +334,19 @@ std::unordered_map<lt::sha1_hash, std::unordered_map<std::string, std::unordered
     }
 }
 
-- (void)notifyDelegatesWithAdd:(lt::torrent_handle)th {
-    TorrentHandle *torrent = [[TorrentHandle alloc] initWith:th inSession:self];
+- (void)notifyDelegatesWithAdd:(TorrentHandle*) torrent {
+    [_torrentsMap setObject:torrent forKey: torrent.infoHashes];
     for (id<SessionDelegate>delegate in self.delegates) {
         [delegate torrentManager:self didAddTorrent:torrent];
     }
 }
 
-- (void)notifyDelegatesWithRemove:(lt::torrent_handle)th {
+- (void)notifyDelegatesWithRemove:(TorrentHandle*) torrent {
+    [_torrentsMap removeObjectForKey: torrent.infoHashes];
 #if LIBTORRENT_VERSION_MAJOR > 1
-    TorrentHashes *hashesData = [[TorrentHashes alloc] initWith:th.info_hashes()];
+    TorrentHashes *hashesData = [[TorrentHashes alloc] initWith:torrent.torrentHandle.info_hashes()];
 #else
-    TorrentHashes *hashesData = [[TorrentHashes alloc] initWith:th.info_hash()];
+    TorrentHashes *hashesData = [[TorrentHashes alloc] initWith:torrent.torrentHandle.info_hash()];
 #endif
     for (id<SessionDelegate>delegate in self.delegates) {
         [delegate torrentManager:self didRemoveTorrentWithHash:hashesData];
@@ -367,7 +374,7 @@ std::unordered_map<lt::sha1_hash, std::unordered_map<std::string, std::unordered
 
 - (void)torrentAddedAlert:(lt::torrent_alert *)alert {
     auto th = alert->handle;
-    [self notifyDelegatesWithAdd:th];
+//    [self notifyDelegatesWithAdd:th];
     if (!th.is_valid()) {
         NSLog(@"%s: torrent_handle is invalid!", __FUNCTION__);
         return;
@@ -423,6 +430,13 @@ std::unordered_map<lt::sha1_hash, std::unordered_map<std::string, std::unordered
 - (void)torrentStateChanged:(lt::torrent_alert *)alert {
 //    auto th = alert->handle;
 //    if (!th.is_valid()) return;
+}
+
+- (void)torrentInputOutputError:(lt::torrent_alert *)alert {
+    auto th = alert->handle;
+    auto hashes = [[TorrentHashes alloc] initWith: th.info_hashes()];
+    auto torrentHandle = _torrentsMap[hashes];
+    [_storages[torrentHandle.storageUUID] resolveSequrityScopes];
 }
 
 - (void)torrentSaveFastResume:(lt::save_resume_data_alert *)alert {

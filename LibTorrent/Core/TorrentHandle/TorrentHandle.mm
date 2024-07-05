@@ -8,6 +8,7 @@
 #import "TorrentHandle_Internal.h"
 #import "FileEntry_Internal.h"
 #import "TorrentTracker_Internal.h"
+#import "Session_Internal.h"
 
 #import "NSData+Hex.h"
 
@@ -60,6 +61,20 @@
 
 //    return [self.v1 isEqual:((TorrentHashes *)other).v1] && [self.v2 isEqual:((TorrentHashes *)other).v2];
 }
+- (nonnull id)copyWithZone:(nullable NSZone *)zone { 
+    TorrentHashes* copy = [[[self class] allocWithZone:zone] init];
+
+        if (copy) {
+            copy.v1 = self.v1;
+            copy.v2 = self.v2;
+            copy.hasV1 = self.hasV1;
+            copy.hasV2 = self.hasV2;
+            copy.best = self.best;
+        }
+
+        return copy;
+}
+
 @end
 
 @implementation TorrentHandleSnapshot
@@ -304,6 +319,22 @@
     return [NSURL fileURLWithPath: path];
 }
 
+- (BOOL)isStorageMissing {
+    if (self.storageUUID == NULL) return false;
+    return !_session.storages[self.storageUUID].allowed;
+}
+
+//- (StorageModel*) storage {
+//    if (self.downloadPath.path == _session.downloadPath) { return NULL; }
+//
+//    for (StorageModel* storage in _session.storages.allValues) {
+//
+//    }
+//    
+//    return NULL;
+////        TorrentService.shared.storages.first(where: { $0.value.url.normalized == downloadPath.normalized })?.value
+//}
+
 // MARK: - Functions
 
 - (void)resume {
@@ -319,6 +350,14 @@
 - (void)rehash {
     _torrentHandle.force_recheck();
     _torrentHandle.set_flags(lt::torrent_flags::auto_managed);
+}
+
+- (void)reload {
+    auto torrentFile = [[TorrentFile alloc] initUnsafeWithFileAtURL: [[NSURL alloc] initFileURLWithPath: self.torrentFilePath]]; //torrentFilePath
+    _session.session->remove_torrent(_torrentHandle);
+    auto newTorrentHandle = [_session addTorrent: torrentFile];
+    _torrentHandle = newTorrentHandle.torrentHandle;
+    [self updateSnapshot];
 }
 
 - (void)setSequentialDownload:(BOOL)enabled {
@@ -519,6 +558,8 @@
         snapshot.magnetLink = self.magnetLink;
         snapshot.torrentFilePath = self.torrentFilePath;
         snapshot.downloadPath = self.downloadPath;
+        snapshot.storageUUID = self.storageUUID;
+        snapshot.isStorageMissing = self.isStorageMissing;
 
         self.snapshot = snapshot;
     } catch(...) {}

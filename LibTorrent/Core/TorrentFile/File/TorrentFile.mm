@@ -170,10 +170,8 @@
         // Try to resolve storage path
         auto storageID = [NSString stringWithUTF8String: std::string(rd.dict_find_string_value("storage_uuid")).c_str()];
         if (ec.value() == 0 && storageID.length != 0) {
-            auto storageUUID = [[NSUUID alloc] initWithUUIDString:storageID];
-            auto URL = [session.storages objectForKey:storageUUID].URL;
-            auto path = URL.path.UTF8String;
-            _params->save_path = path;
+            // Use save_path as temporary storage uuid holder
+            _params->save_path = storageID.UTF8String;
         }
 
         // Get files priorities from fast resume and apply to TorrentFile storage
