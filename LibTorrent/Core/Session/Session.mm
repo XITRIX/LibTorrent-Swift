@@ -151,14 +151,22 @@ std::unordered_map<lt::sha1_hash, std::unordered_map<std::string, std::unordered
 
     // Set custom or default save path
     StorageModel* storageModel = NULL;
+    BOOL customPathSetted = false;
     if (storage != NULL && [_storages objectForKey:storage] != NULL) {
         storageModel = [_storages objectForKey:storage];
         params.save_path = [storageModel.URL.path UTF8String];
+        customPathSetted = true;
     } else if (params.save_path.length() != 0) {
         auto storageUUID = [[NSUUID alloc] initWithUUIDString: [[NSString alloc] initWithUTF8String: params.save_path.c_str()]];
-        storageModel = [_storages objectForKey:storageUUID];
-        params.save_path = storageModel.URL.path.UTF8String;
-    } else {
+        auto storage = [_storages objectForKey:storageUUID];
+        if (storage != NULL) {
+            storageModel = storage;
+            params.save_path = storageModel.URL.path.UTF8String;
+            customPathSetted = true;
+        }
+    }
+
+    if (!customPathSetted) {
         params.save_path = [_downloadPath UTF8String];
     }
 
