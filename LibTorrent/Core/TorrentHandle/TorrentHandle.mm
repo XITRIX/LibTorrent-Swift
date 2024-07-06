@@ -61,7 +61,12 @@
 
 //    return [self.v1 isEqual:((TorrentHashes *)other).v1] && [self.v2 isEqual:((TorrentHashes *)other).v2];
 }
-- (nonnull id)copyWithZone:(nullable NSZone *)zone { 
+
+- (NSUInteger)hash {
+    return _best.hash;
+}
+
+- (nonnull id)copyWithZone:(nullable NSZone *)zone {
     TorrentHashes* copy = [[[self class] allocWithZone:zone] init];
 
         if (copy) {

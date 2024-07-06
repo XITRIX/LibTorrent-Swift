@@ -355,8 +355,20 @@ std::unordered_map<lt::sha1_hash, std::unordered_map<std::string, std::unordered
 
 - (void)notifyDelegatesWithUpdate:(lt::torrent_handle)th {
     if (!th.is_valid()) return;
+
+#if LIBTORRENT_VERSION_MAJOR > 1
+    auto ih = th.info_hashes();
+#else
+    auto ih = th.info_hash();
+#endif
+
+    auto hashes = [[TorrentHashes alloc] initWith:ih];
     
-    TorrentHandle *torrent = [[TorrentHandle alloc] initWith:th inSession:self];
+    auto torrent = _torrentsMap[hashes];
+    if (torrent == NULL) {
+        torrent = [[TorrentHandle alloc] initWith:th inSession:self];
+    }
+
     for (id<SessionDelegate>delegate in self.delegates) {
         [delegate torrentManager:self didReceiveUpdateForTorrent:torrent];
     }
@@ -453,11 +465,13 @@ std::unordered_map<lt::sha1_hash, std::unordered_map<std::string, std::unordered
     lt::entry rd = lt::write_resume_data(alert->params);
     rd["storage_uuid"] = "";
 
-    auto savePath = [NSString stringWithUTF8String: h.status().save_path.c_str()];
-    if (savePath != _downloadPath) {
+    auto hashes = [[TorrentHashes alloc] initWith:ih];
+    auto torrentHandle = _torrentsMap[hashes];
+    auto storageUUID = torrentHandle.storageUUID;
+
+    if (storageUUID != NULL) {
         for (StorageModel *storage in _storages.allValues) {
-            auto path = storage.URL.path;
-            if ([path isEqualToString:savePath]) {
+            if (storage.uuid == storageUUID) {
                 rd["storage_uuid"] = storage.uuid.UUIDString.UTF8String;
 
                 // Do not save fast resume if storage is not allowed
@@ -469,8 +483,7 @@ std::unordered_map<lt::sha1_hash, std::unordered_map<std::string, std::unordered
 
     bencode(std::back_inserter(ret), rd);
 
-    auto data = [[TorrentHashes alloc] initWith:ih];
-    auto nspath = [self fastResumePathForInfoHashes: data];
+    auto nspath = [self fastResumePathForInfoHashes: hashes];
     std::string path = std::string([nspath UTF8String]);
 
     std::fstream f(path, std::ios_base::trunc | std::ios_base::out | std::ios_base::binary);

@@ -48,6 +48,7 @@ typedef NS_ENUM(NSUInteger, ErrorCode) {
 @property (readwrite, nonatomic) SessionSettings *settings;
 
 @property (readonly) NSArray<TorrentHandle *> *torrents;
+@property (readonly, strong, nonatomic) NSDictionary<TorrentHashes*, TorrentHandle*> *torrentsMap;
 
 @property (readwrite) NSDictionary<NSUUID*, StorageModel*> *storages;
 
