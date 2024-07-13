@@ -63,7 +63,7 @@ NS_SWIFT_NAME(TorrentHandle.Snapshot)
 @property (readonly) NSArray<TorrentTracker *> *trackers;
 @property (readonly) NSString* magnetLink;
 @property (readonly, nullable) NSString* torrentFilePath;
-@property (readonly) NSURL* downloadPath;
+@property (readonly, nullable) NSURL* downloadPath;
 @property (readonly, nullable) NSUUID* storageUUID;
 @property (readonly) BOOL isStorageMissing;
 @end
