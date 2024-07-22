@@ -223,120 +223,125 @@ std::unordered_map<lt::sha1_hash, std::unordered_map<std::string, std::unordered
     auto max_wait = lt::milliseconds(ALERTS_LOOP_WAIT_MILLIS);
     while (YES) {
         @autoreleasepool {
-            auto alert_ptr = _session->wait_for_alert(max_wait);
-            std::vector<lt::alert *> alerts_queue;
-            if (alert_ptr != nullptr) {
-                _session->pop_alerts(&alerts_queue);
-            } else {
-                continue;
-            }
-
-            for (auto it = alerts_queue.begin(); it != alerts_queue.end(); ++it) {
-                auto alert = (*it);
-    //            NSLog(@"type:%d msg:%s", alert->type(), alert->message().c_str());
-                switch (alert->type()) {
-                    case lt::metadata_received_alert::alert_type: {
-                        [self metadataReceivedAlert:(lt::torrent_alert *)alert];
-                    } break;
-
-                    case lt::metadata_failed_alert::alert_type: {
-    //                    [self metadataReceivedAlert:(lt::torrent_alert *)alert];
-                    } break;
-
-                    case lt::block_finished_alert::alert_type: {
-                    } break;
-
-                    case lt::add_torrent_alert::alert_type: {
-                        [self torrentAddedAlert:(lt::torrent_alert *)alert];
-                    } break;
-
-                    case lt::torrent_removed_alert::alert_type: {
-//                        [self torrentRemovedAlert:(lt::torrent_alert *)alert];
-                        continue; // Do not notify about update cause it was already removed
-                    } break;
-
-                    case lt::torrent_deleted_alert::alert_type: {
-                        continue;
-                    } break;
-
-                    case lt::torrent_finished_alert::alert_type: {
-                        [self torrentStateChanged:(lt::torrent_alert *)alert];
-                    } break;
-
-                    case lt::torrent_paused_alert::alert_type: {
-                        [self torrentStateChanged:(lt::torrent_alert *)alert];
-                    } break;
-
-                    case lt::torrent_resumed_alert::alert_type: {
-                        [self torrentStateChanged:(lt::torrent_alert *)alert];
-                    } break;
-
-                    case lt::torrent_error_alert::alert_type: {
-                        NSLog(@"TorrentKit torrent_error - %s", alert->message().c_str());
-                        [self torrentInputOutputError:(lt::torrent_alert *) alert];
-                    } break;
-
-                    case lt::file_error_alert::alert_type: {
-                        NSLog(@"TorrentKit file_error - %s", alert->message().c_str());
-                    } break;
-
-                    case lt::session_error_alert::alert_type: {
-                        NSLog(@"TorrentKit session_error - %s", alert->message().c_str());
-                    } break;
-
-                    case lt::peer_error_alert::alert_type: {
-                        NSLog(@"TorrentKit peer_error - %s", alert->message().c_str());
-                    } break;
-
-                    case lt::tracker_announce_alert::alert_type:
-                    case lt::tracker_error_alert::alert_type:
-                    case lt::tracker_reply_alert::alert_type:
-                    case lt::tracker_warning_alert::alert_type: {
-                        NSLog(@"TorrentKit - %s", alert->message().c_str());
-                        [self handleTrackerAlert: (lt::tracker_alert *)alert];
-                    } break;
-
-                    case lt::save_resume_data_alert::alert_type: {
-                        [self torrentSaveFastResume:(lt::save_resume_data_alert *)alert];
-                        continue; // Not sure if need notify update
-                    } break;
-
-                    case lt::fastresume_rejected_alert::alert_type: {
-
-                    } break;
-
-                        // Skip log alerts
-                    case lt::log_alert::alert_type: {
-                        continue;
-                    } break;
-
-                    case lt::torrent_log_alert::alert_type: {
-                        continue;
-                    } break;
-
-                    case lt::peer_log_alert::alert_type: {
-                        continue;
-                    } break;
-
-                    default: break;
+            try {
+                auto alert_ptr = _session->wait_for_alert(max_wait);
+                std::vector<lt::alert *> alerts_queue;
+                if (alert_ptr != nullptr) {
+                    _session->pop_alerts(&alerts_queue);
+                } else {
+                    continue;
                 }
 
-//                if (alert->message().size() > 0) {
-//                    NSLog(@"TorrentKit - %s", alert->message().c_str());
-//                }
+                for (auto it = alerts_queue.begin(); it != alerts_queue.end(); ++it) {
+                    auto alert = (*it);
+                    //            NSLog(@"type:%d msg:%s", alert->type(), alert->message().c_str());
+                    switch (alert->type()) {
+                        case lt::metadata_received_alert::alert_type: {
+                            [self metadataReceivedAlert:(lt::torrent_alert *)alert];
+                        } break;
 
-                if (dynamic_cast<lt::torrent_alert *>(alert) != nullptr) {
-                    auto th = ((lt::torrent_alert *)alert)->handle;
-                    if (!th.is_valid()) { continue; }
+                        case lt::metadata_failed_alert::alert_type: {
+                            //                    [self metadataReceivedAlert:(lt::torrent_alert *)alert];
+                        } break;
 
-                    if (th.need_save_resume_data())
-                        th.save_resume_data();
+                        case lt::block_finished_alert::alert_type: {
+                        } break;
 
-                    [self notifyDelegatesWithUpdate:th];
+                        case lt::add_torrent_alert::alert_type: {
+                            [self torrentAddedAlert:(lt::torrent_alert *)alert];
+                        } break;
+
+                        case lt::torrent_removed_alert::alert_type: {
+                            //                        [self torrentRemovedAlert:(lt::torrent_alert *)alert];
+                            continue; // Do not notify about update cause it was already removed
+                        } break;
+
+                        case lt::torrent_deleted_alert::alert_type: {
+                            continue;
+                        } break;
+
+                        case lt::torrent_finished_alert::alert_type: {
+                            [self torrentStateChanged:(lt::torrent_alert *)alert];
+                        } break;
+
+                        case lt::torrent_paused_alert::alert_type: {
+                            [self torrentStateChanged:(lt::torrent_alert *)alert];
+                        } break;
+
+                        case lt::torrent_resumed_alert::alert_type: {
+                            [self torrentStateChanged:(lt::torrent_alert *)alert];
+                        } break;
+
+                        case lt::torrent_error_alert::alert_type: {
+                            NSLog(@"TorrentKit torrent_error - %s", alert->message().c_str());
+                            [self torrentInputOutputError:(lt::torrent_alert *) alert];
+                        } break;
+
+                        case lt::file_error_alert::alert_type: {
+                            NSLog(@"TorrentKit file_error - %s", alert->message().c_str());
+                        } break;
+
+                        case lt::session_error_alert::alert_type: {
+                            NSLog(@"TorrentKit session_error - %s", alert->message().c_str());
+                        } break;
+
+                        case lt::peer_error_alert::alert_type: {
+                            NSLog(@"TorrentKit peer_error - %s", alert->message().c_str());
+                        } break;
+
+                        case lt::tracker_announce_alert::alert_type:
+                        case lt::tracker_error_alert::alert_type:
+                        case lt::tracker_reply_alert::alert_type:
+                        case lt::tracker_warning_alert::alert_type: {
+                            NSLog(@"TorrentKit - %s", alert->message().c_str());
+                            [self handleTrackerAlert: (lt::tracker_alert *)alert];
+                        } break;
+
+                        case lt::save_resume_data_alert::alert_type: {
+                            [self torrentSaveFastResume:(lt::save_resume_data_alert *)alert];
+                            continue; // Not sure if need notify update
+                        } break;
+
+                        case lt::fastresume_rejected_alert::alert_type: {
+
+                        } break;
+
+                            // Skip log alerts
+                        case lt::log_alert::alert_type: {
+                            continue;
+                        } break;
+
+                        case lt::torrent_log_alert::alert_type: {
+                            continue;
+                        } break;
+
+                        case lt::peer_log_alert::alert_type: {
+                            continue;
+                        } break;
+
+                        default: break;
+                    }
+
+                    //                if (alert->message().size() > 0) {
+                    //                    NSLog(@"TorrentKit - %s", alert->message().c_str());
+                    //                }
+
+                    if (dynamic_cast<lt::torrent_alert *>(alert) != nullptr) {
+                        auto th = ((lt::torrent_alert *)alert)->handle;
+                        if (!th.is_valid()) { continue; }
+
+                        if (th.need_save_resume_data())
+                            th.save_resume_data();
+
+                        [self notifyDelegatesWithUpdate:th];
+                    }
                 }
-            }
 
-            alerts_queue.clear();
+                alerts_queue.clear();
+            } catch (...) {
+                NSError *error = [self errorWithCode:ErrorCodeAlertFail message:@"Failed to handle alerts"];
+                NSLog(@"%@", error);
+            }
             [NSThread sleepForTimeInterval:0.1];
         }
     }
