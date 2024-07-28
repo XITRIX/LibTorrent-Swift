@@ -92,6 +92,8 @@ NS_SWIFT_NAME(TorrentHandle.Snapshot)
 
 - (void)addTracker:(NSString *)url;
 - (void)removeTrackers:(NSArray<NSString *> *)urls;
+- (void)forceReannounce;
+- (void)forceReannounce:(int)index;
 
 - (void)updateSnapshot;
 @end

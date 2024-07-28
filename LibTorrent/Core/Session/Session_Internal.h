@@ -21,6 +21,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (strong, nonatomic) NSThread *eventsThread;
 @property (strong, nonatomic) NSHashTable *delegates;
 @property (strong, nonatomic) NSMutableDictionary<TorrentHashes*, TorrentHandle*> *torrentsMap;
+@property (strong, nonatomic, nullable) NSString *lastExternalIP;
 
 - (std::unordered_map<lt::sha1_hash, std::unordered_map<std::string, std::unordered_map<lt::tcp::endpoint, std::unordered_map<int, int>>>>) updatedTrackerStatuses;
 @end

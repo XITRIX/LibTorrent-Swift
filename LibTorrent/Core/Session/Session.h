@@ -66,6 +66,8 @@ typedef NS_ENUM(NSUInteger, ErrorCode) {
 - (TorrentHandle* _Nullable)addTorrent:(id<Downloadable>)torrent to: (NSUUID* _Nullable)storage;
 - (void)removeTorrent:(TorrentHandle *)torrent deleteFiles:(BOOL)deleteFiles;
 
+- (void)reannounceToAllTrackers;
+
 - (void)pause;
 - (void)resume;
 

@@ -91,6 +91,14 @@ std::unordered_map<lt::sha1_hash, std::unordered_map<std::string, std::unordered
     _session->resume();
 }
 
+- (void)reannounceToAllTrackers {
+    for (TorrentHandle* torrent in _torrentsMap.allValues) {
+        try {
+            torrent.torrentHandle.force_reannounce(0, -1, lt::torrent_handle::ignore_min_interval);
+        } catch (const std::exception &) {}
+    }
+}
+
 - (void)dealloc {
     delete _session;
 }
@@ -297,6 +305,10 @@ std::unordered_map<lt::sha1_hash, std::unordered_map<std::string, std::unordered
                             [self handleTrackerAlert: (lt::tracker_alert *)alert];
                         } break;
 
+                        case lt::external_ip_alert::alert_type: {
+                            [self handleExternalIPAlert: (lt::external_ip_alert *)alert];
+                        } break;
+
                         case lt::save_resume_data_alert::alert_type: {
                             [self torrentSaveFastResume:(lt::save_resume_data_alert *)alert];
                             continue; // Not sure if need notify update
@@ -432,6 +444,16 @@ std::unordered_map<lt::sha1_hash, std::unordered_map<std::string, std::unordered
 #endif
         updatedTrackerStatuses[hash][std::string(alert->tracker_url())][alert->local_endpoint][protocolVersionNum] = numPeers;
     }
+}
+
+-(void)handleExternalIPAlert:(lt::external_ip_alert *)alert {
+    auto externalIP = [[NSString alloc] initWithUTF8String: alert->external_address.to_string().c_str()];
+    if (_lastExternalIP != externalIP) {
+        if (_lastExternalIP != NULL) // Probably need add isReannounceWhenAddressChangedEnabled setting
+            [self reannounceToAllTrackers];
+        _lastExternalIP = externalIP;
+    }
+
 }
 
 - (void)torrentRemoved:(lt::torrent_handle)handle {

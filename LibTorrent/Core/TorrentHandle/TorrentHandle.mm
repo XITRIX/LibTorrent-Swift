@@ -524,6 +524,14 @@
     _torrentHandle.force_reannounce();
 }
 
+- (void)forceReannounce {
+    [self forceReannounce: -1];
+}
+
+- (void)forceReannounce:(int)index {
+    _torrentHandle.force_reannounce(0, index);
+}
+
 - (void)updateSnapshot {
     if (!self.isValid) return;
 
