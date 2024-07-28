@@ -29,6 +29,10 @@
 #import "libtorrent/bencode.hpp"
 #import "libtorrent/bdecode.hpp"
 
+#include <libtorrent/extensions/ut_metadata.hpp>
+#include <libtorrent/extensions/ut_pex.hpp>
+#include <libtorrent/extensions/smart_ban.hpp>
+
 #include <fstream>
 
 static NSErrorDomain ErrorDomain = @"ru.xitrix.TorrentKit.Session.error";
@@ -59,6 +63,12 @@ std::unordered_map<lt::sha1_hash, std::unordered_map<std::string, std::unordered
 
         _session = new lt::session(_settings.settingsPack);
 
+        // Enabling plugins
+        _session->add_extension(&lt::create_smart_ban_plugin);
+        _session->add_extension(&lt::create_ut_metadata_plugin);
+        _session->add_extension(&lt::create_ut_pex_plugin);
+
+        // Init session properties
         _filesQueue = dispatch_queue_create([FileEntriesQueueIdentifier UTF8String], DISPATCH_QUEUE_SERIAL);
         _torrentsMap = [[NSMutableDictionary alloc] init];
         _delegates = [NSHashTable weakObjectsHashTable];
