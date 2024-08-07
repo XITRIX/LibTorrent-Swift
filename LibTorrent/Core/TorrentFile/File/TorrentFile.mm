@@ -41,8 +41,9 @@
         NSMutableArray *results = [[NSMutableArray alloc] init];
 
         for (int i=0; i<files.num_files(); i++) {
-            auto path = files.file_path(i);
-            auto size = files.file_size(i);
+            auto index = static_cast<lt::file_index_t>(i);
+            auto path = files.file_path(index);
+            auto size = files.file_size(index);
 
             FileEntry *fileEntry = [[FileEntry alloc] init];
             fileEntry.index = i;
@@ -83,8 +84,9 @@
         NSMutableArray *results = [[NSMutableArray alloc] init];
 
         for (int i=0; i<files.num_files(); i++) {
-            auto path = files.file_path(i);
-            auto size = files.file_size(i);
+            auto index = static_cast<lt::file_index_t>(i);
+            auto path = files.file_path(index);
+            auto size = files.file_size(index);
 
             FileEntry *fileEntry = [[FileEntry alloc] init];
             fileEntry.index = i;
@@ -177,7 +179,7 @@
         // Get files priorities from fast resume and apply to TorrentFile storage
         if (_priorities.count == resume.file_priorities.size()) {
             for (int i = 0; i < _priorities.count; i++) {
-                _priorities[i] = [NSNumber numberWithInt: resume.file_priorities[i]];
+                _priorities[i] = [NSNumber numberWithInt: static_cast<uint8_t>(resume.file_priorities[i])];
             }
         }
     }

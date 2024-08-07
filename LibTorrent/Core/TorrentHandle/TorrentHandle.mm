@@ -167,6 +167,7 @@
         case lt::torrent_status::state_t::seeding: return TorrentHandleStateSeeding;
 //        case lt::torrent_status::state_t::allocating: return TorrentHandleStateAllocating;
         case lt::torrent_status::state_t::checking_resume_data: return TorrentHandleStateCheckingResumeData;
+        default: return TorrentHandleStateCheckingFiles; // This is an error and should never be the case
     }
 }
 
@@ -264,7 +265,7 @@
 
 - (BOOL)isPaused {
     auto ts = _torrentHandle.status();
-    return ts.flags & lt::torrent_flags::paused;
+    return static_cast<bool>(ts.flags & lt::torrent_flags::paused);
 }
 
 - (BOOL)isFinished {
@@ -279,7 +280,7 @@
 
 - (BOOL)isSequential {
     auto ts = _torrentHandle.status();
-    return ts.flags & lt::torrent_flags::sequential_download;
+    return static_cast<bool>(ts.flags & lt::torrent_flags::sequential_download);
 }
 
 - (NSArray<NSNumber *> *)pieces {
@@ -290,7 +291,7 @@
         return NULL;
 
     auto array = [[NSMutableArray<NSNumber *> alloc] init];
-    for (int i = 0; i < info->end_piece(); i++) {
+    for (auto i = static_cast<lt::piece_index_t>(0); i < info->end_piece(); i++) {
         [array addObject: [NSNumber numberWithBool: stat.pieces.get_bit(i)]];
     }
     return array;
@@ -390,10 +391,11 @@
     std::vector<int64_t> progresses;
     _torrentHandle.file_progress(progresses);
 
-    auto name = std::string(files.file_name(index));
-    auto path = files.file_path(index);
-    auto size = files.file_size(index);
-    uint8_t priority = priorities[index];
+    auto ltIndex = static_cast<lt::file_index_t>(index);
+    auto name = std::string(files.file_name(ltIndex));
+    auto path = files.file_path(ltIndex);
+    auto size = files.file_size(ltIndex);
+    auto priority = static_cast<uint8_t>(priorities[index]);
 
     FileEntry *fileEntry = [[FileEntry alloc] init];
     fileEntry.index = index;
@@ -403,8 +405,8 @@
     fileEntry.downloaded = progresses[index];
     fileEntry.priority = (FilePriority) priority;
 
-    const auto fileSize = files.file_size(index);// > 0 ? files.file_size(i) : 0;
-    const auto fileOffset = files.file_offset(index);
+    const auto fileSize = files.file_size(ltIndex);// > 0 ? files.file_size(i) : 0;
+    const auto fileOffset = files.file_offset(ltIndex);
 
     const long long beginIdx = (fileOffset / pieceLength);
     const long long endIdx = ((fileOffset + fileSize) / pieceLength);
@@ -414,7 +416,8 @@
     fileEntry.num_pieces = (int)(endIdx - beginIdx);
     auto array = [[NSMutableArray<NSNumber *> alloc] init];
     for (int j = 0; j < fileEntry.num_pieces; j++) {
-        [array addObject: [NSNumber numberWithBool: stat.pieces.get_bit(j + (int)beginIdx)]];
+        auto index = static_cast<lt::piece_index_t>(j + (int)beginIdx);
+        [array addObject: [NSNumber numberWithBool: stat.pieces.get_bit(index)]];
     }
     fileEntry.pieces = array;
     return fileEntry;
@@ -425,7 +428,7 @@
     NSMutableArray *results = [[NSMutableArray alloc] init];
     auto ti = th.torrent_file();
     if (ti == nullptr) {
-        NSLog(@"No metadata for torrent with name: %s", th.status().name.c_str());
+//        NSLog(@"No metadata for torrent with name: %s", th.status().name.c_str());
         return [results copy];
     }
 
@@ -438,18 +441,19 @@
     auto files = info->files();
     const int pieceLength = info->piece_length();
     
-    for (int i=0; i<files.num_files(); i++) {
+    for (int index = 0; index < files.num_files(); index++) {
+        auto i = static_cast<lt::file_index_t>(index);
         auto name = std::string(files.file_name(i));
         auto path = files.file_path(i);
         auto size = files.file_size(i);
-        uint8_t priority = priorities[i];
+        uint8_t priority = static_cast<uint8_t>(priorities[index]);
 
         FileEntry *fileEntry = [[FileEntry alloc] init];
-        fileEntry.index = i;
+        fileEntry.index = index;
         fileEntry.name = [NSString stringWithUTF8String:name.c_str()];
         fileEntry.path = [NSString stringWithUTF8String:path.c_str()];
         fileEntry.size = size;
-        fileEntry.downloaded = progresses[i];
+        fileEntry.downloaded = progresses[index];
         fileEntry.priority = (FilePriority) priority;
 
         const auto fileSize = files.file_size(i);// > 0 ? files.file_size(i) : 0;
@@ -463,7 +467,8 @@
         fileEntry.num_pieces = (int)(endIdx - beginIdx);
         auto array = [[NSMutableArray<NSNumber *> alloc] init];
         for (int j = 0; j < fileEntry.num_pieces; j++) {
-            [array addObject: [NSNumber numberWithBool: stat.pieces.get_bit(j + (int)beginIdx)]];
+            auto index = static_cast<lt::piece_index_t>(j + (int)beginIdx);
+            [array addObject: [NSNumber numberWithBool: stat.pieces.get_bit(index)]];
         }
         fileEntry.pieces = array;
 
@@ -484,7 +489,10 @@
 }
 
 - (void)setFilePriority:(FilePriority)priority at:(NSInteger)fileIndex {
-    _torrentHandle.file_priority((int)fileIndex, priority);
+    auto ltIndex = static_cast<lt::file_index_t>((int)fileIndex);
+    auto ltPriority = static_cast<lt::download_priority_t>(priority);
+
+    _torrentHandle.file_priority(std::move(ltIndex), std::move(ltPriority));
     _torrentHandle.save_resume_data();
 }
 
@@ -492,7 +500,7 @@
     auto priorities = _torrentHandle.get_file_priorities();
     for (int i = 0; i < fileIndexes.count; i++) {
         int index = (int)fileIndexes[i].integerValue;
-        priorities[index] = priority;
+        priorities[index] = static_cast<lt::download_priority_t>(priority);
     }
     _torrentHandle.prioritize_files(priorities);
     _torrentHandle.save_resume_data();
@@ -501,7 +509,7 @@
 - (void)setAllFilesPriority:(FilePriority)priority {
     std::vector<lt::download_priority_t> array;
     for (int i = 0; i < _torrentHandle.torrent_file().get()->files().num_files(); i++) {
-        array.push_back(priority);
+        array.push_back(static_cast<lt::download_priority_t>(priority));
     }
     _torrentHandle.prioritize_files(array);
     _torrentHandle.save_resume_data();
