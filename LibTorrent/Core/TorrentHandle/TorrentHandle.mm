@@ -129,7 +129,7 @@
 
     if (ts.has_metadata) {
         auto info = _torrentHandle.torrent_file().get();
-        return [[NSString alloc] initWithFormat:@"%s", info->creator().c_str()];
+        return [NSString stringWithCString:info->creator().c_str() encoding: NSUTF8StringEncoding];
     }
 
     return NULL;
@@ -140,7 +140,7 @@
 
     if (ts.has_metadata) {
         auto info = _torrentHandle.torrent_file().get();
-        return [[NSString alloc] initWithFormat:@"%s", info->comment().c_str()];
+        return [NSString stringWithCString:info->comment().c_str() encoding: NSUTF8StringEncoding];
     }
 
     return NULL;
@@ -299,7 +299,7 @@
 
 - (NSString *)magnetLink {
     auto uri = lt::make_magnet_uri(_torrentHandle);
-    return [[NSString alloc] initWithFormat:@"%s", uri.c_str()];
+    return [NSString stringWithCString:uri.c_str() encoding: NSUTF8StringEncoding];
 }
 
 - (NSString *)torrentFilePath {

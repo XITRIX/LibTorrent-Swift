@@ -30,7 +30,7 @@ NSDate* fromLTTimePoint32(const lt::time_point32 &timePoint)
     self = [self init];
     if (self) {
         _tire = announceEntry.tier;
-        _trackerUrl = [[NSString alloc] initWithFormat:@"%s", announceEntry.url.c_str()];
+        _trackerUrl = [NSString stringWithCString:announceEntry.url.c_str() encoding: NSUTF8StringEncoding];
 
         std::vector<int> protocols;
         if (torrentHandle.infoHashes.hasV1) {

@@ -200,7 +200,7 @@
 }
 
 - (NSString *)name {
-    return [[NSString alloc] initWithFormat:@"%s", self.torrent_info.name().c_str()];
+    return [NSString stringWithCString: self.torrent_info.name().c_str() encoding: NSUTF8StringEncoding];
 }
 
 - (NSArray<FileEntry *> *)files {
