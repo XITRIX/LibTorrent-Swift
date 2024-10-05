@@ -615,7 +615,7 @@ std::unordered_map<lt::sha1_hash, std::unordered_map<std::string, std::unordered
 - (void)removeTorrentFileWithInfo:(std::shared_ptr<const lt::torrent_info>)ti {
     if (ti == nullptr) { return; }
 
-    NSString *fileName = [NSString stringWithFormat:@"%s.torrent", (*ti).name().c_str()];
+    NSString *fileName = [NSString stringWithFormat:@"%s.torrent", ti->name().c_str()];
     NSString *filePath = [_torrentsPath stringByAppendingPathComponent:fileName];
 
     NSError *error;
