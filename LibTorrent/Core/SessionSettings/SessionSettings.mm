@@ -81,8 +81,7 @@ lt::settings_pack::proxy_type_t proxyTypeConverter(SessionSettings *pack) {
     }
 
     // Ports
-    if (!_useDefaultPort)
-        settings.set_int(lt::settings_pack::max_retry_port_bind, (int)_portBindRetries);
+    settings.set_int(lt::settings_pack::max_retry_port_bind, (int)_portBindRetries);
 
     // Interfaces
     settings.set_str(lt::settings_pack::outgoing_interfaces, [_outgoingInterfaces UTF8String]);
