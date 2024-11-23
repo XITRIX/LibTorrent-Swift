@@ -85,7 +85,7 @@
 @implementation TorrentHandleSnapshot
 @end
 
-@implementation TorrentHandle : TorrentHandleSnapshot
+@implementation TorrentHandle
 
 - (instancetype)initWith:(lt::torrent_handle)torrentHandle inSession:(Session *)session {
     self = [self init];
@@ -119,14 +119,11 @@
     return [[TorrentHashes alloc] initWith:ih];
 }
 
-- (NSString *)name {
-    auto ts = _torrentHandle.status();
+- (NSString *)nameFromStatus: (lt::torrent_status)ts {
     return [NSString stringWithCString:ts.name.c_str() encoding: NSUTF8StringEncoding];
 }
 
-- (NSString * _Nullable)creator {
-    auto ts = _torrentHandle.status();
-
+- (NSString * _Nullable)creatorFromStatus: (lt::torrent_status)ts {
     if (ts.has_metadata) {
         auto info = _torrentHandle.torrent_file().get();
         return [NSString stringWithCString:info->creator().c_str() encoding: NSUTF8StringEncoding];
@@ -135,9 +132,7 @@
     return NULL;
 }
 
-- (NSString * _Nullable)comment {
-    auto ts = _torrentHandle.status();
-
+- (NSString * _Nullable)commentFromStatus: (lt::torrent_status)ts {
     if (ts.has_metadata) {
         auto info = _torrentHandle.torrent_file().get();
         return [NSString stringWithCString:info->comment().c_str() encoding: NSUTF8StringEncoding];
@@ -146,9 +141,7 @@
     return NULL;
 }
 
-- (NSDate * _Nullable)creationDate {
-    auto ts = _torrentHandle.status();
-
+- (NSDate * _Nullable)creationDateFromStatus: (lt::torrent_status)ts {
     if (ts.has_metadata) {
         auto info = _torrentHandle.torrent_file().get();
         return [[NSDate alloc] initWithTimeIntervalSince1970:info->creation_date()];
@@ -157,9 +150,8 @@
     return NULL;
 }
 
-- (TorrentHandleState)state {
-    auto status = _torrentHandle.status();
-    switch (status.state) {
+- (TorrentHandleState)stateFromStatus: (lt::torrent_status)ts {
+    switch (ts.state) {
         case lt::torrent_status::state_t::checking_files: return TorrentHandleStateCheckingFiles;
         case lt::torrent_status::state_t::downloading_metadata: return TorrentHandleStateDownloadingMetadata;
         case lt::torrent_status::state_t::downloading: return TorrentHandleStateDownloading;
@@ -171,65 +163,54 @@
     }
 }
 
-- (double)progress {
-    auto status = _torrentHandle.status();
+- (double)progressFromStatus: (lt::torrent_status)status {
     return status.progress;
 }
 
-- (double)progressWanted {
-    return (double) self.totalWantedDone / (double) self.totalWanted;
+- (double)progressWantedFromStatus: (lt::torrent_status)status {
+    return (double) [self totalWantedDoneFromStatus:status] / (double) [self totalWantedFromStatus:status];
 }
 
-- (NSUInteger)numberOfPeers {
-    auto status = _torrentHandle.status();
+- (NSUInteger)numberOfPeersFromStatus: (lt::torrent_status)status {
     return status.num_peers;
 }
 
-- (NSUInteger)numberOfSeeds {
-    auto status = _torrentHandle.status();
+- (NSUInteger)numberOfSeedsFromStatus: (lt::torrent_status)status {
     return status.num_seeds;
 }
 
-- (NSUInteger)numberOfLeechers {
-    return self.numberOfPeers - self.numberOfPeers;
+- (NSUInteger)numberOfLeechersFromStatus: (lt::torrent_status)status {
+    return [self numberOfPeersFromStatus:status] - [self numberOfSeedsFromStatus:status];
 }
 
-- (NSUInteger)numberOfTotalPeers {
-    auto status = _torrentHandle.status();
+- (NSUInteger)numberOfTotalPeersFromStatus: (lt::torrent_status)status {
     int peers = status.num_complete + status.num_incomplete;
     return peers > 0 ? peers : status.list_peers;
 }
 
-- (NSUInteger)numberOfTotalSeeds {
-    auto status = _torrentHandle.status();
+- (NSUInteger)numberOfTotalSeedsFromStatus: (lt::torrent_status)status {
     int complete = status.num_complete;
     return complete > 0 ? complete : status.list_seeds;
 }
 
-- (NSUInteger)numberOfTotalLeechers {
-    auto status = _torrentHandle.status();
+- (NSUInteger)numberOfTotalLeechersFromStatus: (lt::torrent_status)status {
     int incomplete = status.num_incomplete;
     return incomplete > 0 ? incomplete : status.list_peers - status.list_seeds;
 }
 
-- (uint64_t)downloadRate {
-    auto status = _torrentHandle.status();
+- (uint64_t)downloadRateFromStatus: (lt::torrent_status)status {
     return status.download_rate;
 }
 
-- (uint64_t)uploadRate {
-    auto status = _torrentHandle.status();
+- (uint64_t)uploadRateFromStatus: (lt::torrent_status)status {
     return status.upload_rate;
 }
 
-- (BOOL)hasMetadata {
-    auto status = _torrentHandle.status();
+- (BOOL)hasMetadataFromStatus: (lt::torrent_status)status {
     return status.has_metadata;
 }
 
-- (uint64_t)total {
-    auto ts = _torrentHandle.status();
-
+- (uint64_t)totalFromStatus: (lt::torrent_status)ts {
     if (ts.has_metadata) {
         auto info = _torrentHandle.torrent_file().get();
         return info->total_size();
@@ -238,56 +219,46 @@
     return NULL;
 }
 
-- (uint64_t)totalDone {
-    auto ts = _torrentHandle.status();
+- (uint64_t)totalDoneFromStatus: (lt::torrent_status)ts {
     return ts.total_done;
 }
 
-- (uint64_t)totalWanted {
-    auto ts = _torrentHandle.status();
+- (uint64_t)totalWantedFromStatus: (lt::torrent_status)ts {
     return ts.total_wanted;
 }
 
-- (uint64_t)totalWantedDone {
-    auto ts = _torrentHandle.status();
+- (uint64_t)totalWantedDoneFromStatus: (lt::torrent_status)ts {
     return ts.total_wanted_done;
 }
 
-- (uint64_t)totalDownload {
-    auto ts = _torrentHandle.status();
+- (uint64_t)totalDownloadFromStatus: (lt::torrent_status)ts {
     return ts.total_download;
 }
 
-- (uint64_t)totalUpload {
-    auto ts = _torrentHandle.status();
+- (uint64_t)totalUploadFromStatus: (lt::torrent_status)ts {
     return ts.total_upload;
 }
 
-- (BOOL)isPaused {
-    auto ts = _torrentHandle.status();
+- (BOOL)isPausedFromStatus: (lt::torrent_status)ts {
     return static_cast<bool>(ts.flags & lt::torrent_flags::paused);
 }
 
-- (BOOL)isFinished {
-    auto ts = _torrentHandle.status();
+- (BOOL)isFinishedFromStatus: (lt::torrent_status)ts {
     return ts.total_wanted == ts.total_wanted_done;
 }
 
-- (BOOL)isSeed {
-    auto ts = _torrentHandle.status();
+- (BOOL)isSeedFromStatus: (lt::torrent_status)ts {
     return ts.is_seeding;
 }
 
-- (BOOL)isSequential {
-    auto ts = _torrentHandle.status();
+- (BOOL)isSequentialFromStatus: (lt::torrent_status)ts {
     return static_cast<bool>(ts.flags & lt::torrent_flags::sequential_download);
 }
 
-- (NSArray<NSNumber *> *)pieces {
-    auto stat = _torrentHandle.status();
+- (NSArray<NSNumber *> *)piecesFromStatus: (lt::torrent_status)stat {
     auto info = _torrentHandle.torrent_file().get();
 
-    if (!self.hasMetadata)
+    if (![self hasMetadataFromStatus:stat])
         return NULL;
 
     auto array = [[NSMutableArray<NSNumber *> alloc] init];
@@ -302,8 +273,8 @@
     return [NSString stringWithCString:uri.c_str() encoding: NSUTF8StringEncoding];
 }
 
-- (NSString *)torrentFilePath {
-    if (!self.isValid || !self.hasMetadata) return NULL;
+- (NSString *)torrentFilePathFromStatus: (lt::torrent_status)stat {
+    if (!self.isValid || ![self hasMetadataFromStatus:stat]) return NULL;
 
     auto fileInfo = _torrentHandle.torrent_file().get();
     NSString *fileName = [NSString stringWithFormat:@"%s.torrent", fileInfo->name().c_str()];
@@ -315,10 +286,10 @@
     return filePath;
 }
 
-- (NSURL *)downloadPath {
-    if (!self.isValid || !self.hasMetadata) return NULL;
-    
-    auto savePath = _torrentHandle.status().save_path;
+- (NSURL *)downloadPathFromStatus: (lt::torrent_status)stat {
+    if (!self.isValid || ![self hasMetadataFromStatus:stat]) return NULL;
+
+    auto savePath = stat.save_path;
 //    auto url = [NSString stringWithFormat:@"file://%s", savePath.c_str()];
 //    return [NSURL URLWithString: url].URLByStandardizingPath;
     auto path = [NSString stringWithUTF8String: savePath.c_str()];
@@ -359,7 +330,8 @@
 }
 
 - (void)reload {
-    auto torrentFile = [[TorrentFile alloc] initUnsafeWithFileAtURL: [[NSURL alloc] initFileURLWithPath: self.torrentFilePath]]; //torrentFilePath
+    auto stat = _torrentHandle.status();
+    auto torrentFile = [[TorrentFile alloc] initUnsafeWithFileAtURL: [[NSURL alloc] initFileURLWithPath: [self torrentFilePathFromStatus:stat]]]; //torrentFilePath
     _session.session->remove_torrent(_torrentHandle);
     auto newTorrentHandle = [_session addTorrent: torrentFile];
     _torrentHandle = newTorrentHandle.torrentHandle;
@@ -377,53 +349,7 @@
     _torrentHandle.save_resume_data();
 }
 
-- (NSUInteger) filesCount {
-    return _torrentHandle.torrent_file()->files().num_files();
-}
-
-- (FileEntry *)getFileAt:(int)index {
-    auto stat = _torrentHandle.status();
-    auto info = _torrentHandle.torrent_file();
-    auto files = info->files();
-    auto priorities = _torrentHandle.get_file_priorities();
-    const int pieceLength = info->piece_length();
-
-    std::vector<int64_t> progresses;
-    _torrentHandle.file_progress(progresses);
-
-    auto ltIndex = static_cast<lt::file_index_t>(index);
-    auto name = std::string(files.file_name(ltIndex));
-    auto path = files.file_path(ltIndex);
-    auto size = files.file_size(ltIndex);
-    auto priority = static_cast<uint8_t>(priorities[index]);
-
-    FileEntry *fileEntry = [[FileEntry alloc] init];
-    fileEntry.index = index;
-    fileEntry.name = [NSString stringWithUTF8String:name.c_str()];
-    fileEntry.path = [NSString stringWithUTF8String:path.c_str()];
-    fileEntry.size = size;
-    fileEntry.downloaded = progresses[index];
-    fileEntry.priority = (FilePriority) priority;
-
-    const auto fileSize = files.file_size(ltIndex);// > 0 ? files.file_size(i) : 0;
-    const auto fileOffset = files.file_offset(ltIndex);
-
-    const long long beginIdx = (fileOffset / pieceLength);
-    const long long endIdx = ((fileOffset + fileSize) / pieceLength);
-
-    fileEntry.begin_idx = beginIdx;
-    fileEntry.end_idx = endIdx;
-    fileEntry.num_pieces = (int)(endIdx - beginIdx);
-    auto array = [[NSMutableArray<NSNumber *> alloc] init];
-    for (int j = 0; j < fileEntry.num_pieces; j++) {
-        auto index = static_cast<lt::piece_index_t>(j + (int)beginIdx);
-        [array addObject: [NSNumber numberWithBool: stat.pieces.get_bit(index)]];
-    }
-    fileEntry.pieces = array;
-    return fileEntry;
-}
-
-- (NSArray<FileEntry *> *)files {
+- (NSArray<FileEntry *> *)filesFromStatus: (lt::torrent_status)stat {
     auto th = _torrentHandle;
     NSMutableArray *results = [[NSMutableArray alloc] init];
     auto ti = th.torrent_file();
@@ -437,7 +363,6 @@
     auto priorities = th.get_file_priorities();
 
     auto info = ti.get();
-    auto stat = th.status();
     auto files = info->files();
     const int pieceLength = info->piece_length();
     
@@ -545,42 +470,44 @@
 
     auto snapshot = [[TorrentHandleSnapshot alloc] init];
     try {
+        auto stat = _torrentHandle.status();
+
         snapshot.isValid = self.isValid;
         snapshot.infoHashes = self.infoHashes;
-        snapshot.name = self.name;
-        snapshot.state = self.state;
-        snapshot.creator = self.creator;
-        snapshot.comment = self.comment;
-        snapshot.creationDate = self.creationDate;
-        snapshot.progress = self.progress;
-        snapshot.progressWanted = self.progressWanted;
-        snapshot.numberOfPeers = self.numberOfPeers;
-        snapshot.numberOfSeeds = self.numberOfSeeds;
-        snapshot.numberOfLeechers = self.numberOfLeechers;
-        snapshot.numberOfTotalPeers = self.numberOfTotalPeers;
-        snapshot.numberOfTotalSeeds = self.numberOfTotalSeeds;
-        snapshot.numberOfTotalLeechers = self.numberOfTotalLeechers;
-        snapshot.downloadRate = self.downloadRate;
-        snapshot.uploadRate = self.uploadRate;
-        snapshot.hasMetadata = self.hasMetadata;
-        snapshot.total = self.total;
-        snapshot.totalDone = self.totalDone;
-        snapshot.totalWanted = self.totalWanted;
-        snapshot.totalWantedDone = self.totalWantedDone;
-        snapshot.totalDownload = self.totalDownload;
-        snapshot.totalUpload = self.totalUpload;
-        snapshot.isPaused = self.isPaused;
-        snapshot.isFinished = self.isFinished;
-        snapshot.isSeed = self.isSeed;
-        snapshot.isSequential = self.isSequential;
-        snapshot.pieces = self.pieces;
-        snapshot.files = self.files;
-        snapshot.trackers = self.trackers;
-        snapshot.magnetLink = self.magnetLink;
-        snapshot.torrentFilePath = self.torrentFilePath;
-        snapshot.downloadPath = self.downloadPath;
-        snapshot.storageUUID = self.storageUUID;
-        snapshot.isStorageMissing = self.isStorageMissing;
+        snapshot.name = [self nameFromStatus:stat];
+        snapshot.state = [self stateFromStatus:stat];
+        snapshot.creator = [self creatorFromStatus:stat];
+        snapshot.comment = [self commentFromStatus:stat];
+        snapshot.creationDate = [self creationDateFromStatus:stat];
+        snapshot.progress = [self progressFromStatus:stat];
+        snapshot.progressWanted = [self progressWantedFromStatus:stat];
+        snapshot.numberOfPeers = [self numberOfPeersFromStatus:stat];
+        snapshot.numberOfSeeds = [self numberOfSeedsFromStatus:stat];
+        snapshot.numberOfLeechers = [self numberOfLeechersFromStatus:stat];
+        snapshot.numberOfTotalPeers = [self numberOfTotalPeersFromStatus:stat];
+        snapshot.numberOfTotalSeeds = [self numberOfTotalSeedsFromStatus:stat];
+        snapshot.numberOfTotalLeechers = [self numberOfTotalLeechersFromStatus:stat];
+        snapshot.downloadRate = [self downloadRateFromStatus:stat];
+        snapshot.uploadRate = [self uploadRateFromStatus:stat];
+        snapshot.hasMetadata = [self hasMetadataFromStatus:stat];
+        snapshot.total = [self totalFromStatus:stat];
+        snapshot.totalDone = [self totalDoneFromStatus:stat];
+        snapshot.totalWanted = [self totalWantedFromStatus:stat];
+        snapshot.totalWantedDone = [self totalWantedDoneFromStatus:stat];
+        snapshot.totalDownload = [self totalDownloadFromStatus:stat];
+        snapshot.totalUpload = [self totalUploadFromStatus:stat];
+        snapshot.isPaused = [self isPausedFromStatus:stat];
+        snapshot.isFinished = [self isFinishedFromStatus:stat];
+        snapshot.isSeed = [self isSeedFromStatus:stat];
+        snapshot.isSequential = [self isSequentialFromStatus:stat];
+        snapshot.pieces = [self piecesFromStatus:stat];
+        snapshot.files = [self filesFromStatus:stat];
+        snapshot.trackers = [self trackers];
+        snapshot.magnetLink = [self magnetLink];
+        snapshot.torrentFilePath = [self torrentFilePathFromStatus:stat];
+        snapshot.downloadPath = [self downloadPathFromStatus:stat];
+        snapshot.storageUUID = [self storageUUID];
+        snapshot.isStorageMissing = [self isStorageMissing];
 
         self.snapshot = snapshot;
     } catch(...) {}

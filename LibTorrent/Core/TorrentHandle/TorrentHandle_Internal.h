@@ -69,6 +69,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property NSString *sessionDownloadPath;
 @property Session *session;
 
+@property (readwrite, nullable) NSUUID* storageUUID;
 @property (readwrite) TorrentHandleSnapshot* snapshot;
 
 - (instancetype)initWith:(lt::torrent_handle)torrentHandle inSession:(Session *)session;

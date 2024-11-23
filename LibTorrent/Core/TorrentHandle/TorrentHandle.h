@@ -68,16 +68,13 @@ NS_SWIFT_NAME(TorrentHandle.Snapshot)
 @property (readonly) BOOL isStorageMissing;
 @end
 
-@interface TorrentHandle : TorrentHandleSnapshot
+@interface TorrentHandle : NSObject
+
+@property (readonly, nullable) NSUUID* storageUUID;
+@property (readonly) TorrentHashes *infoHashes;
 
 @property (readonly) Session* session;
 @property (readonly) TorrentHandleSnapshot* snapshot;
-
-//@property (readonly) NSArray<NSNumber *> *pieces;
-
-@property (readonly) NSUInteger filesCount;
-@property (readonly) NSArray<FileEntry *> *files;
-- (FileEntry *)getFileAt:(int)index;
 
 - (void)resume;
 - (void)pause;
