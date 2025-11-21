@@ -8,7 +8,7 @@
 #import "ExceptionCatcher.h"
 
 
-@implementation ObjC
+@implementation ObjCatch
 
 + (void) tryBlock:(void(^)(void))block {
     try {

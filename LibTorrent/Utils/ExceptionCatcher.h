@@ -9,7 +9,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface ObjC : NSObject {}
+@interface ObjCatch : NSObject {}
 
 + (void) tryBlock:(void(^)(void))block;
 
