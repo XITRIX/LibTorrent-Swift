@@ -44,6 +44,7 @@ NS_SWIFT_NAME(Session.Settings)
 @property (readwrite, nonatomic) BOOL isNatEnabled;
 
 @property (readwrite, nonatomic) SessionSettingsEncryptionPolicy encryptionPolicy;
+@property (readwrite, nonatomic) BOOL validateHttpsTrackers;
 
 @property (readwrite, nonatomic) NSInteger port;
 @property (readwrite, nonatomic) NSInteger portBindRetries;

@@ -65,6 +65,7 @@ lt::settings_pack::proxy_type_t proxyTypeConverter(SessionSettings *pack) {
     settings.set_bool(lt::settings_pack::enable_natpmp, _isNatEnabled);
 
     // Encryption policy
+    settings.set_bool(lt::settings_pack::validate_https_trackers, _validateHttpsTrackers);
     switch (_encryptionPolicy) {
         case SessionSettingsEncryptionPolicyEnabled:
             settings.set_int(lt::settings_pack::out_enc_policy, lt::settings_pack::pe_enabled);
