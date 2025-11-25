@@ -168,7 +168,9 @@
 }
 
 - (double)progressWantedFromStatus: (lt::torrent_status)status {
-    return (double) [self totalWantedDoneFromStatus:status] / (double) [self totalWantedFromStatus:status];
+    auto totalWanted = (double) [self totalWantedFromStatus:status];
+    if (totalWanted == 0) { return 0; }
+    return (double) [self totalWantedDoneFromStatus:status] / totalWanted;
 }
 
 - (NSUInteger)numberOfPeersFromStatus: (lt::torrent_status)status {
