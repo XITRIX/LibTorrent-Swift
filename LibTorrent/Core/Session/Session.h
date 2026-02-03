@@ -53,7 +53,7 @@ typedef NS_ENUM(NSUInteger, ErrorCode) {
 
 @property (readwrite) NSDictionary<NSUUID*, StorageModel*> *storages;
 
-- (instancetype)initWith:(NSString *)downloadPath torrentsPath:(NSString *)torrentsPath fastResumePath:(NSString *)fastResumePath settings:(SessionSettings *)settings storages:(NSDictionary<NSUUID*, StorageModel*>*)storages;
+- (instancetype)initWith:(NSURL *)downloadPath torrentsPath:(NSURL *)torrentsPath fastResumePath:(NSURL *)fastResumePath settings:(SessionSettings *)settings storages:(NSDictionary<NSUUID*, StorageModel*>*)storages;
 
 - (NSString *)fastResumePathForInfoHashes:(TorrentHashes *)infoHashes;
 

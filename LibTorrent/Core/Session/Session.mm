@@ -47,19 +47,19 @@ static NSString *FileEntriesQueueIdentifier = @"ru.xitrix.TorrentKit.Session.fil
 std::unordered_map<lt::sha1_hash, std::unordered_map<std::string, std::unordered_map<lt::tcp::endpoint, std::unordered_map<int, int>>>> updatedTrackerStatuses;
 
 // MARK: - Init
-- (instancetype)initWith:(NSString *)downloadPath torrentsPath:(NSString *)torrentsPath fastResumePath:(NSString *)fastResumePath settings:(SessionSettings *)settings storages:(NSDictionary<NSUUID*, StorageModel*>*)storages {
+- (instancetype)initWith:(NSURL *)downloadPath torrentsPath:(NSURL *)torrentsPath fastResumePath:(NSURL *)fastResumePath settings:(SessionSettings *)settings storages:(NSDictionary<NSUUID*, StorageModel*>*)storages {
     self = [super init];
     if (self) {
-        _downloadPath = downloadPath;
-        _torrentsPath = torrentsPath;
-        _fastResumePath = fastResumePath;
+        _downloadPath = downloadPath.path;
+        _torrentsPath = torrentsPath.path;
+        _fastResumePath = fastResumePath.path;
         _settings = settings;
         _storages = storages;
 
         NSError * error;
-        [[NSFileManager defaultManager] createDirectoryAtPath:downloadPath withIntermediateDirectories:YES attributes:nil error:&error];
-        [[NSFileManager defaultManager] createDirectoryAtPath:torrentsPath withIntermediateDirectories:YES attributes:nil error:&error];
-        [[NSFileManager defaultManager] createDirectoryAtPath:fastResumePath withIntermediateDirectories:YES attributes:nil error:&error];
+        [[NSFileManager defaultManager] createDirectoryAtURL:downloadPath withIntermediateDirectories:YES attributes:nil error:&error];
+        [[NSFileManager defaultManager] createDirectoryAtURL:torrentsPath withIntermediateDirectories:YES attributes:nil error:&error];
+        [[NSFileManager defaultManager] createDirectoryAtURL:fastResumePath withIntermediateDirectories:YES attributes:nil error:&error];
 
         _session = new lt::session(_settings.settingsPack);
 
