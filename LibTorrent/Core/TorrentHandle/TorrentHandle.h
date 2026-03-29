@@ -87,6 +87,11 @@ NS_SWIFT_NAME(TorrentHandle.Snapshot)
 - (void)setFilesPriority:(FilePriority)priority at:(NSArray<NSNumber *> *)fileIndexes;
 - (void)setAllFilesPriority:(FilePriority)priority;
 
+/// Request piece to be downloaded within deadline (ms). Used for streaming prioritization.
+- (void)setPieceDeadline:(NSInteger)pieceIndex deadline:(int)deadline;
+/// Remove deadline from piece.
+- (void)resetPieceDeadline:(NSInteger)pieceIndex;
+
 - (void)addTracker:(NSString *)url;
 - (void)removeTrackers:(NSArray<NSString *> *)urls;
 - (void)forceReannounce;
