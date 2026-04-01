@@ -16,6 +16,51 @@
 #import "libtorrent/torrent_info.hpp"
 #import "libtorrent/magnet_uri.hpp"
 
+static std::vector<lt::download_priority_t> piecePrioritiesForFiles(
+    lt::torrent_info const &torrentInfo,
+    std::vector<lt::download_priority_t> const &filePriorities,
+    bool firstLastPiecePriorityEnabled)
+{
+    auto const &files = torrentInfo.files();
+    auto piecePriorities = std::vector<lt::download_priority_t>(torrentInfo.num_pieces(), lt::dont_download);
+
+    for (int index = 0; index < files.num_files(); ++index) {
+        auto fileIndex = static_cast<lt::file_index_t>(index);
+        auto filePriority = filePriorities[index];
+        if (filePriority <= lt::dont_download) {
+            continue;
+        }
+
+        auto fileSize = files.file_size(fileIndex);
+        if (fileSize <= 0) {
+            continue;
+        }
+
+        auto const firstPiece = files.map_file(fileIndex, 0, 0).piece;
+        auto const lastPiece = files.map_file(fileIndex, fileSize - 1, 1).piece;
+        auto const pieceCount = static_cast<int>(lastPiece - firstPiece) + 1;
+        auto const piecePriority = firstLastPiecePriorityEnabled ? lt::top_priority : filePriority;
+        std::int64_t const edgeSpan = std::int64_t(torrentInfo.piece_length()) * 100;
+        int edgePieceCount = static_cast<int>((fileSize + edgeSpan - 1) / edgeSpan);
+        if (edgePieceCount > pieceCount) {
+            edgePieceCount = pieceCount;
+        }
+
+        for (int pieceOffset = 0; pieceOffset < edgePieceCount; ++pieceOffset) {
+            piecePriorities[static_cast<int>(firstPiece) + pieceOffset] = piecePriority;
+            piecePriorities[static_cast<int>(lastPiece) - pieceOffset] = piecePriority;
+        }
+
+        for (int pieceIndex = static_cast<int>(firstPiece) + edgePieceCount;
+             pieceIndex <= static_cast<int>(lastPiece) - edgePieceCount;
+             ++pieceIndex) {
+            piecePriorities[pieceIndex] = filePriority;
+        }
+    }
+
+    return piecePriorities;
+}
+
 @implementation TorrentHashes
 
 #if LIBTORRENT_VERSION_MAJOR > 1
@@ -94,6 +139,7 @@
         _torrentHandle = torrentHandle;
         _torrentPath = session.torrentsPath;
         _sessionDownloadPath = session.downloadPath;
+        _isFirstLastPiecePriority = NO;
     }
     return self;
 }
@@ -351,6 +397,37 @@
     _torrentHandle.save_resume_data();
 }
 
+- (void)applyPriorityConfiguration {
+    if (!_torrentHandle.is_valid()) return;
+
+    auto filePriorities = _torrentHandle.get_file_priorities();
+    [self applyPriorityConfigurationWithFilePriorities:filePriorities saveResumeData:YES];
+}
+
+- (void)applyPriorityConfigurationWithFilePriorities:(const std::vector<lt::download_priority_t> &)filePriorities
+                                      saveResumeData:(BOOL)saveResumeData {
+    if (!_torrentHandle.is_valid()) return;
+
+    // File priorities remain the source of truth. Piece priorities are derived from them
+    // and the first/last-piece flag whenever any priority-related setting changes.
+    _torrentHandle.prioritize_files(filePriorities);
+
+    auto torrentInfoPtr = _torrentHandle.torrent_file();
+    if (torrentInfoPtr != nullptr) {
+        auto piecePriorities = piecePrioritiesForFiles(*torrentInfoPtr, filePriorities, _isFirstLastPiecePriority);
+        _torrentHandle.prioritize_pieces(piecePriorities);
+    }
+
+    if (saveResumeData) {
+        _torrentHandle.save_resume_data();
+    }
+}
+
+- (void)setFirstLastPriorityDownload:(BOOL)enabled {
+    _isFirstLastPiecePriority = enabled;
+    [self applyPriorityConfiguration];
+}
+
 - (NSArray<FileEntry *> *)filesFromStatus: (lt::torrent_status)stat {
     auto th = _torrentHandle;
     NSMutableArray *results = [[NSMutableArray alloc] init];
@@ -416,11 +493,9 @@
 }
 
 - (void)setFilePriority:(FilePriority)priority at:(NSInteger)fileIndex {
-    auto ltIndex = static_cast<lt::file_index_t>((int)fileIndex);
-    auto ltPriority = static_cast<lt::download_priority_t>(priority);
-
-    _torrentHandle.file_priority(std::move(ltIndex), std::move(ltPriority));
-    _torrentHandle.save_resume_data();
+    auto priorities = _torrentHandle.get_file_priorities();
+    priorities[(int)fileIndex] = static_cast<lt::download_priority_t>(priority);
+    [self applyPriorityConfigurationWithFilePriorities:priorities saveResumeData:YES];
 }
 
 - (void)setFilesPriority:(FilePriority)priority at:(NSArray<NSNumber *> *)fileIndexes {
@@ -429,8 +504,7 @@
         int index = (int)fileIndexes[i].integerValue;
         priorities[index] = static_cast<lt::download_priority_t>(priority);
     }
-    _torrentHandle.prioritize_files(priorities);
-    _torrentHandle.save_resume_data();
+    [self applyPriorityConfigurationWithFilePriorities:priorities saveResumeData:YES];
 }
 
 - (void)setAllFilesPriority:(FilePriority)priority {
@@ -438,8 +512,7 @@
     for (int i = 0; i < _torrentHandle.torrent_file().get()->files().num_files(); i++) {
         array.push_back(static_cast<lt::download_priority_t>(priority));
     }
-    _torrentHandle.prioritize_files(array);
-    _torrentHandle.save_resume_data();
+    [self applyPriorityConfigurationWithFilePriorities:array saveResumeData:YES];
 }
 
 - (void)addTracker:(NSString *)url {
@@ -502,6 +575,7 @@
         snapshot.isFinished = [self isFinishedFromStatus:stat];
         snapshot.isSeed = [self isSeedFromStatus:stat];
         snapshot.isSequential = [self isSequentialFromStatus:stat];
+        snapshot.isFirstLastPiecePriority = [self isFirstLastPiecePriority];
         snapshot.pieces = [self piecesFromStatus:stat];
         snapshot.files = [self filesFromStatus:stat];
         snapshot.trackers = [self trackers];

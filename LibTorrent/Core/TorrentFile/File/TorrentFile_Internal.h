@@ -16,9 +16,9 @@ NS_ASSUME_NONNULL_BEGIN
 @interface TorrentFile ()
 @property (readonly, nullable) NSMutableArray<NSNumber *> *priorities;
 @property (readonly, nullable) NSArray<FileEntry *> *filesCache;
+@property BOOL firstLastPiecePriorityEnabled;
 
 @property (readonly) lt::torrent_info torrent_info;
 @end
 
 NS_ASSUME_NONNULL_END
-

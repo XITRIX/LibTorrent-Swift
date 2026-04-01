@@ -416,6 +416,16 @@ std::unordered_map<lt::sha1_hash, std::unordered_map<std::string, std::unordered
     if (th.status().has_metadata) {
         [self saveTorrentFileWithInfo:info];
         [self removeMagnetURIWithHash:th.info_hash()];
+
+#if LIBTORRENT_VERSION_MAJOR > 1
+        auto hashes = [[TorrentHashes alloc] initWith: th.info_hashes()];
+#else
+        auto hashes = [[TorrentHashes alloc] initWith: th.info_hash()];
+#endif
+        auto torrentHandle = _torrentsMap[hashes];
+        if (torrentHandle.isFirstLastPiecePriority) {
+            [torrentHandle applyPriorityConfiguration];
+        }
     }
 }
 
@@ -525,6 +535,8 @@ std::unordered_map<lt::sha1_hash, std::unordered_map<std::string, std::unordered
             }
         }
     }
+
+    rd["first_last_piece_priority"] = torrentHandle.isFirstLastPiecePriority ? 1 : 0;
 
     bencode(std::back_inserter(ret), rd);
 

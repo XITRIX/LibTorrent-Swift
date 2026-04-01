@@ -22,6 +22,7 @@
     self = [self init];
     if (self) {
         _fileData = [NSData dataWithContentsOfURL:fileURL];
+        _firstLastPiecePriorityEnabled = NO;
         try {
             if (!self.torrent_info.is_valid()) { return NULL; }
         }
@@ -65,6 +66,7 @@
     self = [self init];
     if (self) {
         _fileData = data;
+        _firstLastPiecePriorityEnabled = NO;
         try {
             if (!self.torrent_info.is_valid()) { return NULL; }
         }
@@ -184,6 +186,8 @@
                 _priorities[i] = [NSNumber numberWithInt: static_cast<uint8_t>(resume.file_priorities[i])];
             }
         }
+
+        _firstLastPiecePriorityEnabled = (rd.dict_find_int_value("first_last_piece_priority", 0) != 0);
     }
 
     _params->ti = std::make_shared<lt::torrent_info>(ti);
@@ -191,6 +195,7 @@
 }
 
 - (void)configureAfterAdded:(TorrentHandle *)torrentHandle {
+    torrentHandle.isFirstLastPiecePriority = self.firstLastPiecePriorityEnabled;
     if (_priorities == NULL) return;
 
     std::vector<lt::download_priority_t> priorities;
@@ -198,7 +203,7 @@
         priorities.push_back((lt::download_priority_t)_priorities[i].intValue);
     }
 
-    torrentHandle.torrentHandle.prioritize_files(priorities);
+    [torrentHandle applyPriorityConfigurationWithFilePriorities:priorities saveResumeData:NO];
 }
 
 - (NSString *)name {
