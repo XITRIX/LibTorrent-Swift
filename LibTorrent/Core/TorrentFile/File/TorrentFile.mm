@@ -171,8 +171,10 @@
         // If not resolved just set it as default iTorrent storage path
         _params->save_path = "";
 
+        const bool hasResumeDictionary = rd.type() == lt::bdecode_node::dict_t;
+
         // Try to resolve storage path
-        if (ec.value() == 0) {
+        if (ec.value() == 0 && hasResumeDictionary) {
             auto storageID = [NSString stringWithUTF8String: std::string(rd.dict_find_string_value("storage_uuid")).c_str()];
             if (storageID.length != 0) {
                 // Use save_path as temporary storage uuid holder
@@ -187,7 +189,8 @@
             }
         }
 
-        _firstLastPiecePriorityEnabled = (rd.dict_find_int_value("first_last_piece_priority", 0) != 0);
+        _firstLastPiecePriorityEnabled = hasResumeDictionary
+            && (rd.dict_find_int_value("first_last_piece_priority", 0) != 0);
     }
 
     _params->ti = std::make_shared<lt::torrent_info>(ti);
