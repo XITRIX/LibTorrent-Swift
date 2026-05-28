@@ -470,9 +470,15 @@ static std::vector<lt::download_priority_t> piecePrioritiesForFiles(
         fileEntry.end_idx = endIdx;
         fileEntry.num_pieces = (int)(endIdx - beginIdx);
         auto array = [[NSMutableArray<NSNumber *> alloc] init];
+        const int piecesSize = stat.pieces.size();
         for (int j = 0; j < fileEntry.num_pieces; j++) {
-            auto index = static_cast<lt::piece_index_t>(j + (int)beginIdx);
-            [array addObject: [NSNumber numberWithBool: stat.pieces.get_bit(index)]];
+            const int pieceIndex = j + (int)beginIdx;
+            if (pieceIndex < piecesSize) {
+                auto index = static_cast<lt::piece_index_t>(pieceIndex);
+                [array addObject: [NSNumber numberWithBool: stat.pieces.get_bit(index)]];
+            } else {
+                [array addObject: @NO];
+            }
         }
         fileEntry.pieces = array;
 
