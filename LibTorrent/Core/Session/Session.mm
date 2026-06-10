@@ -319,6 +319,14 @@ std::unordered_map<lt::sha1_hash, std::unordered_map<std::string, std::unordered
                             [self handleExternalIPAlert: (lt::external_ip_alert *)alert];
                         } break;
 
+                        case lt::state_update_alert::alert_type: {
+                            auto stateUpdateAlert = static_cast<lt::state_update_alert *>(alert);
+                            for (auto const &status : stateUpdateAlert->status) {
+                                [self notifyDelegatesWithUpdate:status.handle];
+                            }
+                            continue;
+                        } break;
+
                         case lt::save_resume_data_alert::alert_type: {
                             [self torrentSaveFastResume:(lt::save_resume_data_alert *)alert];
                             continue; // Not sure if need notify update

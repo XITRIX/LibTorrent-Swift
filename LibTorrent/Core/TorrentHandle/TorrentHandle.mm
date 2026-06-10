@@ -206,6 +206,8 @@ static std::vector<lt::download_priority_t> piecePrioritiesForFiles(
         _torrentHandle.unset_flags(lt::torrent_flags::sequential_download);
     }
     _torrentHandle.save_resume_data();
+    _torrentHandle.post_status();
+
 }
 
 - (void)applyPriorityConfiguration {
@@ -297,8 +299,8 @@ static std::vector<lt::download_priority_t> piecePrioritiesForFiles(
                                                   owner:self
                                             torrentPath:_torrentPath
                                                 session:_session
-                                            storageUUID:self.storageUUID
-                               isFirstLastPiecePriority:self.isFirstLastPiecePriority];
+                                            storageUUID:_storageUUID
+                               isFirstLastPiecePriority:_isFirstLastPiecePriority];
     } catch(...) {}
 }
 
