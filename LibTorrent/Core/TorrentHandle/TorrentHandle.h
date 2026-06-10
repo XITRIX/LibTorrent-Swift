@@ -13,8 +13,6 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@class Session;
-@class StorageModel;
 
 NS_SWIFT_NAME(TorrentHashes)
 @interface TorrentHashes : NSObject<NSCopying>
@@ -74,7 +72,6 @@ NS_SWIFT_NAME(TorrentHandle.Snapshot)
 @property (readonly, nullable) NSUUID* storageUUID;
 @property (readonly) TorrentHashes *infoHashes;
 
-@property (readonly) Session* session;
 @property (readonly) TorrentHandleSnapshot* snapshot;
 
 - (void)resume;

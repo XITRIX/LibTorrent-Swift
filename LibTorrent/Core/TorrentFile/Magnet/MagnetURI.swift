@@ -6,8 +6,9 @@
 //
 
 import Foundation
+@_implementationOnly import LibTorrentLegacyObjC
 
-public extension MagnetURI {
+extension MagnetURI {
     convenience init?(with url: URL) {
         self.init(unsafeWithMagnetURI: url)
     }

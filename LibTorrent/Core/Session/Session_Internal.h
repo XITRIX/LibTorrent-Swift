@@ -15,6 +15,10 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+@interface StorageModel (SwiftHelpers)
+- (BOOL)resolveSequrityScopes;
+@end
+
 @interface Session ()
 @property lt::session *session;
 @property (strong, nonatomic) dispatch_queue_t filesQueue;

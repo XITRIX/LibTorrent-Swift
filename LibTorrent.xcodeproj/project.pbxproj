@@ -7,6 +7,13 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		7C36BAC72FD9656B006C240E /* TorrentSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C36BAC62FD9656B006C240E /* TorrentSession.swift */; };
+		7C36BACD2FD96682006C240E /* LegacyTorrentSessionBridge.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C36BACC2FD96682006C240E /* LegacyTorrentSessionBridge.swift */; };
+		7C36BACF2FD96AC7006C240E /* TorrentSession+Configuration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C36BACE2FD96AC7006C240E /* TorrentSession+Configuration.swift */; };
+		7C36BAD12FD96BCA006C240E /* TorrentSession+Models.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C36BAD02FD96BCA006C240E /* TorrentSession+Models.swift */; };
+		7C36BAD32FD97298006C240E /* TorrentSession+AddConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C36BAD22FD97298006C240E /* TorrentSession+AddConfiguration.swift */; };
+		7C36BAD52FD97911006C240E /* TorrentSession+AddPreview.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C36BAD42FD97911006C240E /* TorrentSession+AddPreview.swift */; };
+		7C36BADD2FD99020006C240E /* TorrentSessionHandleStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C36BADC2FD99020006C240E /* TorrentSessionHandleStore.swift */; };
 		7C5FBE0A2BB8C1780069E5A0 /* LibTorrentVersion.mm in Sources */ = {isa = PBXBuildFile; fileRef = 7C5FBE092BB8C1780069E5A0 /* LibTorrentVersion.mm */; };
 		7C5FBE0C2BB8C18C0069E5A0 /* LibTorrentVersion.h in Headers */ = {isa = PBXBuildFile; fileRef = 7C5FBE0B2BB8C1860069E5A0 /* LibTorrentVersion.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		7CE141432C1CFD85008EA778 /* OpenSSL in Frameworks */ = {isa = PBXBuildFile; productRef = 7CE141422C1CFD85008EA778 /* OpenSSL */; };
@@ -60,6 +67,17 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		7C36BAC62FD9656B006C240E /* TorrentSession.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TorrentSession.swift; sourceTree = "<group>"; };
+		7C36BACC2FD96682006C240E /* LegacyTorrentSessionBridge.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LegacyTorrentSessionBridge.swift; sourceTree = "<group>"; };
+		7C36BACE2FD96AC7006C240E /* TorrentSession+Configuration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TorrentSession+Configuration.swift"; sourceTree = "<group>"; };
+		7C36BAD02FD96BCA006C240E /* TorrentSession+Models.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TorrentSession+Models.swift"; sourceTree = "<group>"; };
+		7C36BAD22FD97298006C240E /* TorrentSession+AddConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TorrentSession+AddConfiguration.swift"; sourceTree = "<group>"; };
+		7C36BAD42FD97911006C240E /* TorrentSession+AddPreview.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TorrentSession+AddPreview.swift"; sourceTree = "<group>"; };
+		7C36BAD72FD983C2006C240E /* LibTorrentInternalImports.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LibTorrentInternalImports.h; sourceTree = "<group>"; };
+		7C36BAD82FD9840E006C240E /* LibTorrentLegacyObjC.modulemap */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.module-map"; path = LibTorrentLegacyObjC.modulemap; sourceTree = "<group>"; };
+		7C36BADA2FD9843C006C240E /* LibTorrentLegacyObjC.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LibTorrentLegacyObjC.h; sourceTree = "<group>"; };
+		7C36BADB2FD9843C006C240E /* module.modulemap */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.module-map"; path = module.modulemap; sourceTree = "<group>"; };
+		7C36BADC2FD99020006C240E /* TorrentSessionHandleStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TorrentSessionHandleStore.swift; sourceTree = "<group>"; };
 		7C5FBE072BB8B8010069E5A0 /* libiconv.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libiconv.tbd; path = usr/lib/libiconv.tbd; sourceTree = SDKROOT; };
 		7C5FBE092BB8C1780069E5A0 /* LibTorrentVersion.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = LibTorrentVersion.mm; sourceTree = "<group>"; };
 		7C5FBE0B2BB8C1860069E5A0 /* LibTorrentVersion.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LibTorrentVersion.h; sourceTree = "<group>"; };
@@ -126,6 +144,39 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		7C36BAC52FD9656A006C240E /* Modern */ = {
+			isa = PBXGroup;
+			children = (
+				7C36BAC62FD9656B006C240E /* TorrentSession.swift */,
+				7C36BACC2FD96682006C240E /* LegacyTorrentSessionBridge.swift */,
+				7C36BACE2FD96AC7006C240E /* TorrentSession+Configuration.swift */,
+				7C36BAD02FD96BCA006C240E /* TorrentSession+Models.swift */,
+				7C36BAD22FD97298006C240E /* TorrentSession+AddConfiguration.swift */,
+				7C36BAD42FD97911006C240E /* TorrentSession+AddPreview.swift */,
+				7C36BADC2FD99020006C240E /* TorrentSessionHandleStore.swift */,
+			);
+			path = Modern;
+			sourceTree = "<group>";
+		};
+		7C36BAD62FD983C1006C240E /* Internal */ = {
+			isa = PBXGroup;
+			children = (
+				7C36BAD72FD983C2006C240E /* LibTorrentInternalImports.h */,
+				7C36BAD82FD9840E006C240E /* LibTorrentLegacyObjC.modulemap */,
+				7C36BAD92FD9843C006C240E /* LibTorrentLegacyObjC */,
+			);
+			path = Internal;
+			sourceTree = "<group>";
+		};
+		7C36BAD92FD9843C006C240E /* LibTorrentLegacyObjC */ = {
+			isa = PBXGroup;
+			children = (
+				7C36BADA2FD9843C006C240E /* LibTorrentLegacyObjC.h */,
+				7C36BADB2FD9843C006C240E /* module.modulemap */,
+			);
+			path = LibTorrentLegacyObjC;
+			sourceTree = "<group>";
+		};
 		D151475B2AE6AE9B000407AE = {
 			isa = PBXGroup;
 			children = (
@@ -134,6 +185,7 @@
 				D15147672AE6AE9C000407AE /* LibTorrent */,
 				D15147662AE6AE9C000407AE /* Products */,
 				D15147782AE6B9BD000407AE /* Frameworks */,
+				7C36BAD62FD983C1006C240E /* Internal */,
 			);
 			sourceTree = "<group>";
 		};
@@ -183,6 +235,7 @@
 				D15147BD2AE7E521000407AE /* TorrentFile */,
 				D15147CA2AE7E521000407AE /* FileEntry */,
 				D15147CF2AE7E521000407AE /* Session */,
+				7C36BAC52FD9656A006C240E /* Modern */,
 			);
 			path = Core;
 			sourceTree = "<group>";
@@ -417,16 +470,21 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				7C36BAD12FD96BCA006C240E /* TorrentSession+Models.swift in Sources */,
 				D15147FA2AE7E529000407AE /* NSData+Sha1Hash.mm in Sources */,
 				D1FFC95D2C357D1400233C2F /* Session.swift in Sources */,
+				7C36BACF2FD96AC7006C240E /* TorrentSession+Configuration.swift in Sources */,
 				D15147F82AE7E529000407AE /* ExceptionCatcher.mm in Sources */,
+				7C36BADD2FD99020006C240E /* TorrentSessionHandleStore.swift in Sources */,
 				D15147F92AE7E529000407AE /* NSData+Hex.m in Sources */,
 				D15147ED2AE7E521000407AE /* Session.mm in Sources */,
+				7C36BAC72FD9656B006C240E /* TorrentSession.swift in Sources */,
 				D15148082AE7F852000407AE /* TorrentHandle.swift in Sources */,
 				D1352D272BBC4F8100104E7B /* SessionSettings.swift in Sources */,
 				D151480B2AE7F85D000407AE /* Data+Hex.swift in Sources */,
 				D15147EA2AE7E521000407AE /* FileEntry.m in Sources */,
 				7C5FBE0A2BB8C1780069E5A0 /* LibTorrentVersion.mm in Sources */,
+				7C36BAD52FD97911006C240E /* TorrentSession+AddPreview.swift in Sources */,
 				D15148092AE7F859000407AE /* TorrentFile.swift in Sources */,
 				D151480A2AE7F859000407AE /* MagnetURI.swift in Sources */,
 				D15147DB2AE7E521000407AE /* TorrentTracker.mm in Sources */,
@@ -434,6 +492,8 @@
 				D15147E12AE7E521000407AE /* TorrentFile.mm in Sources */,
 				D15147D92AE7E521000407AE /* TorrentHandle.mm in Sources */,
 				D15147E52AE7E521000407AE /* MagnetURI.mm in Sources */,
+				7C36BAD32FD97298006C240E /* TorrentSession+AddConfiguration.swift in Sources */,
+				7C36BACD2FD96682006C240E /* LegacyTorrentSessionBridge.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -638,6 +698,7 @@
 				SKIP_INSTALL = YES;
 				SUPPORTS_MACCATALYST = YES;
 				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_INCLUDE_PATHS = "$(PROJECT_DIR)/Internal";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				TARGETED_DEVICE_FAMILY = "1,2,7";
 			};
@@ -692,6 +753,7 @@
 				SKIP_INSTALL = YES;
 				SUPPORTS_MACCATALYST = YES;
 				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_INCLUDE_PATHS = "$(PROJECT_DIR)/Internal";
 				TARGETED_DEVICE_FAMILY = "1,2,7";
 			};
 			name = Release;
@@ -816,6 +878,7 @@
 				SKIP_INSTALL = YES;
 				SUPPORTS_MACCATALYST = YES;
 				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_INCLUDE_PATHS = "$(PROJECT_DIR)/Internal";
 				TARGETED_DEVICE_FAMILY = "1,2,7";
 			};
 			name = RelWithDebInfo;

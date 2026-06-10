@@ -1,0 +1,4 @@
+module LibTorrentLegacyObjC {
+  header "LibTorrentLegacyObjC.h"
+  export *
+}

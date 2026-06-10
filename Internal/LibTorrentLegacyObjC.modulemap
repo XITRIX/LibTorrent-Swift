@@ -1,0 +1,4 @@
+framework module LibTorrentLegacyObjC {
+  header "LibTorrentInternalImports.h"
+  export *
+}

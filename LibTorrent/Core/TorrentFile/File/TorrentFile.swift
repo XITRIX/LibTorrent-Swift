@@ -6,8 +6,9 @@
 //
 
 import Foundation
+@_implementationOnly import LibTorrentLegacyObjC
 
-public extension TorrentFile {
+extension TorrentFile {
     convenience init?(with file: URL) {
         self.init(unsafeWithFileAt: file)
         if !isValid { return nil }
@@ -21,7 +22,7 @@ public extension TorrentFile {
 
 @available(iOS 13.0, *)
 @available(tvOS 15.0, *)
-public extension TorrentFile {
+extension TorrentFile {
     convenience init?(remote url: URL) async {
         do {
             let (data, _) = try await URLSession.shared.data(from: url)
