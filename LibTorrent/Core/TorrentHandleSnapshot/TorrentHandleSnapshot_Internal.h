@@ -17,6 +17,24 @@ NS_ASSUME_NONNULL_BEGIN
     NSString *_torrentPath;
     Session *_session;
     NSUUID *_storageUUID;
+    TorrentHashes *_infoHashes;
+    NSString *_name;
+    NSString *_creator;
+    NSString *_comment;
+    NSDate *_creationDate;
+    NSArray<NSNumber *> *_pieces;
+    NSArray<FileEntry *> *_files;
+    NSArray<TorrentTracker *> *_trackers;
+    NSString *_magnetLink;
+    NSString *_torrentFilePath;
+    NSURL *_downloadPath;
+    uint64_t _total;
+    BOOL _didLoadCreator;
+    BOOL _didLoadComment;
+    BOOL _didLoadCreationDate;
+    BOOL _didLoadTorrentFilePath;
+    BOOL _didLoadDownloadPath;
+    BOOL _didLoadTotal;
     BOOL _isValid;
     BOOL _isFirstLastPiecePriority;
 }

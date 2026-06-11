@@ -45,16 +45,22 @@
 }
 
 - (TorrentHashes *)infoHashes {
+    if (_infoHashes != nil) { return _infoHashes; }
+
 #if LIBTORRENT_VERSION_MAJOR > 1
     auto ih = _torrentHandle.info_hashes();
 #else
     auto ih = _torrentHandle.info_hash();
 #endif
-    return [[TorrentHashes alloc] initWith:ih];
+    _infoHashes = [[TorrentHashes alloc] initWith:ih];
+    return _infoHashes;
 }
 
 - (NSString *)name {
-    return [NSString stringWithCString:_status.name.c_str() encoding:NSUTF8StringEncoding];
+    if (_name != nil) { return _name; }
+
+    _name = [NSString stringWithCString:_status.name.c_str() encoding:NSUTF8StringEncoding];
+    return _name;
 }
 
 - (TorrentHandleState)state {
@@ -71,24 +77,36 @@
 }
 
 - (NSString * _Nullable)creator {
+    if (_didLoadCreator) { return _creator; }
+    _didLoadCreator = true;
+
     if (!_status.has_metadata) { return NULL; }
 
     auto info = _torrentHandle.torrent_file().get();
-    return [NSString stringWithCString:info->creator().c_str() encoding:NSUTF8StringEncoding];
+    _creator = [NSString stringWithCString:info->creator().c_str() encoding:NSUTF8StringEncoding];
+    return _creator;
 }
 
 - (NSString * _Nullable)comment {
+    if (_didLoadComment) { return _comment; }
+    _didLoadComment = true;
+
     if (!_status.has_metadata) { return NULL; }
 
     auto info = _torrentHandle.torrent_file().get();
-    return [NSString stringWithCString:info->comment().c_str() encoding:NSUTF8StringEncoding];
+    _comment = [NSString stringWithCString:info->comment().c_str() encoding:NSUTF8StringEncoding];
+    return _comment;
 }
 
 - (NSDate * _Nullable)creationDate {
+    if (_didLoadCreationDate) { return _creationDate; }
+    _didLoadCreationDate = true;
+
     if (!_status.has_metadata) { return NULL; }
 
     auto info = _torrentHandle.torrent_file().get();
-    return [[NSDate alloc] initWithTimeIntervalSince1970:info->creation_date()];
+    _creationDate = [[NSDate alloc] initWithTimeIntervalSince1970:info->creation_date()];
+    return _creationDate;
 }
 
 - (double)progress {
@@ -141,10 +159,14 @@
 }
 
 - (uint64_t)total {
+    if (_didLoadTotal) { return _total; }
+    _didLoadTotal = true;
+
     if (!_status.has_metadata) { return 0; }
 
     auto info = _torrentHandle.torrent_file().get();
-    return info->total_size();
+    _total = info->total_size();
+    return _total;
 }
 
 - (uint64_t)totalDone {
@@ -188,34 +210,41 @@
 }
 
 - (NSArray<NSNumber *> * _Nullable)pieces {
+    if (_pieces != nil) { return _pieces; }
     if (!_status.has_metadata) { return NULL; }
 
     auto info = _torrentHandle.torrent_file().get();
-    auto array = [[NSMutableArray<NSNumber *> alloc] init];
+    NSMutableArray<NSNumber *> *array = [[NSMutableArray alloc] initWithCapacity:static_cast<NSUInteger>(static_cast<int>(info->end_piece()))];
     for (auto i = static_cast<lt::piece_index_t>(0); i < info->end_piece(); i++) {
         [array addObject:[NSNumber numberWithBool:_status.pieces.get_bit(i)]];
     }
-    return array;
+    _pieces = [array copy];
+    return _pieces;
 }
 
 - (NSArray<FileEntry *> *)files {
+    if (_files != nil) { return _files; }
+
     auto th = _torrentHandle;
-    NSMutableArray *results = [[NSMutableArray alloc] init];
     auto ti = th.torrent_file();
     if (ti == nullptr) {
 //        NSLog(@"No metadata for torrent with name: %s", th.status().name.c_str());
-        return [results copy];
+        _files = @[];
+        return _files;
     }
+
+    auto info = ti.get();
+    auto files = info->files();
+    const int fileCount = files.num_files();
+    NSMutableArray<FileEntry *> *results = [[NSMutableArray alloc] initWithCapacity:fileCount];
 
     std::vector<int64_t> progresses;
     th.file_progress(progresses);
     auto priorities = th.get_file_priorities();
 
-    auto info = ti.get();
-    auto files = info->files();
     const int pieceLength = info->piece_length();
 
-    for (int index = 0; index < files.num_files(); index++) {
+    for (int index = 0; index < fileCount; index++) {
         auto i = static_cast<lt::file_index_t>(index);
         auto name = std::string(files.file_name(i));
         auto path = files.file_path(i);
@@ -239,7 +268,7 @@
         fileEntry.begin_idx = beginIdx;
         fileEntry.end_idx = endIdx;
         fileEntry.num_pieces = (int)(endIdx - beginIdx);
-        auto array = [[NSMutableArray<NSNumber *> alloc] init];
+        auto array = [[NSMutableArray<NSNumber *> alloc] initWithCapacity:fileEntry.num_pieces];
         for (int j = 0; j < fileEntry.num_pieces; j++) {
             auto index = static_cast<lt::piece_index_t>(j + (int)beginIdx);
             [array addObject:[NSNumber numberWithBool:_status.pieces.get_bit(index)]];
@@ -248,29 +277,42 @@
 
         [results addObject:fileEntry];
     }
-    return [results copy];
+    _files = [results copy];
+    return _files;
 }
 
 - (NSArray<TorrentTracker *> *)trackers {
+    if (_trackers != nil) { return _trackers; }
+
     TorrentHandle *owner = _torrentHandleOwner;
-    if (owner == nil) { return @[]; }
+    if (owner == nil) {
+        _trackers = @[];
+        return _trackers;
+    }
 
     auto trackers = _torrentHandle.trackers();
-    NSMutableArray *results = [[NSMutableArray alloc] init];
+    NSMutableArray<TorrentTracker *> *results = [[NSMutableArray alloc] initWithCapacity:trackers.size()];
 
     for (auto tracker : trackers) {
         [results addObject:[[TorrentTracker alloc] initWithAnnounceEntry:tracker from:owner]];
     }
 
-    return results;
+    _trackers = [results copy];
+    return _trackers;
 }
 
 - (NSString *)magnetLink {
+    if (_magnetLink != nil) { return _magnetLink; }
+
     auto uri = lt::make_magnet_uri(_torrentHandle);
-    return [NSString stringWithCString:uri.c_str() encoding:NSUTF8StringEncoding];
+    _magnetLink = [NSString stringWithCString:uri.c_str() encoding:NSUTF8StringEncoding];
+    return _magnetLink;
 }
 
 - (NSString * _Nullable)torrentFilePath {
+    if (_didLoadTorrentFilePath) { return _torrentFilePath; }
+    _didLoadTorrentFilePath = true;
+
     if (!self.isValid || !self.hasMetadata) { return NULL; }
 
     auto fileInfo = _torrentHandle.torrent_file().get();
@@ -281,17 +323,22 @@
         return NULL;
     }
 
-    return filePath;
+    _torrentFilePath = filePath;
+    return _torrentFilePath;
 }
 
 - (NSURL * _Nullable)downloadPath {
+    if (_didLoadDownloadPath) { return _downloadPath; }
+    _didLoadDownloadPath = true;
+
     if (!self.isValid || !self.hasMetadata) { return NULL; }
 
     auto savePath = _status.save_path;
 //    auto url = [NSString stringWithFormat:@"file://%s", savePath.c_str()];
 //    return [NSURL URLWithString: url].URLByStandardizingPath;
     auto path = [NSString stringWithUTF8String:savePath.c_str()];
-    return [NSURL fileURLWithPath:path];
+    _downloadPath = [NSURL fileURLWithPath:path];
+    return _downloadPath;
 }
 
 - (NSUUID * _Nullable)storageUUID {
