@@ -7,6 +7,12 @@
 
 import Foundation
 
+public enum RemoteTorrentFileError: Error, Equatable, Sendable {
+    case invalidResponse
+    case httpStatus(Int)
+    case invalidTorrent
+}
+
 public extension TorrentFile {
     convenience init?(with file: URL) {
         self.init(unsafeWithFileAt: file)
@@ -22,10 +28,19 @@ public extension TorrentFile {
 @available(iOS 13.0, *)
 @available(tvOS 15.0, *)
 public extension TorrentFile {
-    convenience init?(remote url: URL) async {
-        do {
-            let (data, _) = try await URLSession.shared.data(from: url)
-            self.init(with: data)
-        } catch { return nil }
+    static func download(from url: URL) async throws -> TorrentFile {
+        let (data, response) = try await URLSession.shared.data(from: url)
+
+        guard let response = response as? HTTPURLResponse else {
+            throw RemoteTorrentFileError.invalidResponse
+        }
+        guard 200 ..< 300 ~= response.statusCode else {
+            throw RemoteTorrentFileError.httpStatus(response.statusCode)
+        }
+        guard let torrentFile = TorrentFile(with: data) else {
+            throw RemoteTorrentFileError.invalidTorrent
+        }
+
+        return torrentFile
     }
 }

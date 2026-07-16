@@ -30,6 +30,7 @@ NS_SWIFT_NAME(TorrentHashes)
 
 @property (readonly, nullable) NSUUID* storageUUID;
 @property (readonly) TorrentHashes *infoHashes;
+@property (readonly) BOOL isPrivate;
 
 @property (readonly) Session* session;
 @property (readonly) TorrentHandleSnapshot* snapshot;

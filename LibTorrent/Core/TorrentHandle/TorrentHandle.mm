@@ -163,6 +163,13 @@ static std::vector<lt::download_priority_t> piecePrioritiesForFiles(
     return [[TorrentHashes alloc] initWith:ih];
 }
 
+- (BOOL)isPrivate {
+    if (!_torrentHandle.is_valid()) { return NO; }
+
+    auto torrentInfo = _torrentHandle.torrent_file();
+    return torrentInfo != nullptr && torrentInfo->priv();
+}
+
 // MARK: - Functions
 
 - (void)resume {

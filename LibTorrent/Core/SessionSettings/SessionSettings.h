@@ -28,6 +28,7 @@ NS_SWIFT_NAME(Session.Settings)
 @interface SessionSettings : NSObject
 
 @property (readwrite, nonatomic) NSString* agentName;
+@property (readwrite, nonatomic) NSString* peerFingerprint;
 @property (readwrite, nonatomic) BOOL preallocateStorage;
 
 @property (readwrite, nonatomic) NSInteger maxActiveTorrents;

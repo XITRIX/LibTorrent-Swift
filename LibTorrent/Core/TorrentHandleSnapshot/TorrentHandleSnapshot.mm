@@ -109,6 +109,11 @@
     return _creationDate;
 }
 
+- (NSDate * _Nullable)addedDate {
+    if (_status.added_time <= 0) { return NULL; }
+    return [[NSDate alloc] initWithTimeIntervalSince1970:_status.added_time];
+}
+
 - (double)progress {
     return _status.progress;
 }
@@ -315,9 +320,7 @@
 
     if (!self.isValid || !self.hasMetadata) { return NULL; }
 
-    auto fileInfo = _torrentHandle.torrent_file().get();
-    NSString *fileName = [NSString stringWithFormat:@"%s.torrent", fileInfo->name().c_str()];
-    NSString *filePath = [_torrentPath stringByAppendingPathComponent:fileName];
+    NSString *filePath = [_session torrentFilePathForInfoHashes:self.infoHashes];
 
     if (![[NSFileManager defaultManager] fileExistsAtPath:filePath]) {
         return NULL;

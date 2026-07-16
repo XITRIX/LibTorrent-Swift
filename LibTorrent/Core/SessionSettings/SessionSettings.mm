@@ -34,6 +34,7 @@ lt::settings_pack::proxy_type_t proxyTypeConverter(SessionSettings *pack) {
     self = [super init];
 
     if (self) {
+        _peerFingerprint = @"-IT0000-";
         _preallocateStorage = false;
     }
 
@@ -46,6 +47,7 @@ lt::settings_pack::proxy_type_t proxyTypeConverter(SessionSettings *pack) {
     // Must have
     settings.set_int(lt::settings_pack::alert_mask, lt::alert_category_t::all());
     settings.set_str(lt::settings_pack::user_agent, [_agentName UTF8String]);
+    settings.set_str(lt::settings_pack::peer_fingerprint, [_peerFingerprint UTF8String]);
 
     // Torrent limitations
     settings.set_int(lt::settings_pack::active_limit, (int)_maxActiveTorrents);

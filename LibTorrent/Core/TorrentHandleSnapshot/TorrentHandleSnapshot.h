@@ -27,6 +27,7 @@ NS_SWIFT_NAME(TorrentHandle.Snapshot)
 @property (readonly, nullable) NSString *creator;
 @property (readonly, nullable) NSString *comment;
 @property (readonly, nullable) NSDate *creationDate;
+@property (readonly, nullable) NSDate *addedDate;
 @property (readonly) double progress;
 @property (readonly) double progressWanted;
 @property (readonly) NSUInteger numberOfPeers;

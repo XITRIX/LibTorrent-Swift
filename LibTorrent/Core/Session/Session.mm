@@ -118,6 +118,10 @@ std::unordered_map<lt::sha1_hash, std::unordered_map<std::string, std::unordered
     return [[_fastResumePath stringByAppendingPathComponent:infoHashes.best.hexString] stringByAppendingPathExtension:@"fastresume"];
 }
 
+- (NSString *)torrentFilePathForInfoHashes:(TorrentHashes *)infoHashes {
+    return [[_torrentsPath stringByAppendingPathComponent:infoHashes.best.hexString] stringByAppendingPathExtension:@"torrent"];
+}
+
 - (NSString *)magnetURIsFilePath {
     return [_fastResumePath stringByAppendingPathComponent:@"magnet_links"];
 }
@@ -140,6 +144,7 @@ std::unordered_map<lt::sha1_hash, std::unordered_map<std::string, std::unordered
         NSString *filePath = [_torrentsPath stringByAppendingPathComponent:fileName];
         NSURL *fileURL = [NSURL fileURLWithPath:filePath];
         TorrentFile *torrent = [[TorrentFile alloc] initUnsafeWithFileAtURL:fileURL];
+        if (torrent == nil) { continue; }
         [self addTorrent:torrent];
     }
 }
@@ -559,8 +564,13 @@ std::unordered_map<lt::sha1_hash, std::unordered_map<std::string, std::unordered
 - (void)saveTorrentFileWithInfo:(std::shared_ptr<const lt::torrent_info>)ti {
     if (ti == nullptr) { return; }
 
-    NSString *fileName = [NSString stringWithFormat:@"%s.torrent", (*ti).name().c_str()];
-    NSString *filePath = [_torrentsPath stringByAppendingPathComponent:fileName];
+#if LIBTORRENT_VERSION_MAJOR > 1
+    auto hash = ti->info_hashes();
+#else
+    auto hash = ti->info_hash();
+#endif
+    auto hashes = [[TorrentHashes alloc] initWith:hash];
+    NSString *filePath = [self torrentFilePathForInfoHashes:hashes];
 
     if (![[NSFileManager defaultManager] fileExistsAtPath:filePath]) {
         lt::create_torrent new_torrent(*ti);
@@ -635,8 +645,13 @@ std::unordered_map<lt::sha1_hash, std::unordered_map<std::string, std::unordered
 - (void)removeTorrentFileWithInfo:(std::shared_ptr<const lt::torrent_info>)ti {
     if (ti == nullptr) { return; }
 
-    NSString *fileName = [NSString stringWithFormat:@"%s.torrent", ti->name().c_str()];
-    NSString *filePath = [_torrentsPath stringByAppendingPathComponent:fileName];
+#if LIBTORRENT_VERSION_MAJOR > 1
+    auto hash = ti->info_hashes();
+#else
+    auto hash = ti->info_hash();
+#endif
+    auto hashes = [[TorrentHashes alloc] initWith:hash];
+    NSString *filePath = [self torrentFilePathForInfoHashes:hashes];
 
     NSError *error;
     BOOL success = [[NSFileManager defaultManager] removeItemAtPath:filePath error:&error];

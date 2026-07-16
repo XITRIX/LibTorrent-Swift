@@ -130,15 +130,9 @@
     lt::torrent_info ti = [self torrent_info];
 
     // Save torrent file
-    NSString *fileName = [NSString stringWithFormat:@"%s.torrent", ti.name().c_str()];
-    NSString *filePath = [session.torrentsPath stringByAppendingPathComponent:fileName];
+    NSString *filePath = [session torrentFilePathForInfoHashes:self.infoHashes];
 
-    if (_fileData != NULL) {
-        if (![[NSFileManager defaultManager] fileExistsAtPath:filePath]) {
-            // Remove existing torrent file with same name
-            // Probably should store torrent files by HASH value
-            [[NSFileManager defaultManager] removeItemAtPath:filePath error:NULL];
-        }
+    if (_fileData != NULL && ![[NSFileManager defaultManager] fileExistsAtPath:filePath]) {
         BOOL success = [_fileData writeToFile:filePath atomically:YES];
         if (!success) { NSLog(@"Can't save .torrent file"); }
     }

@@ -56,6 +56,7 @@ typedef NS_ENUM(NSUInteger, ErrorCode) {
 - (instancetype)initWith:(NSURL *)downloadPath torrentsPath:(NSURL *)torrentsPath fastResumePath:(NSURL *)fastResumePath settings:(SessionSettings *)settings storages:(NSDictionary<NSUUID*, StorageModel*>*)storages;
 
 - (NSString *)fastResumePathForInfoHashes:(TorrentHashes *)infoHashes;
+- (NSString *)torrentFilePathForInfoHashes:(TorrentHashes *)infoHashes;
 
 - (void)addDelegate:(id<SessionDelegate>)delegate;
 - (void)removeDelegate:(id<SessionDelegate>)delegate;

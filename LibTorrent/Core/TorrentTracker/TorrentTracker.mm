@@ -54,10 +54,13 @@ NSDate* fromLTTimePoint32(const lt::time_point32 &timePoint)
 
             for (auto protocolVersion: protocols) {
 #if LIBTORRENT_VERSION_MAJOR > 1
-                auto info = endpoint.info_hashes.at(protocolVersion);
+                const auto ltProtocolVersion = protocolVersion == 1
+                    ? lt::protocol_version::V1
+                    : lt::protocol_version::V2;
+                const auto &info = endpoint.info_hashes[ltProtocolVersion];
                 auto hash = torrentHandle.torrentHandle.info_hashes().get_best();
 #else
-                auto info = endpoint;
+                const auto &info = endpoint;
                 auto hash = torrentHandle.torrentHandle.info_hash();
 #endif
                 TorrentTrackerEndpoint *status = [[TorrentTrackerEndpoint alloc] init];
@@ -159,6 +162,7 @@ NSDate* fromLTTimePoint32(const lt::time_point32 &timePoint)
         _nextAnnounceTime = [[NSDate alloc] init];
         _minAnnounceTime = [[NSDate alloc] init];
         _message = NULL;
+        BOOL hasAnnounceTime = NO;
 
         for (const TorrentTrackerEndpoint *endpointStatus : _endpoints)
         {
@@ -169,11 +173,12 @@ NSDate* fromLTTimePoint32(const lt::time_point32 &timePoint)
 
             if (endpointStatus.state == _state)
             {
-//                if (!_nextAnnounceTime.isValid() ||)
-                if ((_nextAnnounceTime > endpointStatus.nextAnnounceTime))
+                if (!hasAnnounceTime
+                    || [_nextAnnounceTime compare:endpointStatus.nextAnnounceTime] == NSOrderedDescending)
                 {
                     _nextAnnounceTime = endpointStatus.nextAnnounceTime;
                     _minAnnounceTime = endpointStatus.minAnnounceTime;
+                    hasAnnounceTime = YES;
                     if ((endpointStatus.state != TorrentTrackerStateWorking)
                         || !(endpointStatus.message == NULL || [endpointStatus.message length] == 0))
                     {
