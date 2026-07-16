@@ -13,7 +13,6 @@
 #import "TorrentFile_Internal.h"
 #import "TorrentHandle_Internal.h"
 #import "NSData+Hex.h"
-#import "NSData+Sha1Hash.h"
 
 //libtorrent
 #import "libtorrent/session.hpp"
@@ -23,7 +22,6 @@
 #import "libtorrent/write_resume_data.hpp"
 #import "libtorrent/torrent_handle.hpp"
 #import "libtorrent/torrent_info.hpp"
-#import "libtorrent/create_torrent.hpp"
 #import "libtorrent/magnet_uri.hpp"
 
 #import "libtorrent/bencode.hpp"
@@ -33,11 +31,20 @@
 #include <libtorrent/extensions/ut_pex.hpp>
 #include <libtorrent/extensions/smart_ban.hpp>
 
-#include <fstream>
-
 static NSErrorDomain ErrorDomain = @"ru.xitrix.TorrentKit.Session.error";
 static NSString *EventsQueueIdentifier = @"ru.xitrix.TorrentKit.Session.events.queue";
 static NSString *FileEntriesQueueIdentifier = @"ru.xitrix.TorrentKit.Session.files.queue";
+
+@interface Session (TorrentPersistence)
+- (void)requestTorrentFileSave:(lt::torrent_handle const&)handle;
+- (BOOL)hasValidTorrentFileForInfoHashes:(TorrentHashes *)infoHashes;
+- (BOOL)saveTorrentFileWithParams:(lt::add_torrent_params const&)params;
+- (NSArray<NSString *> *)storedMagnetURIs;
+- (void)writeStoredMagnetURIs:(NSArray<NSString *> *)magnetURIs;
+- (TorrentHashes * _Nullable)infoHashesForMagnetURI:(NSString *)magnetURI;
+- (void)removeMagnetURIWithInfoHashes:(TorrentHashes *)infoHashes;
+- (void)restoreMagnetURIs;
+@end
 
 @implementation StorageModel : NSObject
 @end
@@ -147,6 +154,8 @@ std::unordered_map<lt::sha1_hash, std::unordered_map<std::string, std::unordered
         if (torrent == nil) { continue; }
         [self addTorrent:torrent];
     }
+
+    [self restoreMagnetURIs];
 }
 - (void)addDelegate:(id<SessionDelegate>)delegate {
     [self.delegates addObject:delegate];
@@ -233,8 +242,12 @@ std::unordered_map<lt::sha1_hash, std::unordered_map<std::string, std::unordered
     dispatch_async(self.filesQueue, ^{
         [self removeTorrentFileWithInfo:ti];
         [self removeFastResumeFileWithInfo:ti];
-        auto ih = th.info_hash();
-        [self removeMagnetURIWithHash:ih];
+#if LIBTORRENT_VERSION_MAJOR > 1
+        auto hashes = [[TorrentHashes alloc] initWith:th.info_hashes()];
+#else
+        auto hashes = [[TorrentHashes alloc] initWith:th.info_hash()];
+#endif
+        [self removeMagnetURIWithInfoHashes:hashes];
     });
 }
 
@@ -264,7 +277,7 @@ std::unordered_map<lt::sha1_hash, std::unordered_map<std::string, std::unordered
                         } break;
 
                         case lt::metadata_failed_alert::alert_type: {
-                            //                    [self metadataReceivedAlert:(lt::torrent_alert *)alert];
+                            NSLog(@"TorrentKit metadata_failed - %s", alert->message().c_str());
                         } break;
 
                         case lt::block_finished_alert::alert_type: {
@@ -335,6 +348,11 @@ std::unordered_map<lt::sha1_hash, std::unordered_map<std::string, std::unordered
                         case lt::save_resume_data_alert::alert_type: {
                             [self torrentSaveFastResume:(lt::save_resume_data_alert *)alert];
                             continue; // Not sure if need notify update
+                        } break;
+
+                        case lt::save_resume_data_failed_alert::alert_type: {
+                            NSLog(@"TorrentKit save_resume_data_failed - %s", alert->message().c_str());
+                            continue;
                         } break;
 
                         case lt::fastresume_rejected_alert::alert_type: {
@@ -424,11 +442,9 @@ std::unordered_map<lt::sha1_hash, std::unordered_map<std::string, std::unordered
 
 - (void)metadataReceivedAlert:(lt::torrent_alert *)alert {
     auto th = alert->handle;
-    auto info = th.torrent_file();
 
     if (th.status().has_metadata) {
-        [self saveTorrentFileWithInfo:info];
-        [self removeMagnetURIWithHash:th.info_hash()];
+        [self requestTorrentFileSave:th];
 
 #if LIBTORRENT_VERSION_MAJOR > 1
         auto hashes = [[TorrentHashes alloc] initWith: th.info_hashes()];
@@ -450,15 +466,25 @@ std::unordered_map<lt::sha1_hash, std::unordered_map<std::string, std::unordered
         return;
     }
 
-    bool has_metadata = th.status().has_metadata;
-    auto torrent_info = th.torrent_file();
-    auto margnet_uri = lt::make_magnet_uri(th);
-    dispatch_async(self.filesQueue, ^{
-        if (has_metadata) {
-            [self saveTorrentFileWithInfo:torrent_info];
+    if (th.status().has_metadata) {
+#if LIBTORRENT_VERSION_MAJOR > 1
+        auto hashes = [[TorrentHashes alloc] initWith:th.info_hashes()];
+#else
+        auto hashes = [[TorrentHashes alloc] initWith:th.info_hash()];
+#endif
+        if ([self hasValidTorrentFileForInfoHashes:hashes]) {
+            dispatch_async(self.filesQueue, ^{
+                [self removeMagnetURIWithInfoHashes:hashes];
+            });
         } else {
-            [self saveMagnetURIWithContent:margnet_uri];
+            [self requestTorrentFileSave:th];
         }
+        return;
+    }
+
+    auto magnetURI = lt::make_magnet_uri(th);
+    dispatch_async(self.filesQueue, ^{
+        [self saveMagnetURIWithContent:magnetURI];
     });
 }
 
@@ -534,12 +560,18 @@ std::unordered_map<lt::sha1_hash, std::unordered_map<std::string, std::unordered
     rd["storage_uuid"] = "";
 
     auto hashes = [[TorrentHashes alloc] initWith:ih];
+    if (alert->params.ti != nullptr && [self saveTorrentFileWithParams:alert->params]) {
+        dispatch_async(self.filesQueue, ^{
+            [self removeMagnetURIWithInfoHashes:hashes];
+        });
+    }
+
     auto torrentHandle = _torrentsMap[hashes];
     auto storageUUID = torrentHandle.storageUUID;
 
     if (storageUUID != NULL) {
         for (StorageModel *storage in _storages.allValues) {
-            if (storage.uuid == storageUUID) {
+            if ([storage.uuid isEqual:storageUUID]) {
                 rd["storage_uuid"] = storage.uuid.UUIDString.UTF8String;
 
                 // Do not save fast resume if storage is not allowed
@@ -554,38 +586,59 @@ std::unordered_map<lt::sha1_hash, std::unordered_map<std::string, std::unordered
     bencode(std::back_inserter(ret), rd);
 
     auto nspath = [self fastResumePathForInfoHashes: hashes];
-    std::string path = std::string([nspath UTF8String]);
-
-    std::fstream f(path, std::ios_base::trunc | std::ios_base::out | std::ios_base::binary);
-    f.write(ret.data(), ret.size());
+    NSData *data = [NSData dataWithBytes:ret.data() length:ret.size()];
+    NSError *error;
+    if (![data writeToFile:nspath options:NSDataWritingAtomic error:&error]) {
+        NSLog(@"Failed to save fast-resume data at %@: %@", nspath, error);
+    }
 }
 
 // MARK: - Torrent saving
-- (void)saveTorrentFileWithInfo:(std::shared_ptr<const lt::torrent_info>)ti {
-    if (ti == nullptr) { return; }
+- (void)requestTorrentFileSave:(lt::torrent_handle const&)handle {
+    try {
+        handle.save_resume_data(lt::torrent_handle::save_info_dict);
+    } catch (std::exception const& error) {
+        NSLog(@"Failed to request torrent metadata save: %s", error.what());
+    }
+}
+
+- (BOOL)hasValidTorrentFileForInfoHashes:(TorrentHashes *)infoHashes {
+    NSString *filePath = [self torrentFilePathForInfoHashes:infoHashes];
+    if (![[NSFileManager defaultManager] fileExistsAtPath:filePath]) { return NO; }
+
+    TorrentFile *torrent = [[TorrentFile alloc] initUnsafeWithFileAtURL:[NSURL fileURLWithPath:filePath]];
+    return torrent != nil && [torrent.infoHashes isEqual:infoHashes];
+}
+
+- (BOOL)saveTorrentFileWithParams:(lt::add_torrent_params const&)params {
+    if (params.ti == nullptr) { return NO; }
 
 #if LIBTORRENT_VERSION_MAJOR > 1
-    auto hash = ti->info_hashes();
+    auto hash = params.ti->info_hashes();
 #else
-    auto hash = ti->info_hash();
+    auto hash = params.ti->info_hash();
 #endif
     auto hashes = [[TorrentHashes alloc] initWith:hash];
     NSString *filePath = [self torrentFilePathForInfoHashes:hashes];
+    if ([self hasValidTorrentFileForInfoHashes:hashes]) { return YES; }
 
-    if (![[NSFileManager defaultManager] fileExistsAtPath:filePath]) {
-        lt::create_torrent new_torrent(*ti);
-        std::vector<char> out_file;
-
-        NSString* appName = NSBundle.mainBundle.infoDictionary[(NSString*) kCFBundleNameKey];
-        NSString* appVersion = [NSBundle.mainBundle objectForInfoDictionaryKey: @"CFBundleShortVersionString"];
-        NSString* creator = [NSString stringWithFormat:@"%@ %@", appName, appVersion];
-
-        new_torrent.set_creator([creator cStringUsingEncoding: NSUTF8StringEncoding]);
-        lt::bencode(std::back_inserter(out_file), new_torrent.generate());
-
-        NSData *data = [NSData dataWithBytes:out_file.data() length:out_file.size()];
-        BOOL success = [data writeToFile:filePath atomically:YES];
-        if (!success) { NSLog(@"Can't save .torrent file"); }
+    try {
+        // Magnet-sourced v2 torrents may not have every piece layer until the
+        // content is complete. Libtorrent can restore and fetch them on demand.
+        auto torrentData = lt::write_torrent_file_buf(
+            params,
+            lt::write_flags::allow_missing_piece_layer
+        );
+        NSData *data = [NSData dataWithBytes:torrentData.data() length:torrentData.size()];
+        NSError *error;
+        if (![data writeToFile:filePath options:NSDataWritingAtomic error:&error]) {
+            NSLog(@"Failed to save torrent file at %@: %@", filePath, error);
+            return NO;
+        }
+        return YES;
+    } catch (std::exception const& error) {
+        NSLog(@"Failed to serialize torrent file at %@: %s", filePath, error.what());
+        return NO;
     }
 }
 
@@ -597,30 +650,16 @@ std::unordered_map<lt::sha1_hash, std::unordered_map<std::string, std::unordered
 }
 
 - (void)appendMagnetURIToFileStore:(NSString *)magnetURI {
-    // read from existing file
-    NSError *error;
-    NSString *fileContent = [NSString stringWithContentsOfFile:[self magnetURIsFilePath]
-                                                      encoding:NSUTF8StringEncoding
-                                                         error:&error];
-    if (error) { NSLog(@"%@", error); }
-
-    NSMutableArray *magnetURIs = [[fileContent componentsSeparatedByString:@"\n"] mutableCopy];
-    if (magnetURIs == nil) {
-        magnetURIs = [[NSMutableArray alloc] init];
+    TorrentHashes *newHashes = [self infoHashesForMagnetURI:magnetURI];
+    NSMutableArray<NSString *> *magnetURIs = [[NSMutableArray alloc] init];
+    for (NSString *storedURI in [self storedMagnetURIs]) {
+        TorrentHashes *storedHashes = [self infoHashesForMagnetURI:storedURI];
+        if (newHashes != nil && [storedHashes isEqual:newHashes]) { continue; }
+        if ([storedURI caseInsensitiveCompare:magnetURI] == NSOrderedSame) { continue; }
+        [magnetURIs addObject:storedURI];
     }
-    // remove all existing copies
-    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"NOT (SELF CONTAINS[cd] %@)", magnetURI];
-    [magnetURIs filterUsingPredicate:predicate];
-    // add new uri
     [magnetURIs addObject:magnetURI];
-
-    // save to file
-    fileContent = [magnetURIs componentsJoinedByString:@"\n"];
-    [fileContent writeToFile:[self magnetURIsFilePath]
-                  atomically:YES
-                    encoding:NSUTF8StringEncoding
-                       error:&error];
-    if (error) { NSLog(@"%@", error); }
+    [self writeStoredMagnetURIs:magnetURIs];
 }
 
 // MARK: - Torrent deletion
@@ -658,31 +697,81 @@ std::unordered_map<lt::sha1_hash, std::unordered_map<std::string, std::unordered
     if (error) { NSLog(@"success: %d, %@", success, error); }
 }
 
-- (void)removeMagnetURIWithHash:(lt::sha1_hash)info_hash {
-    NSData *hashData = [[NSData alloc] initWith:info_hash];
-    [self removeFromFileStoreMagnetURIWithHash:hashData.hexString];
-}
+- (NSArray<NSString *> *)storedMagnetURIs {
+    NSString *path = [self magnetURIsFilePath];
+    if (![[NSFileManager defaultManager] fileExistsAtPath:path]) { return @[]; }
 
-- (void)removeFromFileStoreMagnetURIWithHash:(NSString *)hashString {
-    // read from existing file
     NSError *error;
-    NSString *fileContent = [NSString stringWithContentsOfFile:[self magnetURIsFilePath]
+    NSString *fileContent = [NSString stringWithContentsOfFile:path
                                                       encoding:NSUTF8StringEncoding
                                                          error:&error];
-    if (error) { NSLog(@"%@", error); }
+    if (fileContent == nil) {
+        NSLog(@"Failed to read stored magnet links at %@: %@", path, error);
+        return @[];
+    }
 
-    NSMutableArray *magnetURIs = [[fileContent componentsSeparatedByString:@"\n"] mutableCopy];
-    // remove all existing copies
-    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"NOT (SELF CONTAINS[cd] %@)", hashString];
-    [magnetURIs filterUsingPredicate:predicate];
+    NSPredicate *notEmpty = [NSPredicate predicateWithBlock:^BOOL(NSString *value, NSDictionary *_) {
+        return value.length > 0;
+    }];
+    return [[fileContent componentsSeparatedByString:@"\n"] filteredArrayUsingPredicate:notEmpty];
+}
 
-    // save to file
-    fileContent = [magnetURIs componentsJoinedByString:@"\n"];
-    [fileContent writeToFile:[self magnetURIsFilePath]
-                  atomically:YES
-                    encoding:NSUTF8StringEncoding
-                       error:&error];
-    if (error) { NSLog(@"%@", error); }
+- (void)writeStoredMagnetURIs:(NSArray<NSString *> *)magnetURIs {
+    NSString *path = [self magnetURIsFilePath];
+    NSString *fileContent = [magnetURIs componentsJoinedByString:@"\n"];
+    NSError *error;
+    if (![fileContent writeToFile:path
+                       atomically:YES
+                         encoding:NSUTF8StringEncoding
+                            error:&error]) {
+        NSLog(@"Failed to save magnet links at %@: %@", path, error);
+    }
+}
+
+- (TorrentHashes * _Nullable)infoHashesForMagnetURI:(NSString *)magnetURI {
+    lt::error_code error;
+    auto params = lt::parse_magnet_uri(magnetURI.UTF8String, error);
+    if (error) { return NULL; }
+
+#if LIBTORRENT_VERSION_MAJOR > 1
+    return [[TorrentHashes alloc] initWith:params.info_hashes];
+#else
+    return [[TorrentHashes alloc] initWith:params.info_hash];
+#endif
+}
+
+- (void)removeMagnetURIWithInfoHashes:(TorrentHashes *)infoHashes {
+    NSMutableArray<NSString *> *remainingURIs = [[NSMutableArray alloc] init];
+    BOOL didRemove = NO;
+    for (NSString *magnetURI in [self storedMagnetURIs]) {
+        TorrentHashes *storedHashes = [self infoHashesForMagnetURI:magnetURI];
+        if (storedHashes != nil && [storedHashes isEqual:infoHashes]) {
+            didRemove = YES;
+            continue;
+        }
+        [remainingURIs addObject:magnetURI];
+    }
+    if (didRemove) { [self writeStoredMagnetURIs:remainingURIs]; }
+}
+
+- (void)restoreMagnetURIs {
+    NSMutableArray<NSString *> *remainingURIs = [[NSMutableArray alloc] init];
+    BOOL didRemoveStaleURI = NO;
+
+    for (NSString *magnetURI in [self storedMagnetURIs]) {
+        TorrentHashes *hashes = [self infoHashesForMagnetURI:magnetURI];
+        if (hashes != nil && _torrentsMap[hashes] != nil) {
+            didRemoveStaleURI = YES;
+            continue;
+        }
+
+        NSURL *url = [NSURL URLWithString:magnetURI];
+        MagnetURI *magnet = url == nil ? nil : [[MagnetURI alloc] initUnsafeWithMagnetURI:url];
+        if (magnet != nil) { [self addTorrent:magnet]; }
+        [remainingURIs addObject:magnetURI];
+    }
+
+    if (didRemoveStaleURI) { [self writeStoredMagnetURIs:remainingURIs]; }
 }
 
 - (std::unordered_map<lt::sha1_hash, std::unordered_map<std::string, std::unordered_map<lt::tcp::endpoint, std::unordered_map<int, int>>>>)updatedTrackerStatuses {
