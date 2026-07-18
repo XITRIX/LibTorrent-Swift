@@ -188,19 +188,22 @@ static std::vector<lt::download_priority_t> piecePrioritiesForFiles(
 }
 
 - (void)reload {
-    auto status = _torrentHandle.status();
-    auto snapshot = [self createSnapshotFromStatus:status
-                                     torrentHandle:_torrentHandle
-                                             owner:self
-                                       torrentPath:_torrentPath
-                                           session:_session
-                                       storageUUID:self.storageUUID
-                          isFirstLastPiecePriority:self.isFirstLastPiecePriority];
-    
-    auto torrentFile = [[TorrentFile alloc] initUnsafeWithFileAtURL:[[NSURL alloc] initFileURLWithPath:snapshot.torrentFilePath]];
-    _session.session->remove_torrent(_torrentHandle);
-    auto newTorrentHandle = [_session addTorrent: torrentFile];
-    _torrentHandle = newTorrentHandle.torrentHandle;
+    @synchronized (self) {
+        auto torrentHandle = _torrentHandle;
+        auto status = torrentHandle.status();
+        auto snapshot = [self createSnapshotFromStatus:status
+                                         torrentHandle:torrentHandle
+                                                 owner:self
+                                           torrentPath:_torrentPath
+                                               session:_session
+                                           storageUUID:self.storageUUID
+                              isFirstLastPiecePriority:self.isFirstLastPiecePriority];
+
+        auto torrentFile = [[TorrentFile alloc] initUnsafeWithFileAtURL:[[NSURL alloc] initFileURLWithPath:snapshot.torrentFilePath]];
+        _session.session->remove_torrent(torrentHandle);
+        auto newTorrentHandle = [_session addTorrent:torrentFile];
+        _torrentHandle = newTorrentHandle.torrentHandle;
+    }
     [self updateSnapshot];
 }
 
@@ -297,18 +300,21 @@ static std::vector<lt::download_priority_t> piecePrioritiesForFiles(
 }
 
 - (void)updateSnapshot {
-    if (!self.isValid) return;
+    @synchronized (self) {
+        auto torrentHandle = _torrentHandle;
+        if (!torrentHandle.is_valid()) { return; }
 
-    try {
-        auto status = _torrentHandle.status();
-        self.snapshot = [self createSnapshotFromStatus:status
-                                          torrentHandle:_torrentHandle
-                                                  owner:self
-                                            torrentPath:_torrentPath
-                                                session:_session
-                                            storageUUID:_storageUUID
-                               isFirstLastPiecePriority:_isFirstLastPiecePriority];
-    } catch(...) {}
+        try {
+            auto status = torrentHandle.status();
+            self.snapshot = [self createSnapshotFromStatus:status
+                                              torrentHandle:torrentHandle
+                                                      owner:self
+                                                torrentPath:_torrentPath
+                                                    session:_session
+                                                storageUUID:_storageUUID
+                                   isFirstLastPiecePriority:_isFirstLastPiecePriority];
+        } catch(...) {}
+    }
 }
 
 - (TorrentHandleSnapshot*)createSnapshotFromStatus:(lt::torrent_status) status

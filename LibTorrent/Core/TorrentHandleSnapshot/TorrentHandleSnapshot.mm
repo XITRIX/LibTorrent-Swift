@@ -215,75 +215,108 @@
 }
 
 - (NSArray<NSNumber *> * _Nullable)pieces {
-    if (_pieces != nil) { return _pieces; }
-    if (!_status.has_metadata) { return NULL; }
+    @synchronized (self) {
+        if (_pieces != nil) { return _pieces; }
+        if (!_status.has_metadata) { return NULL; }
 
-    auto info = _torrentHandle.torrent_file().get();
-    NSMutableArray<NSNumber *> *array = [[NSMutableArray alloc] initWithCapacity:static_cast<NSUInteger>(static_cast<int>(info->end_piece()))];
-    for (auto i = static_cast<lt::piece_index_t>(0); i < info->end_piece(); i++) {
-        [array addObject:[NSNumber numberWithBool:_status.pieces.get_bit(i)]];
+        // The status bitfield is the source of truth for this snapshot. Its size may
+        // temporarily differ from torrent_file() while metadata or a handle changes.
+        const int pieceCount = _status.pieces.size();
+        NSMutableArray<NSNumber *> *array = [[NSMutableArray alloc] initWithCapacity:static_cast<NSUInteger>(pieceCount)];
+        for (int index = 0; index < pieceCount; ++index) {
+            auto pieceIndex = static_cast<lt::piece_index_t>(index);
+            [array addObject:[NSNumber numberWithBool:_status.pieces.get_bit(pieceIndex)]];
+        }
+        _pieces = [array copy];
+        return _pieces;
     }
-    _pieces = [array copy];
-    return _pieces;
 }
 
 - (NSArray<FileEntry *> *)files {
-    if (_files != nil) { return _files; }
+    @synchronized (self) {
+        if (_files != nil) { return _files; }
 
-    auto th = _torrentHandle;
-    auto ti = th.torrent_file();
-    if (ti == nullptr) {
-//        NSLog(@"No metadata for torrent with name: %s", th.status().name.c_str());
-        _files = @[];
+        try {
+            auto th = _torrentHandle;
+            auto ti = th.torrent_file();
+            if (ti == nullptr) {
+                _files = @[];
+                return _files;
+            }
+
+            auto info = ti.get();
+            auto const &files = info->files();
+            const int fileCount = files.num_files();
+            NSMutableArray<FileEntry *> *results = [[NSMutableArray alloc] initWithCapacity:static_cast<NSUInteger>(fileCount)];
+
+            std::vector<int64_t> progresses;
+            th.file_progress(progresses);
+            auto priorities = th.get_file_priorities();
+
+            const int pieceLength = info->piece_length();
+            const int statusPieceCount = _status.pieces.size();
+
+            for (int index = 0; index < fileCount; ++index) {
+                auto fileIndex = static_cast<lt::file_index_t>(index);
+                auto name = std::string(files.file_name(fileIndex));
+                auto path = files.file_path(fileIndex);
+                auto fileSize = files.file_size(fileIndex);
+                auto vectorIndex = static_cast<std::size_t>(index);
+
+                auto priority = lt::default_priority;
+                if (vectorIndex < priorities.size()) {
+                    priority = priorities[vectorIndex];
+                }
+
+                uint64_t downloaded = 0;
+                if (vectorIndex < progresses.size() && progresses[vectorIndex] > 0) {
+                    downloaded = static_cast<uint64_t>(progresses[vectorIndex]);
+                }
+
+                FileEntry *fileEntry = [[FileEntry alloc] init];
+                fileEntry.index = index;
+                fileEntry.name = [NSString stringWithUTF8String:name.c_str()] ?: @"";
+                fileEntry.path = [NSString stringWithUTF8String:path.c_str()] ?: @"";
+                fileEntry.size = fileSize > 0 ? static_cast<uint64_t>(fileSize) : 0;
+                fileEntry.downloaded = downloaded;
+                fileEntry.priority = static_cast<FilePriority>(static_cast<uint8_t>(priority));
+
+                int beginIndex = 0;
+                int endIndex = 0;
+                if (pieceLength > 0 && fileSize > 0) {
+                    auto firstPiece = files.map_file(fileIndex, 0, 0).piece;
+                    auto lastPiece = files.map_file(fileIndex, fileSize - 1, 1).piece;
+                    int firstPieceIndex = static_cast<int>(firstPiece);
+                    int lastPieceIndex = static_cast<int>(lastPiece);
+                    if (firstPieceIndex >= 0 && lastPieceIndex >= firstPieceIndex) {
+                        beginIndex = firstPieceIndex;
+                        endIndex = lastPieceIndex + 1;
+                    }
+                }
+
+                fileEntry.begin_idx = static_cast<uint64_t>(beginIndex);
+                fileEntry.end_idx = static_cast<uint64_t>(endIndex);
+                fileEntry.num_pieces = endIndex - beginIndex;
+
+                auto array = [[NSMutableArray<NSNumber *> alloc] initWithCapacity:static_cast<NSUInteger>(fileEntry.num_pieces)];
+                for (int pieceIndex = beginIndex; pieceIndex < endIndex; ++pieceIndex) {
+                    BOOL hasPiece = NO;
+                    if (pieceIndex >= 0 && pieceIndex < statusPieceCount) {
+                        hasPiece = _status.pieces.get_bit(static_cast<lt::piece_index_t>(pieceIndex));
+                    }
+                    [array addObject:[NSNumber numberWithBool:hasPiece]];
+                }
+                fileEntry.pieces = [array copy];
+
+                [results addObject:fileEntry];
+            }
+            _files = [results copy];
+        } catch (...) {
+            // A handle may become invalid while a snapshot is being materialized.
+            _files = @[];
+        }
         return _files;
     }
-
-    auto info = ti.get();
-    auto files = info->files();
-    const int fileCount = files.num_files();
-    NSMutableArray<FileEntry *> *results = [[NSMutableArray alloc] initWithCapacity:fileCount];
-
-    std::vector<int64_t> progresses;
-    th.file_progress(progresses);
-    auto priorities = th.get_file_priorities();
-
-    const int pieceLength = info->piece_length();
-
-    for (int index = 0; index < fileCount; index++) {
-        auto i = static_cast<lt::file_index_t>(index);
-        auto name = std::string(files.file_name(i));
-        auto path = files.file_path(i);
-        auto size = files.file_size(i);
-        uint8_t priority = static_cast<uint8_t>(priorities[index]);
-
-        FileEntry *fileEntry = [[FileEntry alloc] init];
-        fileEntry.index = index;
-        fileEntry.name = [NSString stringWithUTF8String:name.c_str()];
-        fileEntry.path = [NSString stringWithUTF8String:path.c_str()];
-        fileEntry.size = size;
-        fileEntry.downloaded = progresses[index];
-        fileEntry.priority = (FilePriority)priority;
-
-        const auto fileSize = files.file_size(i);// > 0 ? files.file_size(i) : 0;
-        const auto fileOffset = files.file_offset(i);
-
-        const long long beginIdx = (fileOffset / pieceLength);
-        const long long endIdx = ((fileOffset + fileSize) / pieceLength);
-
-        fileEntry.begin_idx = beginIdx;
-        fileEntry.end_idx = endIdx;
-        fileEntry.num_pieces = (int)(endIdx - beginIdx);
-        auto array = [[NSMutableArray<NSNumber *> alloc] initWithCapacity:fileEntry.num_pieces];
-        for (int j = 0; j < fileEntry.num_pieces; j++) {
-            auto index = static_cast<lt::piece_index_t>(j + (int)beginIdx);
-            [array addObject:[NSNumber numberWithBool:_status.pieces.get_bit(index)]];
-        }
-        fileEntry.pieces = array;
-
-        [results addObject:fileEntry];
-    }
-    _files = [results copy];
-    return _files;
 }
 
 - (NSArray<TorrentTracker *> *)trackers {
