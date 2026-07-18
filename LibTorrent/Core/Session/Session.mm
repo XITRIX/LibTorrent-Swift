@@ -47,6 +47,11 @@ static NSString *FileEntriesQueueIdentifier = @"ru.xitrix.TorrentKit.Session.fil
 - (void)restoreMagnetURIs;
 @end
 
+@interface Session (TorrentErrorRecovery)
+- (void)torrentMadeProgress:(lt::torrent_alert *)alert;
+- (void)handleTorrentError:(lt::torrent_error_alert *)alert;
+@end
+
 @implementation StorageModel : NSObject
 @end
 
@@ -79,6 +84,7 @@ std::unordered_map<lt::sha1_hash, std::unordered_map<std::string, std::unordered
         // Init session properties
         _filesQueue = dispatch_queue_create([FileEntriesQueueIdentifier UTF8String], DISPATCH_QUEUE_SERIAL);
         _torrentsMap = [[NSMutableDictionary alloc] init];
+        _automaticErrorRecoveryAttempts = [[NSMutableSet alloc] init];
         _delegates = [NSHashTable weakObjectsHashTable];
 
         // restore session
@@ -343,6 +349,10 @@ std::unordered_map<lt::sha1_hash, std::unordered_map<std::string, std::unordered
                         case lt::block_finished_alert::alert_type: {
                         } break;
 
+                        case lt::piece_finished_alert::alert_type: {
+                            [self torrentMadeProgress:(lt::torrent_alert *)alert];
+                        } break;
+
                         case lt::add_torrent_alert::alert_type: {
                             [self torrentAddedAlert:(lt::torrent_alert *)alert];
                         } break;
@@ -370,7 +380,7 @@ std::unordered_map<lt::sha1_hash, std::unordered_map<std::string, std::unordered
 
                         case lt::torrent_error_alert::alert_type: {
                             NSLog(@"TorrentKit torrent_error - %s", alert->message().c_str());
-                            [self torrentInputOutputError:(lt::torrent_alert *) alert];
+                            [self handleTorrentError:(lt::torrent_error_alert *)alert];
                         } break;
 
                         case lt::file_error_alert::alert_type: {
@@ -473,6 +483,9 @@ std::unordered_map<lt::sha1_hash, std::unordered_map<std::string, std::unordered
 
 - (void)notifyDelegatesWithRemove:(TorrentHandle*) torrent {
     [_torrentsMap removeObjectForKey: torrent.infoHashes];
+    @synchronized (_automaticErrorRecoveryAttempts) {
+        [_automaticErrorRecoveryAttempts removeObject:torrent.infoHashes];
+    }
     TorrentHashes *hashesData = torrent.infoHashes;
     for (id<SessionDelegate>delegate in self.delegates) {
         [delegate torrentManager:self didRemoveTorrentWithHash:hashesData];
@@ -598,11 +611,77 @@ std::unordered_map<lt::sha1_hash, std::unordered_map<std::string, std::unordered
 //    if (!th.is_valid()) return;
 }
 
-- (void)torrentInputOutputError:(lt::torrent_alert *)alert {
+- (void)torrentMadeProgress:(lt::torrent_alert *)alert {
     auto th = alert->handle;
+#if LIBTORRENT_VERSION_MAJOR > 1
     auto hashes = [[TorrentHashes alloc] initWith: th.info_hashes()];
+#else
+    auto hashes = [[TorrentHashes alloc] initWith: th.info_hash()];
+#endif
+    @synchronized (_automaticErrorRecoveryAttempts) {
+        [_automaticErrorRecoveryAttempts removeObject:hashes];
+    }
+}
+
+- (void)handleTorrentError:(lt::torrent_error_alert *)alert {
+    auto th = alert->handle;
+    if (!th.is_valid()) { return; }
+
+#if LIBTORRENT_VERSION_MAJOR > 1
+    auto hashes = [[TorrentHashes alloc] initWith:th.info_hashes()];
+#else
+    auto hashes = [[TorrentHashes alloc] initWith:th.info_hash()];
+#endif
     auto torrentHandle = _torrentsMap[hashes];
-    [_storages[torrentHandle.storageUUID] resolveSequrityScopes];
+    if (torrentHandle == nil) { return; }
+
+    // Automatically retry errors that point at torrent storage. Other torrent
+    // errors (invalid metadata, SSL configuration, duplicate torrents, etc.)
+    // need a specific fix and must not be cleared in a tight alert loop.
+    BOOL storageAccessRestored = NO;
+    NSUUID *storageUUID = torrentHandle.storageUUID;
+    if (storageUUID != nil) {
+        StorageModel *storage = _storages[storageUUID];
+        storageAccessRestored = storage != nil && [storage resolveSequrityScopes];
+    }
+
+    char const *errorFilename = alert->filename();
+    NSString *filename = errorFilename != nullptr
+        ? ([NSString stringWithUTF8String:errorFilename] ?: @"")
+        : @"";
+    NSString *defaultStoragePrefix = [_downloadPath stringByAppendingString:@"/"];
+    BOOL isDefaultStorageError = [filename isEqualToString:_downloadPath]
+        || [filename hasPrefix:defaultStoragePrefix];
+
+    if (!storageAccessRestored && !isDefaultStorageError) { return; }
+
+    // One automatic attempt is allowed until the torrent successfully writes
+    // another block. This recovers transient I/O failures without repeatedly
+    // clearing permanent failures such as a full disk.
+    @synchronized (_automaticErrorRecoveryAttempts) {
+        if ([_automaticErrorRecoveryAttempts containsObject:hashes]) { return; }
+        [_automaticErrorRecoveryAttempts addObject:hashes];
+    }
+
+    try {
+        th.clear_error();
+        th.post_status();
+    } catch (std::exception const &exception) {
+        @synchronized (_automaticErrorRecoveryAttempts) {
+            [_automaticErrorRecoveryAttempts removeObject:hashes];
+        }
+        NSString *message = [NSString stringWithUTF8String:exception.what()] ?: @"Unknown C++ exception";
+        [self reportErrorWithCode:ErrorCodeLibtorrentOperationFailed
+                        operation:@"recoverTorrentError"
+                          message:message];
+    } catch (...) {
+        @synchronized (_automaticErrorRecoveryAttempts) {
+            [_automaticErrorRecoveryAttempts removeObject:hashes];
+        }
+        [self reportErrorWithCode:ErrorCodeLibtorrentOperationFailed
+                        operation:@"recoverTorrentError"
+                          message:@"Unknown C++ exception"];
+    }
 }
 
 - (void)torrentSaveFastResume:(lt::save_resume_data_alert *)alert {

@@ -187,6 +187,10 @@ static std::vector<lt::download_priority_t> piecePrioritiesForFiles(
 
 - (void)resume {
     [self performOperation:@"resume" action:^(lt::torrent_handle const &handle) {
+        // resume() alone does not recover a torrent that libtorrent placed in
+        // an error state. clear_error() both clears that state and makes the
+        // torrent eligible to start again.
+        handle.clear_error();
         handle.unset_flags(lt::torrent_flags::auto_managed);
         handle.resume();
     }];
@@ -196,6 +200,13 @@ static std::vector<lt::download_priority_t> piecePrioritiesForFiles(
     [self performOperation:@"pause" action:^(lt::torrent_handle const &handle) {
         handle.unset_flags(lt::torrent_flags::auto_managed);
         handle.pause();
+    }];
+}
+
+- (void)clearError {
+    [self performOperation:@"clearError" action:^(lt::torrent_handle const &handle) {
+        handle.clear_error();
+        handle.post_status();
     }];
 }
 

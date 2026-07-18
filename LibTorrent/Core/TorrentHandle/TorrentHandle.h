@@ -37,6 +37,7 @@ NS_SWIFT_NAME(TorrentHashes)
 
 - (void)resume;
 - (void)pause;
+- (void)clearError;
 - (void)rehash;
 - (void)reload;
 
