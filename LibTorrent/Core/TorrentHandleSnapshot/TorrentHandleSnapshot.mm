@@ -13,9 +13,27 @@
 #import "TorrentHandleSnapshot_Internal.h"
 
 #import "libtorrent/magnet_uri.hpp"
+#import "libtorrent/load_torrent.hpp"
 #import "libtorrent/torrent_info.hpp"
 #import "libtorrent/torrent_status.hpp"
 
+@interface TorrentHandleSnapshot (TorrentMetadata)
+- (lt::add_torrent_params const * _Nullable)torrentParams;
+@end
+
+static lt::add_torrent_params magnetParams(lt::torrent_handle const &handle) {
+    lt::add_torrent_params params;
+    params.info_hashes = handle.info_hashes();
+    params.name = handle.status(lt::torrent_handle::query_name).name;
+
+    for (auto const &tracker : handle.trackers()) {
+        params.trackers.push_back(tracker.url);
+    }
+    for (auto const &urlSeed : handle.url_seeds()) {
+        params.url_seeds.push_back(urlSeed);
+    }
+    return params;
+}
 
 @implementation TorrentHandleSnapshot
 
@@ -37,11 +55,7 @@
         _storageUUID = storageUUID;
         _isValid = torrentHandle.is_valid();
         _isFirstLastPiecePriority = isFirstLastPiecePriority;
-#if LIBTORRENT_VERSION_MAJOR > 1
         _infoHashes = [[TorrentHashes alloc] initWith:status.info_hashes];
-#else
-        _infoHashes = [[TorrentHashes alloc] initWith:status.info_hash];
-#endif
     }
     return self;
 }
@@ -80,9 +94,9 @@
 
     if (!_status.has_metadata) { return NULL; }
 
-    auto info = _torrentInfo.get();
-    if (info == nullptr) { return NULL; }
-    _creator = [NSString stringWithCString:info->creator().c_str() encoding:NSUTF8StringEncoding];
+    auto params = self.torrentParams;
+    if (params == nullptr) { return NULL; }
+    _creator = [NSString stringWithUTF8String:params->created_by.c_str()];
     return _creator;
 }
 
@@ -92,9 +106,9 @@
 
     if (!_status.has_metadata) { return NULL; }
 
-    auto info = _torrentInfo.get();
-    if (info == nullptr) { return NULL; }
-    _comment = [NSString stringWithCString:info->comment().c_str() encoding:NSUTF8StringEncoding];
+    auto params = self.torrentParams;
+    if (params == nullptr) { return NULL; }
+    _comment = [NSString stringWithUTF8String:params->comment.c_str()];
     return _comment;
 }
 
@@ -104,10 +118,25 @@
 
     if (!_status.has_metadata) { return NULL; }
 
-    auto info = _torrentInfo.get();
-    if (info == nullptr) { return NULL; }
-    _creationDate = [[NSDate alloc] initWithTimeIntervalSince1970:info->creation_date()];
+    auto params = self.torrentParams;
+    if (params == nullptr) { return NULL; }
+    _creationDate = [[NSDate alloc] initWithTimeIntervalSince1970:params->creation_date];
     return _creationDate;
+}
+
+- (lt::add_torrent_params const * _Nullable)torrentParams {
+    if (_didLoadTorrentParams) return _torrentParams.get();
+    _didLoadTorrentParams = YES;
+
+    NSString *filePath = self.torrentFilePath;
+    if (filePath == nil) return nullptr;
+
+    lt::error_code error;
+    auto params = lt::load_torrent_file(filePath.UTF8String, error, lt::load_torrent_limits{});
+    if (error || params.ti == nullptr) return nullptr;
+
+    _torrentParams = std::make_shared<lt::add_torrent_params const>(std::move(params));
+    return _torrentParams.get();
 }
 
 - (NSDate * _Nullable)addedDate {
@@ -247,7 +276,8 @@
             }
 
             auto info = ti.get();
-            auto const &files = info->files();
+            auto const &layout = info->layout();
+            lt::filenames files(layout, _status.renamed_files);
             const int fileCount = files.num_files();
             NSMutableArray<FileEntry *> *results = [[NSMutableArray alloc] initWithCapacity:static_cast<NSUInteger>(fileCount)];
 
@@ -260,7 +290,7 @@
 
             for (int index = 0; index < fileCount; ++index) {
                 auto fileIndex = static_cast<lt::file_index_t>(index);
-                auto name = std::string(files.file_name(fileIndex));
+                auto name = std::string(_status.renamed_files.file_name(layout, fileIndex));
                 auto path = files.file_path(fileIndex);
                 auto fileSize = files.file_size(fileIndex);
                 auto vectorIndex = static_cast<std::size_t>(index);
@@ -367,7 +397,7 @@
     if (_magnetLink != nil) { return _magnetLink; }
 
     try {
-        auto uri = lt::make_magnet_uri(_torrentHandle);
+        auto uri = lt::make_magnet_uri(magnetParams(_torrentHandle));
         _magnetLink = [NSString stringWithCString:uri.c_str() encoding:NSUTF8StringEncoding] ?: @"";
     } catch (std::exception const &exception) {
         _magnetLink = @"";

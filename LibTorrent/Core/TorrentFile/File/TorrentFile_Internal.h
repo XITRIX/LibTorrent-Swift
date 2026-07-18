@@ -8,7 +8,7 @@
 #import "TorrentFile.h"
 #import "FileEntry_Internal.h"
 
-#import "libtorrent/torrent_info.hpp"
+#import "libtorrent/add_torrent_params.hpp"
 #import "libtorrent/torrent_handle.hpp"
 
 NS_ASSUME_NONNULL_BEGIN
@@ -17,8 +17,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (readonly, nullable) NSMutableArray<NSNumber *> *priorities;
 @property (readonly, nullable) NSArray<FileEntry *> *filesCache;
 @property BOOL firstLastPiecePriorityEnabled;
-
-@property (readonly) lt::torrent_info torrent_info;
+@property (readwrite) lt::add_torrent_params torrentParams;
 @end
 
 NS_ASSUME_NONNULL_END

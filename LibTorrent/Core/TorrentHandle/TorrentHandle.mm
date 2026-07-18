@@ -33,7 +33,7 @@ static std::vector<lt::download_priority_t> piecePrioritiesForFiles(
     std::vector<lt::download_priority_t> const &filePriorities,
     bool firstLastPiecePriorityEnabled)
 {
-    auto const &files = torrentInfo.files();
+    auto const &files = torrentInfo.layout();
     auto piecePriorities = std::vector<lt::download_priority_t>(torrentInfo.num_pieces(), lt::dont_download);
 
     for (int index = 0; index < files.num_files(); ++index) {
@@ -75,7 +75,6 @@ static std::vector<lt::download_priority_t> piecePrioritiesForFiles(
 
 @implementation TorrentHashes
 
-#if LIBTORRENT_VERSION_MAJOR > 1
 - (instancetype)initWith:(lt::info_hash_t)infoHash {
     self = [self init];
     if (self) {
@@ -89,20 +88,6 @@ static std::vector<lt::download_priority_t> piecePrioritiesForFiles(
     }
     return self;
 }
-#else
-- (instancetype)initWith:(lt::sha1_hash)infoHash {
-    self = [self init];
-    if (self) {
-        _v1 = [[NSData alloc] initWithBytes:infoHash.data() length:infoHash.size()];
-        _v2 = NULL;
-        _hasV1 = true;
-        _hasV2 = false;
-
-        _best = _v1;
-    }
-    return self;
-}
-#endif
 
 - (BOOL)isEqual:(id)other
 {
@@ -146,11 +131,7 @@ static std::vector<lt::download_priority_t> piecePrioritiesForFiles(
     if (self) {
         _session = session;
         _torrentHandle = torrentHandle;
-#if LIBTORRENT_VERSION_MAJOR > 1
         _cachedInfoHashes = [[TorrentHashes alloc] initWith:torrentHandle.info_hashes()];
-#else
-        _cachedInfoHashes = [[TorrentHashes alloc] initWith:torrentHandle.info_hash()];
-#endif
         _torrentPath = session.torrentsPath;
         _sessionDownloadPath = session.downloadPath;
         _isFirstLastPiecePriority = NO;
@@ -355,7 +336,7 @@ static std::vector<lt::download_priority_t> piecePrioritiesForFiles(
         if (torrentInfo == nullptr) { return; }
 
         std::vector<lt::download_priority_t> priorities(
-            static_cast<std::size_t>(torrentInfo->files().num_files()),
+            static_cast<std::size_t>(torrentInfo->layout().num_files()),
             static_cast<lt::download_priority_t>(priority)
         );
         [self applyPriorityConfigurationToHandle:handle filePriorities:priorities saveResumeData:YES];

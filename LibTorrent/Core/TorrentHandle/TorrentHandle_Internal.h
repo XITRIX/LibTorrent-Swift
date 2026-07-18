@@ -10,7 +10,6 @@
 
 #import "libtorrent/torrent_handle.hpp"
 #import "libtorrent/torrent_status.hpp"
-#import "libtorrent/version.hpp"
 #import "Session.h"
 
 NS_ASSUME_NONNULL_BEGIN
@@ -51,11 +50,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 
 @interface TorrentHashes ()
-#if LIBTORRENT_VERSION_MAJOR > 1
 - (instancetype)initWith:(lt::info_hash_t)infoHash;
-#else
-- (instancetype)initWith:(lt::sha1_hash)infoHash;
-#endif
 @end
 
 NS_ASSUME_NONNULL_END

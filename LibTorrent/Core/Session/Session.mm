@@ -16,6 +16,8 @@
 
 //libtorrent
 #import "libtorrent/session.hpp"
+#import "libtorrent/session_params.hpp"
+#import "libtorrent/pread_disk_io.hpp"
 #import "libtorrent/alert.hpp"
 #import "libtorrent/alert_types.hpp"
 
@@ -26,10 +28,6 @@
 
 #import "libtorrent/bencode.hpp"
 #import "libtorrent/bdecode.hpp"
-
-#include <libtorrent/extensions/ut_metadata.hpp>
-#include <libtorrent/extensions/ut_pex.hpp>
-#include <libtorrent/extensions/smart_ban.hpp>
 
 static NSErrorDomain ErrorDomain = @"ru.xitrix.TorrentKit.Session.error";
 static NSString *EventsQueueIdentifier = @"ru.xitrix.TorrentKit.Session.events.queue";
@@ -51,6 +49,20 @@ static NSString *FileEntriesQueueIdentifier = @"ru.xitrix.TorrentKit.Session.fil
 - (void)torrentMadeProgress:(lt::torrent_alert *)alert;
 - (void)handleTorrentError:(lt::torrent_error_alert *)alert;
 @end
+
+static lt::add_torrent_params magnetParams(lt::torrent_handle const &handle) {
+    lt::add_torrent_params params;
+    params.info_hashes = handle.info_hashes();
+    params.name = handle.status(lt::torrent_handle::query_name).name;
+
+    for (auto const &tracker : handle.trackers()) {
+        params.trackers.push_back(tracker.url);
+    }
+    for (auto const &urlSeed : handle.url_seeds()) {
+        params.url_seeds.push_back(urlSeed);
+    }
+    return params;
+}
 
 @implementation StorageModel : NSObject
 @end
@@ -74,12 +86,9 @@ std::unordered_map<lt::sha1_hash, std::unordered_map<std::string, std::unordered
         [[NSFileManager defaultManager] createDirectoryAtURL:torrentsPath withIntermediateDirectories:YES attributes:nil error:&error];
         [[NSFileManager defaultManager] createDirectoryAtURL:fastResumePath withIntermediateDirectories:YES attributes:nil error:&error];
 
-        _session = new lt::session(_settings.settingsPack);
-
-        // Enabling plugins
-        _session->add_extension(&lt::create_smart_ban_plugin);
-        _session->add_extension(&lt::create_ut_metadata_plugin);
-        _session->add_extension(&lt::create_ut_pex_plugin);
+        auto params = lt::session_params(_settings.settingsPack);
+        params.disk_io_constructor = &lt::pread_disk_io_constructor;
+        _session = new lt::session(std::move(params));
 
         // Init session properties
         _filesQueue = dispatch_queue_create([FileEntriesQueueIdentifier UTF8String], DISPATCH_QUEUE_SERIAL);
@@ -326,9 +335,9 @@ std::unordered_map<lt::sha1_hash, std::unordered_map<std::string, std::unordered
     while (YES) {
         @autoreleasepool {
             try {
-                auto alert_ptr = _session->wait_for_alert(max_wait);
+                auto const hasAlerts = _session->wait_for_alert(max_wait);
                 std::vector<lt::alert *> alerts_queue;
-                if (alert_ptr != nullptr) {
+                if (hasAlerts) {
                     _session->pop_alerts(&alerts_queue);
                 } else {
                     continue;
@@ -495,11 +504,7 @@ std::unordered_map<lt::sha1_hash, std::unordered_map<std::string, std::unordered
 - (void)notifyDelegatesWithUpdate:(lt::torrent_handle)th {
     if (!th.is_valid()) return;
 
-#if LIBTORRENT_VERSION_MAJOR > 1
     auto ih = th.info_hashes();
-#else
-    auto ih = th.info_hash();
-#endif
 
     auto hashes = [[TorrentHashes alloc] initWith:ih];
     
@@ -519,11 +524,7 @@ std::unordered_map<lt::sha1_hash, std::unordered_map<std::string, std::unordered
     if (th.status().has_metadata) {
         [self requestTorrentFileSave:th];
 
-#if LIBTORRENT_VERSION_MAJOR > 1
         auto hashes = [[TorrentHashes alloc] initWith: th.info_hashes()];
-#else
-        auto hashes = [[TorrentHashes alloc] initWith: th.info_hash()];
-#endif
         auto torrentHandle = _torrentsMap[hashes];
         if (torrentHandle.isFirstLastPiecePriority) {
             [torrentHandle applyPriorityConfiguration];
@@ -540,11 +541,7 @@ std::unordered_map<lt::sha1_hash, std::unordered_map<std::string, std::unordered
     }
 
     if (th.status().has_metadata) {
-#if LIBTORRENT_VERSION_MAJOR > 1
         auto hashes = [[TorrentHashes alloc] initWith:th.info_hashes()];
-#else
-        auto hashes = [[TorrentHashes alloc] initWith:th.info_hash()];
-#endif
         if ([self hasValidTorrentFileForInfoHashes:hashes]) {
             dispatch_async(self.filesQueue, ^{
                 [self removeMagnetURIWithInfoHashes:hashes];
@@ -555,7 +552,7 @@ std::unordered_map<lt::sha1_hash, std::unordered_map<std::string, std::unordered
         return;
     }
 
-    auto magnetURI = lt::make_magnet_uri(th);
+    auto magnetURI = lt::make_magnet_uri(magnetParams(th));
     dispatch_async(self.filesQueue, ^{
         [self saveMagnetURIWithContent:magnetURI];
     });
@@ -567,13 +564,8 @@ std::unordered_map<lt::sha1_hash, std::unordered_map<std::string, std::unordered
     if (alert->type() == lt::tracker_reply_alert::alert_type)
     {
         const int numPeers = static_cast<const lt::tracker_reply_alert *>(alert)->num_peers;
-#if LIBTORRENT_VERSION_MAJOR > 1        
         auto hash = th.info_hashes().get_best();
         const int protocolVersionNum = (static_cast<const lt::tracker_reply_alert *>(alert)->version == lt::protocol_version::V1) ? 1 : 2;
-#else
-        auto hash = th.info_hash();
-        const int protocolVersionNum = 1;
-#endif
         updatedTrackerStatuses[hash][std::string(alert->tracker_url())][alert->local_endpoint][protocolVersionNum] = numPeers;
     }
 }
@@ -613,11 +605,7 @@ std::unordered_map<lt::sha1_hash, std::unordered_map<std::string, std::unordered
 
 - (void)torrentMadeProgress:(lt::torrent_alert *)alert {
     auto th = alert->handle;
-#if LIBTORRENT_VERSION_MAJOR > 1
     auto hashes = [[TorrentHashes alloc] initWith: th.info_hashes()];
-#else
-    auto hashes = [[TorrentHashes alloc] initWith: th.info_hash()];
-#endif
     @synchronized (_automaticErrorRecoveryAttempts) {
         [_automaticErrorRecoveryAttempts removeObject:hashes];
     }
@@ -627,11 +615,7 @@ std::unordered_map<lt::sha1_hash, std::unordered_map<std::string, std::unordered
     auto th = alert->handle;
     if (!th.is_valid()) { return; }
 
-#if LIBTORRENT_VERSION_MAJOR > 1
     auto hashes = [[TorrentHashes alloc] initWith:th.info_hashes()];
-#else
-    auto hashes = [[TorrentHashes alloc] initWith:th.info_hash()];
-#endif
     auto torrentHandle = _torrentsMap[hashes];
     if (torrentHandle == nil) { return; }
 
@@ -688,13 +672,8 @@ std::unordered_map<lt::sha1_hash, std::unordered_map<std::string, std::unordered
     lt::torrent_handle h = alert->handle;
     if (!h.is_valid()) return;
 
-#if LIBTORRENT_VERSION_MAJOR > 1
     auto ih = h.info_hashes();
-#else
-    auto ih = h.info_hash();
-#endif
 
-    std::vector<char> ret;
     lt::entry rd = lt::write_resume_data(alert->params);
     rd["storage_uuid"] = "";
 
@@ -722,7 +701,7 @@ std::unordered_map<lt::sha1_hash, std::unordered_map<std::string, std::unordered
 
     rd["first_last_piece_priority"] = torrentHandle.isFirstLastPiecePriority ? 1 : 0;
 
-    bencode(std::back_inserter(ret), rd);
+    auto ret = lt::bencode(rd);
 
     auto nspath = [self fastResumePathForInfoHashes: hashes];
     NSData *data = [NSData dataWithBytes:ret.data() length:ret.size()];
@@ -752,11 +731,7 @@ std::unordered_map<lt::sha1_hash, std::unordered_map<std::string, std::unordered
 - (BOOL)saveTorrentFileWithParams:(lt::add_torrent_params const&)params {
     if (params.ti == nullptr) { return NO; }
 
-#if LIBTORRENT_VERSION_MAJOR > 1
     auto hash = params.ti->info_hashes();
-#else
-    auto hash = params.ti->info_hash();
-#endif
     auto hashes = [[TorrentHashes alloc] initWith:hash];
     NSString *filePath = [self torrentFilePathForInfoHashes:hashes];
     if ([self hasValidTorrentFileForInfoHashes:hashes]) { return YES; }
@@ -805,11 +780,7 @@ std::unordered_map<lt::sha1_hash, std::unordered_map<std::string, std::unordered
 - (void)removeFastResumeFileWithInfo:(std::shared_ptr<const lt::torrent_info>)ti {
     if (ti == nullptr) { return; }
 
-#if LIBTORRENT_VERSION_MAJOR > 1
     auto hash = ti->info_hashes();
-#else
-    auto hash = ti->info_hash();
-#endif
 
     auto data = [[TorrentHashes alloc] initWith:hash];
 
@@ -823,11 +794,7 @@ std::unordered_map<lt::sha1_hash, std::unordered_map<std::string, std::unordered
 - (void)removeTorrentFileWithInfo:(std::shared_ptr<const lt::torrent_info>)ti {
     if (ti == nullptr) { return; }
 
-#if LIBTORRENT_VERSION_MAJOR > 1
     auto hash = ti->info_hashes();
-#else
-    auto hash = ti->info_hash();
-#endif
     auto hashes = [[TorrentHashes alloc] initWith:hash];
     NSString *filePath = [self torrentFilePathForInfoHashes:hashes];
 
@@ -872,11 +839,7 @@ std::unordered_map<lt::sha1_hash, std::unordered_map<std::string, std::unordered
     auto params = lt::parse_magnet_uri(magnetURI.UTF8String, error);
     if (error) { return NULL; }
 
-#if LIBTORRENT_VERSION_MAJOR > 1
     return [[TorrentHashes alloc] initWith:params.info_hashes];
-#else
-    return [[TorrentHashes alloc] initWith:params.info_hash];
-#endif
 }
 
 - (void)removeMagnetURIWithInfoHashes:(TorrentHashes *)infoHashes {

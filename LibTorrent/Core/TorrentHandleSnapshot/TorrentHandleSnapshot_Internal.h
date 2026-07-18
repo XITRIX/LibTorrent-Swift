@@ -8,6 +8,7 @@
 #import <Foundation/Foundation.h>
 #import "TorrentHandleSnapshot.h"
 #import "libtorrent/torrent_info.hpp"
+#import "libtorrent/add_torrent_params.hpp"
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -15,6 +16,7 @@ NS_ASSUME_NONNULL_BEGIN
     lt::torrent_status _status;
     lt::torrent_handle _torrentHandle;
     std::shared_ptr<const lt::torrent_info> _torrentInfo;
+    std::shared_ptr<const lt::add_torrent_params> _torrentParams;
     __weak TorrentHandle *_torrentHandleOwner;
     NSString *_torrentPath;
     Session *_session;
@@ -34,6 +36,7 @@ NS_ASSUME_NONNULL_BEGIN
     BOOL _didLoadCreator;
     BOOL _didLoadComment;
     BOOL _didLoadCreationDate;
+    BOOL _didLoadTorrentParams;
     BOOL _didLoadTorrentFilePath;
     BOOL _didLoadDownloadPath;
     BOOL _didLoadTotal;

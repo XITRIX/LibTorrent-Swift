@@ -54,6 +54,9 @@ lt::settings_pack::proxy_type_t proxyTypeConverter(SessionSettings *pack) {
     settings.set_int(lt::settings_pack::active_downloads, (int)_maxDownloadingTorrents);
     settings.set_int(lt::settings_pack::active_seeds, (int)_maxUploadingTorrents);
 
+    // The pread disk backend is selected when the session is constructed.
+    settings.set_int(lt::settings_pack::aio_threads, 4);
+
     // Speed limitations
     settings.set_int(lt::settings_pack::download_rate_limit, (int)_maxDownloadSpeed);
     settings.set_int(lt::settings_pack::upload_rate_limit, (int)_maxUploadSpeed);

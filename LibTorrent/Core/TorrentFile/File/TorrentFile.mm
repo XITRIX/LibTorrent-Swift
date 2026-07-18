@@ -13,51 +13,52 @@
 #import "libtorrent/torrent_handle.hpp"
 #import "libtorrent/read_resume_data.hpp"
 #import "libtorrent/add_torrent_params.hpp"
+#import "libtorrent/load_torrent.hpp"
 
 #include <fstream>
+
+@interface TorrentFile (Loading)
+- (BOOL)loadTorrentData:(NSData *)data;
+@end
+
+static void mergeTorrentFileParams(
+    lt::add_torrent_params &resume,
+    lt::add_torrent_params const &torrentFile)
+{
+    // Resume data owns mutable session state. The .torrent file remains the
+    // authoritative source for immutable metadata and fills optional fields
+    // missing from older resume files.
+    resume.ti = torrentFile.ti;
+    resume.info_hashes = torrentFile.info_hashes;
+
+    if (resume.trackers.empty()) {
+        resume.trackers = torrentFile.trackers;
+        resume.tracker_tiers = torrentFile.tracker_tiers;
+    }
+    if (resume.url_seeds.empty()) resume.url_seeds = torrentFile.url_seeds;
+    if (resume.dht_nodes.empty()) resume.dht_nodes = torrentFile.dht_nodes;
+    if (resume.merkle_trees.empty()) {
+        resume.merkle_trees = torrentFile.merkle_trees;
+        resume.merkle_tree_mask = torrentFile.merkle_tree_mask;
+        resume.verified_leaf_hashes = torrentFile.verified_leaf_hashes;
+    }
+    if (resume.renamed_files.empty()) resume.renamed_files = torrentFile.renamed_files;
+    if (resume.name.empty()) resume.name = torrentFile.name;
+    if (resume.comment.empty()) resume.comment = torrentFile.comment;
+    if (resume.created_by.empty()) resume.created_by = torrentFile.created_by;
+    if (resume.creation_date == 0) resume.creation_date = torrentFile.creation_date;
+    if (resume.root_certificate.empty()) resume.root_certificate = torrentFile.root_certificate;
+}
 
 @implementation TorrentFile : NSObject
 
 - (instancetype)initUnsafeWithFileAtURL:(NSURL *)fileURL {
     self = [self init];
     if (self) {
-        _fileData = [NSData dataWithContentsOfURL:fileURL];
-        _firstLastPiecePriorityEnabled = NO;
         try {
-            if (!self.torrent_info.is_valid()) { return NULL; }
+            if (![self loadTorrentData:[NSData dataWithContentsOfURL:fileURL]]) { return nil; }
         }
-        catch(std::exception const& ex)
-        { return NULL; }
-
-        auto info = [self torrent_info];
-        auto files = info.files();
-
-        // Generate priorities array (should be replaced with filesCache and removed)
-        _priorities = [[NSMutableArray alloc] initWithCapacity:files.num_files()];
-        for (int i=0; i<files.num_files(); i++) {
-            [_priorities setObject:[NSNumber numberWithInt:FilePriorityDefaultPriority] atIndexedSubscript:i];
-        }
-
-        // Generate files cache
-        NSMutableArray *results = [[NSMutableArray alloc] init];
-
-        for (int i=0; i<files.num_files(); i++) {
-            auto index = static_cast<lt::file_index_t>(i);
-            auto path = files.file_path(index);
-            auto size = files.file_size(index);
-
-            FileEntry *fileEntry = [[FileEntry alloc] init];
-            fileEntry.index = i;
-            fileEntry.isPrototype = true;
-            fileEntry.priority = (FilePriority) _priorities[i].intValue;
-            fileEntry.path = [NSString stringWithUTF8String:path.c_str()];
-            fileEntry.name = [fileEntry.path lastPathComponent];
-            fileEntry.size = size;
-
-            [results addObject:fileEntry];
-        }
-
-        _filesCache = [results copy];
+        catch (...) { return nil; }
     }
     return self;
 }
@@ -65,69 +66,64 @@
 - (instancetype)initUnsafeWithFileWithData:(NSData *)data {
     self = [self init];
     if (self) {
-        _fileData = data;
-        _firstLastPiecePriorityEnabled = NO;
         try {
-            if (!self.torrent_info.is_valid()) { return NULL; }
+            if (![self loadTorrentData:data]) { return nil; }
         }
-        catch(...)
-        { return NULL; }
-
-        auto info = [self torrent_info];
-        auto files = info.files();
-
-        // Generate priorities array (should be replaced with filesCache and removed)
-        _priorities = [[NSMutableArray alloc] initWithCapacity:files.num_files()];
-        for (int i=0; i<files.num_files(); i++) {
-            [_priorities setObject:[NSNumber numberWithInt:FilePriorityDefaultPriority] atIndexedSubscript:i];
-        }
-
-        // Generate files cache
-        NSMutableArray *results = [[NSMutableArray alloc] init];
-
-        for (int i=0; i<files.num_files(); i++) {
-            auto index = static_cast<lt::file_index_t>(i);
-            auto path = files.file_path(index);
-            auto size = files.file_size(index);
-
-            FileEntry *fileEntry = [[FileEntry alloc] init];
-            fileEntry.index = i;
-            fileEntry.isPrototype = true;
-            fileEntry.priority = (FilePriority) _priorities[i].intValue;
-            fileEntry.path = [NSString stringWithUTF8String:path.c_str()];
-            fileEntry.name = [fileEntry.path lastPathComponent];
-            fileEntry.size = size;
-
-            [results addObject:fileEntry];
-        }
-
-        _filesCache = [results copy];
+        catch (...) { return nil; }
     }
     return self;
 }
 
-- (lt::torrent_info)torrent_info {
-    uint8_t *buffer = (uint8_t *)[self.fileData bytes];
-    size_t size = [self.fileData length];
-    return lt::torrent_info((char *)buffer, (int)size);
+- (BOOL)loadTorrentData:(NSData *)data {
+    if (data == nil) return NO;
+
+    _fileData = data;
+    _firstLastPiecePriorityEnabled = NO;
+
+    auto buffer = lt::span<char const>(
+        static_cast<char const *>(data.bytes),
+        static_cast<std::ptrdiff_t>(data.length)
+    );
+    _torrentParams = lt::load_torrent_buffer(buffer);
+    if (_torrentParams.ti == nullptr || !_torrentParams.ti->is_valid()) return NO;
+
+    auto const &layout = _torrentParams.ti->layout();
+    lt::renamed_files renamedFiles;
+    renamedFiles.import_filenames(layout, _torrentParams.renamed_files);
+    lt::filenames files(layout, renamedFiles);
+
+    _priorities = [[NSMutableArray alloc] initWithCapacity:files.num_files()];
+    NSMutableArray<FileEntry *> *results = [[NSMutableArray alloc] initWithCapacity:files.num_files()];
+    for (int i = 0; i < files.num_files(); ++i) {
+        [_priorities addObject:@(FilePriorityDefaultPriority)];
+
+        auto index = static_cast<lt::file_index_t>(i);
+        auto path = files.file_path(index);
+
+        FileEntry *fileEntry = [[FileEntry alloc] init];
+        fileEntry.index = i;
+        fileEntry.isPrototype = true;
+        fileEntry.priority = FilePriorityDefaultPriority;
+        fileEntry.path = [NSString stringWithUTF8String:path.c_str()];
+        fileEntry.name = fileEntry.path.lastPathComponent;
+        fileEntry.size = files.file_size(index);
+        [results addObject:fileEntry];
+    }
+    _filesCache = [results copy];
+    return YES;
 }
 
 - (TorrentHashes *)infoHashes {
-#if LIBTORRENT_VERSION_MAJOR > 1
-    auto ih = self.torrent_info.info_hashes();
-#else
-    auto ih = self.torrent_info.info_hash();
-#endif
-    return [[TorrentHashes alloc] initWith:ih];
+    return [[TorrentHashes alloc] initWith:_torrentParams.ti->info_hashes()];
 }
 
 - (BOOL)isValid {
-    return self.torrent_info.is_valid();
+    return _torrentParams.ti != nullptr && _torrentParams.ti->is_valid();
 }
 
 - (void)configureAddTorrentParams:(void *)params forSession:(Session *)session {
     lt::add_torrent_params *_params = (lt::add_torrent_params *)params;
-    lt::torrent_info ti = [self torrent_info];
+    *_params = _torrentParams;
 
     // Save torrent file
     NSString *filePath = [session torrentFilePathForInfoHashes:self.infoHashes];
@@ -155,10 +151,9 @@
 
         auto resume = lt::read_resume_data(rd, ec, cfg.max_pieces);
 
-        if (ec.value() == 0) {
+        if (!ec) {
+            mergeTorrentFileParams(resume, _torrentParams);
             *_params = resume;
-        } else {
-            *_params = lt::add_torrent_params();
         }
 
         // Set save_path as empty, so if it will be resolved later, we can check by empty string
@@ -168,7 +163,7 @@
         const bool hasResumeDictionary = rd.type() == lt::bdecode_node::dict_t;
 
         // Try to resolve storage path
-        if (ec.value() == 0 && hasResumeDictionary) {
+        if (!ec && hasResumeDictionary) {
             auto storageID = [NSString stringWithUTF8String: std::string(rd.dict_find_string_value("storage_uuid")).c_str()];
             if (storageID.length != 0) {
                 // Use save_path as temporary storage uuid holder
@@ -187,7 +182,6 @@
             && (rd.dict_find_int_value("first_last_piece_priority", 0) != 0);
     }
 
-    _params->ti = std::make_shared<lt::torrent_info>(ti);
     _params->storage_mode = session.settings.preallocateStorage ? lt::storage_mode_allocate : lt::storage_mode_sparse;
 }
 
@@ -204,7 +198,7 @@
 }
 
 - (NSString *)name {
-    return [NSString stringWithCString: self.torrent_info.name().c_str() encoding: NSUTF8StringEncoding];
+    return [NSString stringWithCString:_torrentParams.ti->name().c_str() encoding:NSUTF8StringEncoding];
 }
 
 - (NSArray<FileEntry *> *)files {

@@ -7,7 +7,6 @@
 
 #import "TorrentTracker_Internal.h"
 #import "Session_Internal.h"
-#import "libtorrent/version.hpp"
 #import <vector>
 
 @implementation TorrentTrackerEndpoint
@@ -53,16 +52,11 @@ NSDate* fromLTTimePoint32(const lt::time_point32 &timePoint)
             const auto endpointName = toString(endpoint.local_endpoint);
 
             for (auto protocolVersion: protocols) {
-#if LIBTORRENT_VERSION_MAJOR > 1
                 const auto ltProtocolVersion = protocolVersion == 1
                     ? lt::protocol_version::V1
                     : lt::protocol_version::V2;
                 const auto &info = endpoint.info_hashes[ltProtocolVersion];
                 auto hash = torrentHandle.torrentHandle.info_hashes().get_best();
-#else
-                const auto &info = endpoint;
-                auto hash = torrentHandle.torrentHandle.info_hash();
-#endif
                 TorrentTrackerEndpoint *status = [[TorrentTrackerEndpoint alloc] init];
                 status.name = [[NSString alloc] initWithUTF8String:endpointName.c_str()];
                 status.btVersion = protocolVersion;
