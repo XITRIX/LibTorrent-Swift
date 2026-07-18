@@ -25,6 +25,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface TorrentHandle ()
 @property lt::torrent_handle torrentHandle;
+@property TorrentHashes *cachedInfoHashes;
 @property NSString *torrentPath;
 @property NSString *sessionDownloadPath;
 @property Session *session;

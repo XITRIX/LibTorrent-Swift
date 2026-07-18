@@ -17,6 +17,17 @@
 #import "libtorrent/torrent_info.hpp"
 #import "libtorrent/magnet_uri.hpp"
 
+typedef void (^TorrentHandleOperation)(lt::torrent_handle const &handle);
+
+@interface TorrentHandle (SafeOperations)
+- (void)performOperation:(NSString *)operation action:(TorrentHandleOperation)action;
+- (void)reportException:(std::exception const &)exception operation:(NSString *)operation;
+- (void)reportUnknownExceptionForOperation:(NSString *)operation;
+- (void)applyPriorityConfigurationToHandle:(lt::torrent_handle const &)handle
+                            filePriorities:(std::vector<lt::download_priority_t> const &)filePriorities
+                            saveResumeData:(BOOL)saveResumeData;
+@end
+
 static std::vector<lt::download_priority_t> piecePrioritiesForFiles(
     lt::torrent_info const &torrentInfo,
     std::vector<lt::download_priority_t> const &filePriorities,
@@ -135,6 +146,11 @@ static std::vector<lt::download_priority_t> piecePrioritiesForFiles(
     if (self) {
         _session = session;
         _torrentHandle = torrentHandle;
+#if LIBTORRENT_VERSION_MAJOR > 1
+        _cachedInfoHashes = [[TorrentHashes alloc] initWith:torrentHandle.info_hashes()];
+#else
+        _cachedInfoHashes = [[TorrentHashes alloc] initWith:torrentHandle.info_hash()];
+#endif
         _torrentPath = session.torrentsPath;
         _sessionDownloadPath = session.downloadPath;
         _isFirstLastPiecePriority = NO;
@@ -155,140 +171,205 @@ static std::vector<lt::download_priority_t> piecePrioritiesForFiles(
 //}
 
 - (TorrentHashes *)infoHashes {
-#if LIBTORRENT_VERSION_MAJOR > 1
-    auto ih = _torrentHandle.info_hashes();
-#else
-    auto ih = _torrentHandle.info_hash();
-#endif
-    return [[TorrentHashes alloc] initWith:ih];
+    return _cachedInfoHashes;
 }
 
 - (BOOL)isPrivate {
-    if (!_torrentHandle.is_valid()) { return NO; }
-
-    auto torrentInfo = _torrentHandle.torrent_file();
-    return torrentInfo != nullptr && torrentInfo->priv();
+    __block BOOL result = NO;
+    [self performOperation:@"isPrivate" action:^(lt::torrent_handle const &handle) {
+        auto torrentInfo = handle.torrent_file();
+        result = torrentInfo != nullptr && torrentInfo->priv();
+    }];
+    return result;
 }
 
 // MARK: - Functions
 
 - (void)resume {
-    _torrentHandle.unset_flags(lt::torrent_flags::auto_managed);
-    _torrentHandle.resume();
+    [self performOperation:@"resume" action:^(lt::torrent_handle const &handle) {
+        handle.unset_flags(lt::torrent_flags::auto_managed);
+        handle.resume();
+    }];
 }
 
 - (void)pause {
-    _torrentHandle.unset_flags(lt::torrent_flags::auto_managed);
-    _torrentHandle.pause();
+    [self performOperation:@"pause" action:^(lt::torrent_handle const &handle) {
+        handle.unset_flags(lt::torrent_flags::auto_managed);
+        handle.pause();
+    }];
 }
 
 - (void)rehash {
-    _torrentHandle.force_recheck();
-    _torrentHandle.set_flags(lt::torrent_flags::auto_managed);
+    [self performOperation:@"rehash" action:^(lt::torrent_handle const &handle) {
+        handle.force_recheck();
+        handle.set_flags(lt::torrent_flags::auto_managed);
+    }];
 }
 
 - (void)reload {
+    BOOL didReload = NO;
     @synchronized (self) {
         auto torrentHandle = _torrentHandle;
-        auto status = torrentHandle.status();
-        auto snapshot = [self createSnapshotFromStatus:status
-                                         torrentHandle:torrentHandle
-                                                 owner:self
-                                           torrentPath:_torrentPath
-                                               session:_session
-                                           storageUUID:self.storageUUID
-                              isFirstLastPiecePriority:self.isFirstLastPiecePriority];
+        if (!torrentHandle.is_valid()) {
+            [_session reportErrorWithCode:ErrorCodeInvalidTorrentHandle
+                                operation:@"reload"
+                                  message:@"Handle was invalid before the operation started"];
+            return;
+        }
 
-        auto torrentFile = [[TorrentFile alloc] initUnsafeWithFileAtURL:[[NSURL alloc] initFileURLWithPath:snapshot.torrentFilePath]];
-        _session.session->remove_torrent(torrentHandle);
-        auto newTorrentHandle = [_session addTorrent:torrentFile];
-        _torrentHandle = newTorrentHandle.torrentHandle;
+        try {
+            auto status = torrentHandle.status();
+            auto snapshot = [self createSnapshotFromStatus:status
+                                             torrentHandle:torrentHandle
+                                                     owner:self
+                                               torrentPath:_torrentPath
+                                                   session:_session
+                                               storageUUID:self.storageUUID
+                                  isFirstLastPiecePriority:self.isFirstLastPiecePriority];
+
+            NSString *torrentFilePath = snapshot.torrentFilePath;
+            if (torrentFilePath == nil) {
+                [_session reportErrorWithCode:ErrorCodeLibtorrentOperationFailed
+                                    operation:@"reload"
+                                      message:@"No persisted torrent file was available"];
+                return;
+            }
+
+            auto torrentFile = [[TorrentFile alloc] initUnsafeWithFileAtURL:[[NSURL alloc] initFileURLWithPath:torrentFilePath]];
+            _session.session->remove_torrent(torrentHandle);
+            auto newTorrentHandle = [_session addTorrent:torrentFile];
+            if (newTorrentHandle == nil) {
+                [_session reportErrorWithCode:ErrorCodeLibtorrentOperationFailed
+                                    operation:@"reload"
+                                      message:@"Failed to add the torrent after removing its previous handle"];
+                return;
+            }
+
+            _torrentHandle = newTorrentHandle.torrentHandle;
+            _cachedInfoHashes = newTorrentHandle.infoHashes;
+            didReload = YES;
+        } catch (std::exception const &exception) {
+            [self reportException:exception operation:@"reload"];
+        } catch (...) {
+            [self reportUnknownExceptionForOperation:@"reload"];
+        }
     }
-    [self updateSnapshot];
+    if (didReload) {
+        [self updateSnapshot];
+    }
 }
 
 - (void)setSequentialDownload:(BOOL)enabled {
-    if (!_torrentHandle.is_valid()) return;
-    
-    if (enabled) {
-        _torrentHandle.set_flags(lt::torrent_flags::sequential_download);
-    } else {
-        _torrentHandle.unset_flags(lt::torrent_flags::sequential_download);
-    }
-    _torrentHandle.save_resume_data();
-    _torrentHandle.post_status();
-
+    [self performOperation:@"setSequentialDownload" action:^(lt::torrent_handle const &handle) {
+        if (enabled) {
+            handle.set_flags(lt::torrent_flags::sequential_download);
+        } else {
+            handle.unset_flags(lt::torrent_flags::sequential_download);
+        }
+        handle.save_resume_data();
+        handle.post_status();
+    }];
 }
 
 - (void)applyPriorityConfiguration {
-    if (!_torrentHandle.is_valid()) return;
-
-    auto filePriorities = _torrentHandle.get_file_priorities();
-    [self applyPriorityConfigurationWithFilePriorities:filePriorities saveResumeData:YES];
+    [self performOperation:@"applyPriorityConfiguration" action:^(lt::torrent_handle const &handle) {
+        auto filePriorities = handle.get_file_priorities();
+        [self applyPriorityConfigurationToHandle:handle
+                                 filePriorities:filePriorities
+                                 saveResumeData:YES];
+    }];
 }
 
 - (void)applyPriorityConfigurationWithFilePriorities:(const std::vector<lt::download_priority_t> &)filePriorities
                                       saveResumeData:(BOOL)saveResumeData {
-    if (!_torrentHandle.is_valid()) return;
+    [self performOperation:@"applyPriorityConfiguration" action:^(lt::torrent_handle const &handle) {
+        [self applyPriorityConfigurationToHandle:handle
+                                 filePriorities:filePriorities
+                                 saveResumeData:saveResumeData];
+    }];
+}
 
+- (void)applyPriorityConfigurationToHandle:(lt::torrent_handle const &)handle
+                            filePriorities:(const std::vector<lt::download_priority_t> &)filePriorities
+                            saveResumeData:(BOOL)saveResumeData {
     // File priorities remain the source of truth. Piece priorities are derived from them
     // and the first/last-piece flag whenever any priority-related setting changes.
-    _torrentHandle.prioritize_files(filePriorities);
+    handle.prioritize_files(filePriorities);
 
-    auto torrentInfoPtr = _torrentHandle.torrent_file();
+    auto torrentInfoPtr = handle.torrent_file();
     if (torrentInfoPtr != nullptr) {
         auto piecePriorities = piecePrioritiesForFiles(*torrentInfoPtr, filePriorities, _isFirstLastPiecePriority);
-        _torrentHandle.prioritize_pieces(piecePriorities);
+        handle.prioritize_pieces(piecePriorities);
     }
 
     if (saveResumeData) {
-        _torrentHandle.save_resume_data();
+        handle.save_resume_data();
     }
 }
 
 - (void)setFirstLastPriorityDownload:(BOOL)enabled {
-    _isFirstLastPiecePriority = enabled;
-    [self applyPriorityConfiguration];
+    [self performOperation:@"setFirstLastPriorityDownload" action:^(lt::torrent_handle const &handle) {
+        _isFirstLastPiecePriority = enabled;
+        auto filePriorities = handle.get_file_priorities();
+        [self applyPriorityConfigurationToHandle:handle
+                                 filePriorities:filePriorities
+                                 saveResumeData:YES];
+    }];
 }
 
 - (void)setFilePriority:(FilePriority)priority at:(NSInteger)fileIndex {
-    auto priorities = _torrentHandle.get_file_priorities();
-    priorities[(int)fileIndex] = static_cast<lt::download_priority_t>(priority);
-    [self applyPriorityConfigurationWithFilePriorities:priorities saveResumeData:YES];
+    [self performOperation:@"setFilePriority" action:^(lt::torrent_handle const &handle) {
+        auto priorities = handle.get_file_priorities();
+        if (fileIndex < 0 || static_cast<std::size_t>(fileIndex) >= priorities.size()) { return; }
+        priorities[static_cast<std::size_t>(fileIndex)] = static_cast<lt::download_priority_t>(priority);
+        [self applyPriorityConfigurationToHandle:handle filePriorities:priorities saveResumeData:YES];
+    }];
 }
 
 - (void)setFilesPriority:(FilePriority)priority at:(NSArray<NSNumber *> *)fileIndexes {
-    auto priorities = _torrentHandle.get_file_priorities();
-    for (int i = 0; i < fileIndexes.count; i++) {
-        int index = (int)fileIndexes[i].integerValue;
-        priorities[index] = static_cast<lt::download_priority_t>(priority);
-    }
-    [self applyPriorityConfigurationWithFilePriorities:priorities saveResumeData:YES];
+    [self performOperation:@"setFilesPriority" action:^(lt::torrent_handle const &handle) {
+        auto priorities = handle.get_file_priorities();
+        for (NSNumber *fileIndex in fileIndexes) {
+            NSInteger index = fileIndex.integerValue;
+            if (index < 0 || static_cast<std::size_t>(index) >= priorities.size()) { continue; }
+            priorities[static_cast<std::size_t>(index)] = static_cast<lt::download_priority_t>(priority);
+        }
+        [self applyPriorityConfigurationToHandle:handle filePriorities:priorities saveResumeData:YES];
+    }];
 }
 
 - (void)setAllFilesPriority:(FilePriority)priority {
-    std::vector<lt::download_priority_t> array;
-    for (int i = 0; i < _torrentHandle.torrent_file().get()->files().num_files(); i++) {
-        array.push_back(static_cast<lt::download_priority_t>(priority));
-    }
-    [self applyPriorityConfigurationWithFilePriorities:array saveResumeData:YES];
+    [self performOperation:@"setAllFilesPriority" action:^(lt::torrent_handle const &handle) {
+        auto torrentInfo = handle.torrent_file();
+        if (torrentInfo == nullptr) { return; }
+
+        std::vector<lt::download_priority_t> priorities(
+            static_cast<std::size_t>(torrentInfo->files().num_files()),
+            static_cast<lt::download_priority_t>(priority)
+        );
+        [self applyPriorityConfigurationToHandle:handle filePriorities:priorities saveResumeData:YES];
+    }];
 }
 
 - (void)addTracker:(NSString *)url {
-    _torrentHandle.add_tracker(lt::announce_entry(url.UTF8String));
+    [self performOperation:@"addTracker" action:^(lt::torrent_handle const &handle) {
+        handle.add_tracker(lt::announce_entry(url.UTF8String));
+    }];
 }
 
 - (void)removeTrackers:(NSArray<NSString *> *)urls {
-    auto trackers = _torrentHandle.trackers();
-    std::vector<lt::announce_entry> newTrackers;
+    [self performOperation:@"removeTrackers" action:^(lt::torrent_handle const &handle) {
+        auto trackers = handle.trackers();
+        std::vector<lt::announce_entry> newTrackers;
 
-    for (auto tracker: trackers) {
-        if ([urls containsObject: [NSString stringWithFormat:@"%s", tracker.url.c_str()]]) { continue; }
-        newTrackers.push_back(tracker);
-    }
+        for (auto tracker: trackers) {
+            if ([urls containsObject:[NSString stringWithFormat:@"%s", tracker.url.c_str()]]) { continue; }
+            newTrackers.push_back(tracker);
+        }
 
-    _torrentHandle.replace_trackers(newTrackers);
-    _torrentHandle.force_reannounce();
+        handle.replace_trackers(newTrackers);
+        handle.force_reannounce();
+    }];
 }
 
 - (void)forceReannounce {
@@ -296,7 +377,9 @@ static std::vector<lt::download_priority_t> piecePrioritiesForFiles(
 }
 
 - (void)forceReannounce:(int)index {
-    _torrentHandle.force_reannounce(0, index);
+    [self performOperation:@"forceReannounce" action:^(lt::torrent_handle const &handle) {
+        handle.force_reannounce(0, index);
+    }];
 }
 
 - (void)updateSnapshot {
@@ -313,8 +396,49 @@ static std::vector<lt::download_priority_t> piecePrioritiesForFiles(
                                                     session:_session
                                                 storageUUID:_storageUUID
                                    isFirstLastPiecePriority:_isFirstLastPiecePriority];
-        } catch(...) {}
+        } catch (std::exception const &exception) {
+            [self reportException:exception operation:@"updateSnapshot"];
+        } catch (...) {
+            [self reportUnknownExceptionForOperation:@"updateSnapshot"];
+        }
     }
+}
+
+- (void)performOperation:(NSString *)operation action:(TorrentHandleOperation)action {
+    @synchronized (self) {
+        auto handle = _torrentHandle;
+        if (!handle.is_valid()) {
+            [_session reportErrorWithCode:ErrorCodeInvalidTorrentHandle
+                                operation:operation
+                                  message:@"Handle was invalid before the operation started"];
+            return;
+        }
+
+        try {
+            action(handle);
+        } catch (std::exception const &exception) {
+            [self reportException:exception operation:operation];
+        } catch (...) {
+            [self reportUnknownExceptionForOperation:operation];
+        }
+    }
+}
+
+- (void)reportException:(std::exception const &)exception operation:(NSString *)operation {
+    ErrorCode code = ErrorCodeLibtorrentOperationFailed;
+    auto systemError = dynamic_cast<lt::system_error const *>(&exception);
+    if (systemError != nullptr && systemError->code() == lt::errors::invalid_torrent_handle) {
+        code = ErrorCodeInvalidTorrentHandle;
+    }
+
+    NSString *message = [NSString stringWithUTF8String:exception.what()] ?: @"Unknown C++ exception";
+    [_session reportErrorWithCode:code operation:operation message:message];
+}
+
+- (void)reportUnknownExceptionForOperation:(NSString *)operation {
+    [_session reportErrorWithCode:ErrorCodeLibtorrentOperationFailed
+                        operation:operation
+                          message:@"Unknown C++ exception"];
 }
 
 - (TorrentHandleSnapshot*)createSnapshotFromStatus:(lt::torrent_status) status

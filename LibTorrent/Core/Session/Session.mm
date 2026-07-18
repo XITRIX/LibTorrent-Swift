@@ -37,6 +37,7 @@ static NSString *FileEntriesQueueIdentifier = @"ru.xitrix.TorrentKit.Session.fil
 
 @interface Session (TorrentPersistence)
 - (void)requestTorrentFileSave:(lt::torrent_handle const&)handle;
+- (void)removeStoredTorrentOrMagnet:(lt::torrent_handle)handle infoHashes:(TorrentHashes *)infoHashes;
 - (BOOL)hasValidTorrentFileForInfoHashes:(TorrentHashes *)infoHashes;
 - (BOOL)saveTorrentFileWithParams:(lt::add_torrent_params const&)params;
 - (NSArray<NSString *> *)storedMagnetURIs;
@@ -110,9 +111,23 @@ std::unordered_map<lt::sha1_hash, std::unordered_map<std::string, std::unordered
 
 - (void)reannounceToAllTrackers {
     for (TorrentHandle* torrent in _torrentsMap.allValues) {
-        try {
-            torrent.torrentHandle.force_reannounce(0, -1, lt::torrent_handle::ignore_min_interval);
-        } catch (const std::exception &) {}
+        @synchronized (torrent) {
+            auto handle = torrent.torrentHandle;
+            if (!handle.is_valid()) { continue; }
+
+            try {
+                handle.force_reannounce(0, -1, lt::torrent_handle::ignore_min_interval);
+            } catch (std::exception const &exception) {
+                NSString *message = [NSString stringWithUTF8String:exception.what()] ?: @"Unknown C++ exception";
+                [self reportErrorWithCode:ErrorCodeLibtorrentOperationFailed
+                                operation:@"reannounceToAllTrackers"
+                                  message:message];
+            } catch (...) {
+                [self reportErrorWithCode:ErrorCodeLibtorrentOperationFailed
+                                operation:@"reannounceToAllTrackers"
+                                  message:@"Unknown C++ exception"];
+            }
+        }
     }
 }
 
@@ -174,10 +189,14 @@ std::unordered_map<lt::sha1_hash, std::unordered_map<std::string, std::unordered
 
     try {
         [torrent configureAddTorrentParams:&params forSession:self];
+    } catch (std::exception const &exception) {
+        NSString *message = [NSString stringWithUTF8String:exception.what()] ?: @"Unknown C++ exception";
+        [self reportErrorWithCode:ErrorCodeBadFile operation:@"configureAddTorrent" message:message];
+        return NULL;
     } catch (...) {
-        NSError *error = [self errorWithCode:ErrorCodeBadFile message:@"Failed to add torrent"];
-        NSLog(@"%@", error);
-//        [self notifyDelegatesAboutError:error];
+        [self reportErrorWithCode:ErrorCodeBadFile
+                        operation:@"configureAddTorrent"
+                          message:@"Unknown C++ exception"];
         return NULL;
     }
 
@@ -211,42 +230,83 @@ std::unordered_map<lt::sha1_hash, std::unordered_map<std::string, std::unordered
         torrentHandle.storageUUID = storageModel.uuid;
         [self notifyDelegatesWithAdd: torrentHandle];
         return torrentHandle;
-    } catch(std::exception const& ex) {
+    } catch(std::exception const& exception) {
+        NSString *message = [NSString stringWithUTF8String:exception.what()] ?: @"Unknown C++ exception";
+        [self reportErrorWithCode:ErrorCodeLibtorrentOperationFailed operation:@"addTorrent" message:message];
+        return NULL;
+    } catch (...) {
+        [self reportErrorWithCode:ErrorCodeLibtorrentOperationFailed
+                        operation:@"addTorrent"
+                          message:@"Unknown C++ exception"];
         return NULL;
     }
 }
 
 - (void)removeTorrent:(TorrentHandle *)torrent deleteFiles:(BOOL)deleteFiles {
-    [self notifyDelegatesWithRemove:torrent];
-    [self removeStoredTorrentOrMagnet:torrent.torrentHandle];
+    @synchronized (torrent) {
+        [self notifyDelegatesWithRemove:torrent];
 
-    // Remove torrrent from session
-    if (deleteFiles) {
-        _session->remove_torrent(torrent.torrentHandle, lt::session::delete_files);
-    } else {
-        _session->remove_torrent(torrent.torrentHandle);
+        auto handle = torrent.torrentHandle;
+        if (!handle.is_valid()) {
+            [self reportErrorWithCode:ErrorCodeInvalidTorrentHandle
+                            operation:@"removeTorrent"
+                              message:@"Handle was invalid before the operation started"];
+            return;
+        }
+
+        try {
+            [self removeStoredTorrentOrMagnet:handle infoHashes:torrent.infoHashes];
+
+            // Remove torrent from session while holding the same lock used by
+            // TorrentHandle operations and snapshot replacement.
+            if (deleteFiles) {
+                _session->remove_torrent(handle, lt::session::delete_files);
+            } else {
+                _session->remove_torrent(handle);
+            }
+        } catch (std::exception const &exception) {
+            NSString *message = [NSString stringWithUTF8String:exception.what()] ?: @"Unknown C++ exception";
+            ErrorCode code = ErrorCodeLibtorrentOperationFailed;
+            auto systemError = dynamic_cast<lt::system_error const *>(&exception);
+            if (systemError != nullptr && systemError->code() == lt::errors::invalid_torrent_handle) {
+                code = ErrorCodeInvalidTorrentHandle;
+            }
+            [self reportErrorWithCode:code operation:@"removeTorrent" message:message];
+        } catch (...) {
+            [self reportErrorWithCode:ErrorCodeLibtorrentOperationFailed
+                            operation:@"removeTorrent"
+                              message:@"Unknown C++ exception"];
+        }
     }
 }
 
 // MARK: - Private
-- (NSError *)errorWithCode:(ErrorCode)code message:(NSString *)message {
-    return [NSError errorWithDomain:ErrorDomain
-                               code:code
-                           userInfo:@{NSLocalizedDescriptionKey: message}];
+- (void)reportErrorWithCode:(ErrorCode)code
+                  operation:(NSString *)operation
+                    message:(NSString *)message {
+    NSString *nativeStack = [[NSThread callStackSymbols] componentsJoinedByString:@"\n"];
+    NSError *error = [NSError errorWithDomain:ErrorDomain
+                                         code:code
+                                     userInfo:@{
+        NSLocalizedDescriptionKey: [NSString stringWithFormat:@"LibTorrent %@ failed: %@", operation, message],
+        @"libtorrent.operation": operation,
+        @"libtorrent.message": message,
+        @"libtorrent.nativeStack": nativeStack
+    }];
+
+    NSLog(@"%@\n%@", error, nativeStack);
+    for (id<SessionDelegate>delegate in self.delegates) {
+        [delegate torrentManager:self didErrorOccur:error];
+    }
 }
 
-- (void)removeStoredTorrentOrMagnet:(lt::torrent_handle)th {
+- (void)removeStoredTorrentOrMagnet:(lt::torrent_handle)th infoHashes:(TorrentHashes *)hashes {
     // Remove stored torrent
     auto ti = th.torrent_file();
 
     dispatch_async(self.filesQueue, ^{
         [self removeTorrentFileWithInfo:ti];
         [self removeFastResumeFileWithInfo:ti];
-#if LIBTORRENT_VERSION_MAJOR > 1
-        auto hashes = [[TorrentHashes alloc] initWith:th.info_hashes()];
-#else
-        auto hashes = [[TorrentHashes alloc] initWith:th.info_hash()];
-#endif
         [self removeMagnetURIWithInfoHashes:hashes];
     });
 }
@@ -391,9 +451,13 @@ std::unordered_map<lt::sha1_hash, std::unordered_map<std::string, std::unordered
                 }
 
                 alerts_queue.clear();
+            } catch (std::exception const &exception) {
+                NSString *message = [NSString stringWithUTF8String:exception.what()] ?: @"Unknown C++ exception";
+                [self reportErrorWithCode:ErrorCodeAlertFail operation:@"alertsLoop" message:message];
             } catch (...) {
-                NSError *error = [self errorWithCode:ErrorCodeAlertFail message:@"Failed to handle alerts"];
-                NSLog(@"%@", error);
+                [self reportErrorWithCode:ErrorCodeAlertFail
+                                operation:@"alertsLoop"
+                                  message:@"Unknown C++ exception"];
             }
             [NSThread sleepForTimeInterval:0.1];
         }
@@ -409,11 +473,7 @@ std::unordered_map<lt::sha1_hash, std::unordered_map<std::string, std::unordered
 
 - (void)notifyDelegatesWithRemove:(TorrentHandle*) torrent {
     [_torrentsMap removeObjectForKey: torrent.infoHashes];
-#if LIBTORRENT_VERSION_MAJOR > 1
-    TorrentHashes *hashesData = [[TorrentHashes alloc] initWith:torrent.torrentHandle.info_hashes()];
-#else
-    TorrentHashes *hashesData = [[TorrentHashes alloc] initWith:torrent.torrentHandle.info_hash()];
-#endif
+    TorrentHashes *hashesData = torrent.infoHashes;
     for (id<SessionDelegate>delegate in self.delegates) {
         [delegate torrentManager:self didRemoveTorrentWithHash:hashesData];
     }

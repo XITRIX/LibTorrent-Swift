@@ -7,12 +7,14 @@
 
 #import <Foundation/Foundation.h>
 #import "TorrentHandleSnapshot.h"
+#import "libtorrent/torrent_info.hpp"
 
 NS_ASSUME_NONNULL_BEGIN
 
 @interface TorrentHandleSnapshot () {
     lt::torrent_status _status;
     lt::torrent_handle _torrentHandle;
+    std::shared_ptr<const lt::torrent_info> _torrentInfo;
     __weak TorrentHandle *_torrentHandleOwner;
     NSString *_torrentPath;
     Session *_session;

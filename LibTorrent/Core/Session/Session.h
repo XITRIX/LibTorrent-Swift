@@ -17,7 +17,9 @@ NS_ASSUME_NONNULL_BEGIN
 typedef NS_ENUM(NSUInteger, ErrorCode) {
     ErrorCodeBadFile,
     ErrorCodeUndefined,
-    ErrorCodeAlertFail
+    ErrorCodeAlertFail,
+    ErrorCodeLibtorrentOperationFailed,
+    ErrorCodeInvalidTorrentHandle
 } NS_SWIFT_NAME(ErrorCode);
 
 @class Session, TorrentHandle;

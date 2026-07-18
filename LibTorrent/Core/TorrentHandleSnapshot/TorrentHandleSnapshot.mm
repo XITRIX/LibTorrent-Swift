@@ -30,12 +30,18 @@
     if (self) {
         _status = status;
         _torrentHandle = torrentHandle;
+        _torrentInfo = status.torrent_file.lock();
         _torrentHandleOwner = owner;
         _torrentPath = torrentPath;
         _session = session;
         _storageUUID = storageUUID;
         _isValid = torrentHandle.is_valid();
         _isFirstLastPiecePriority = isFirstLastPiecePriority;
+#if LIBTORRENT_VERSION_MAJOR > 1
+        _infoHashes = [[TorrentHashes alloc] initWith:status.info_hashes];
+#else
+        _infoHashes = [[TorrentHashes alloc] initWith:status.info_hash];
+#endif
     }
     return self;
 }
@@ -45,14 +51,6 @@
 }
 
 - (TorrentHashes *)infoHashes {
-    if (_infoHashes != nil) { return _infoHashes; }
-
-#if LIBTORRENT_VERSION_MAJOR > 1
-    auto ih = _torrentHandle.info_hashes();
-#else
-    auto ih = _torrentHandle.info_hash();
-#endif
-    _infoHashes = [[TorrentHashes alloc] initWith:ih];
     return _infoHashes;
 }
 
@@ -82,7 +80,8 @@
 
     if (!_status.has_metadata) { return NULL; }
 
-    auto info = _torrentHandle.torrent_file().get();
+    auto info = _torrentInfo.get();
+    if (info == nullptr) { return NULL; }
     _creator = [NSString stringWithCString:info->creator().c_str() encoding:NSUTF8StringEncoding];
     return _creator;
 }
@@ -93,7 +92,8 @@
 
     if (!_status.has_metadata) { return NULL; }
 
-    auto info = _torrentHandle.torrent_file().get();
+    auto info = _torrentInfo.get();
+    if (info == nullptr) { return NULL; }
     _comment = [NSString stringWithCString:info->comment().c_str() encoding:NSUTF8StringEncoding];
     return _comment;
 }
@@ -104,7 +104,8 @@
 
     if (!_status.has_metadata) { return NULL; }
 
-    auto info = _torrentHandle.torrent_file().get();
+    auto info = _torrentInfo.get();
+    if (info == nullptr) { return NULL; }
     _creationDate = [[NSDate alloc] initWithTimeIntervalSince1970:info->creation_date()];
     return _creationDate;
 }
@@ -169,7 +170,8 @@
 
     if (!_status.has_metadata) { return 0; }
 
-    auto info = _torrentHandle.torrent_file().get();
+    auto info = _torrentInfo.get();
+    if (info == nullptr) { return 0; }
     _total = info->total_size();
     return _total;
 }
@@ -238,7 +240,7 @@
 
         try {
             auto th = _torrentHandle;
-            auto ti = th.torrent_file();
+            auto ti = _torrentInfo;
             if (ti == nullptr) {
                 _files = @[];
                 return _files;
@@ -311,9 +313,18 @@
                 [results addObject:fileEntry];
             }
             _files = [results copy];
-        } catch (...) {
+        } catch (std::exception const &exception) {
             // A handle may become invalid while a snapshot is being materialized.
             _files = @[];
+            NSString *message = [NSString stringWithUTF8String:exception.what()] ?: @"Unknown C++ exception";
+            [_session reportErrorWithCode:ErrorCodeLibtorrentOperationFailed
+                                operation:@"snapshot.files"
+                                  message:message];
+        } catch (...) {
+            _files = @[];
+            [_session reportErrorWithCode:ErrorCodeLibtorrentOperationFailed
+                                operation:@"snapshot.files"
+                                  message:@"Unknown C++ exception"];
         }
         return _files;
     }
@@ -328,22 +339,48 @@
         return _trackers;
     }
 
-    auto trackers = _torrentHandle.trackers();
-    NSMutableArray<TorrentTracker *> *results = [[NSMutableArray alloc] initWithCapacity:trackers.size()];
+    try {
+        auto trackers = _torrentHandle.trackers();
+        NSMutableArray<TorrentTracker *> *results = [[NSMutableArray alloc] initWithCapacity:trackers.size()];
 
-    for (auto tracker : trackers) {
-        [results addObject:[[TorrentTracker alloc] initWithAnnounceEntry:tracker from:owner]];
+        for (auto tracker : trackers) {
+            [results addObject:[[TorrentTracker alloc] initWithAnnounceEntry:tracker from:owner]];
+        }
+
+        _trackers = [results copy];
+    } catch (std::exception const &exception) {
+        _trackers = @[];
+        NSString *message = [NSString stringWithUTF8String:exception.what()] ?: @"Unknown C++ exception";
+        [_session reportErrorWithCode:ErrorCodeLibtorrentOperationFailed
+                            operation:@"snapshot.trackers"
+                              message:message];
+    } catch (...) {
+        _trackers = @[];
+        [_session reportErrorWithCode:ErrorCodeLibtorrentOperationFailed
+                            operation:@"snapshot.trackers"
+                              message:@"Unknown C++ exception"];
     }
-
-    _trackers = [results copy];
     return _trackers;
 }
 
 - (NSString *)magnetLink {
     if (_magnetLink != nil) { return _magnetLink; }
 
-    auto uri = lt::make_magnet_uri(_torrentHandle);
-    _magnetLink = [NSString stringWithCString:uri.c_str() encoding:NSUTF8StringEncoding];
+    try {
+        auto uri = lt::make_magnet_uri(_torrentHandle);
+        _magnetLink = [NSString stringWithCString:uri.c_str() encoding:NSUTF8StringEncoding] ?: @"";
+    } catch (std::exception const &exception) {
+        _magnetLink = @"";
+        NSString *message = [NSString stringWithUTF8String:exception.what()] ?: @"Unknown C++ exception";
+        [_session reportErrorWithCode:ErrorCodeLibtorrentOperationFailed
+                            operation:@"snapshot.magnetLink"
+                              message:message];
+    } catch (...) {
+        _magnetLink = @"";
+        [_session reportErrorWithCode:ErrorCodeLibtorrentOperationFailed
+                            operation:@"snapshot.magnetLink"
+                              message:@"Unknown C++ exception"];
+    }
     return _magnetLink;
 }
 
