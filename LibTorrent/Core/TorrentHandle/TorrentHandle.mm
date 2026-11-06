@@ -179,6 +179,9 @@ static std::vector<lt::download_priority_t> piecePrioritiesForFiles(
 
 - (void)pause {
     [self performOperation:@"pause" action:^(lt::torrent_handle const &handle) {
+        // Ignore pause requests while startup resume-data validation is in progress.
+        if (handle.status().state == lt::torrent_status::checking_resume_data) return;
+
         handle.unset_flags(lt::torrent_flags::auto_managed);
         handle.pause();
     }];
