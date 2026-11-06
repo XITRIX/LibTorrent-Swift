@@ -343,6 +343,16 @@ static std::vector<lt::download_priority_t> piecePrioritiesForFiles(
     }];
 }
 
+- (void)setPieceDeadline:(NSInteger)pieceIndex deadline:(int)deadline {
+    auto idx = static_cast<lt::piece_index_t>(static_cast<int>(pieceIndex));
+    _torrentHandle.set_piece_deadline(idx, deadline);
+}
+
+- (void)resetPieceDeadline:(NSInteger)pieceIndex {
+    auto idx = static_cast<lt::piece_index_t>(static_cast<int>(pieceIndex));
+    _torrentHandle.reset_piece_deadline(idx);
+}
+
 - (void)addTracker:(NSString *)url {
     [self performOperation:@"addTracker" action:^(lt::torrent_handle const &handle) {
         handle.add_tracker(lt::announce_entry(url.UTF8String));
