@@ -69,10 +69,12 @@ static lt::add_torrent_params magnetParams(lt::torrent_handle const &handle) {
 }
 
 - (NSString *)name {
-    if (_name != nil) { return _name; }
+    @synchronized (self) {
+        if (_name != nil) { return _name; }
 
-    _name = [NSString stringWithCString:_status.name.c_str() encoding:NSUTF8StringEncoding];
-    return _name;
+        _name = [NSString stringWithCString:_status.name.c_str() encoding:NSUTF8StringEncoding];
+        return _name;
+    }
 }
 
 - (TorrentHandleState)state {
@@ -89,54 +91,62 @@ static lt::add_torrent_params magnetParams(lt::torrent_handle const &handle) {
 }
 
 - (NSString * _Nullable)creator {
-    if (_didLoadCreator) { return _creator; }
-    _didLoadCreator = true;
+    @synchronized (self) {
+        if (_didLoadCreator) { return _creator; }
+        _didLoadCreator = true;
 
-    if (!_status.has_metadata) { return NULL; }
+        if (!_status.has_metadata) { return NULL; }
 
-    auto params = self.torrentParams;
-    if (params == nullptr) { return NULL; }
-    _creator = [NSString stringWithUTF8String:params->created_by.c_str()];
-    return _creator;
+        auto params = self.torrentParams;
+        if (params == nullptr) { return NULL; }
+        _creator = [NSString stringWithUTF8String:params->created_by.c_str()];
+        return _creator;
+    }
 }
 
 - (NSString * _Nullable)comment {
-    if (_didLoadComment) { return _comment; }
-    _didLoadComment = true;
+    @synchronized (self) {
+        if (_didLoadComment) { return _comment; }
+        _didLoadComment = true;
 
-    if (!_status.has_metadata) { return NULL; }
+        if (!_status.has_metadata) { return NULL; }
 
-    auto params = self.torrentParams;
-    if (params == nullptr) { return NULL; }
-    _comment = [NSString stringWithUTF8String:params->comment.c_str()];
-    return _comment;
+        auto params = self.torrentParams;
+        if (params == nullptr) { return NULL; }
+        _comment = [NSString stringWithUTF8String:params->comment.c_str()];
+        return _comment;
+    }
 }
 
 - (NSDate * _Nullable)creationDate {
-    if (_didLoadCreationDate) { return _creationDate; }
-    _didLoadCreationDate = true;
+    @synchronized (self) {
+        if (_didLoadCreationDate) { return _creationDate; }
+        _didLoadCreationDate = true;
 
-    if (!_status.has_metadata) { return NULL; }
+        if (!_status.has_metadata) { return NULL; }
 
-    auto params = self.torrentParams;
-    if (params == nullptr) { return NULL; }
-    _creationDate = [[NSDate alloc] initWithTimeIntervalSince1970:params->creation_date];
-    return _creationDate;
+        auto params = self.torrentParams;
+        if (params == nullptr) { return NULL; }
+        _creationDate = [[NSDate alloc] initWithTimeIntervalSince1970:params->creation_date];
+        return _creationDate;
+    }
 }
 
 - (lt::add_torrent_params const * _Nullable)torrentParams {
-    if (_didLoadTorrentParams) return _torrentParams.get();
-    _didLoadTorrentParams = YES;
+    @synchronized (self) {
+        if (_didLoadTorrentParams) return _torrentParams.get();
+        _didLoadTorrentParams = YES;
 
-    NSString *filePath = self.torrentFilePath;
-    if (filePath == nil) return nullptr;
+        NSString *filePath = self.torrentFilePath;
+        if (filePath == nil) return nullptr;
 
-    lt::error_code error;
-    auto params = lt::load_torrent_file(filePath.UTF8String, error, lt::load_torrent_limits{});
-    if (error || params.ti == nullptr) return nullptr;
+        lt::error_code error;
+        auto params = lt::load_torrent_file(filePath.UTF8String, error, lt::load_torrent_limits{});
+        if (error || params.ti == nullptr) return nullptr;
 
-    _torrentParams = std::make_shared<lt::add_torrent_params const>(std::move(params));
-    return _torrentParams.get();
+        _torrentParams = std::make_shared<lt::add_torrent_params const>(std::move(params));
+        return _torrentParams.get();
+    }
 }
 
 - (NSDate * _Nullable)addedDate {
@@ -194,15 +204,17 @@ static lt::add_torrent_params magnetParams(lt::torrent_handle const &handle) {
 }
 
 - (uint64_t)total {
-    if (_didLoadTotal) { return _total; }
-    _didLoadTotal = true;
+    @synchronized (self) {
+        if (_didLoadTotal) { return _total; }
+        _didLoadTotal = true;
 
-    if (!_status.has_metadata) { return 0; }
+        if (!_status.has_metadata) { return 0; }
 
-    auto info = _torrentInfo.get();
-    if (info == nullptr) { return 0; }
-    _total = info->total_size();
-    return _total;
+        auto info = _torrentInfo.get();
+        if (info == nullptr) { return 0; }
+        _total = info->total_size();
+        return _total;
+    }
 }
 
 - (uint64_t)totalDone {
@@ -361,87 +373,95 @@ static lt::add_torrent_params magnetParams(lt::torrent_handle const &handle) {
 }
 
 - (NSArray<TorrentTracker *> *)trackers {
-    if (_trackers != nil) { return _trackers; }
+    @synchronized (self) {
+        if (_trackers != nil) { return _trackers; }
 
-    TorrentHandle *owner = _torrentHandleOwner;
-    if (owner == nil) {
-        _trackers = @[];
-        return _trackers;
-    }
-
-    try {
-        auto trackers = _torrentHandle.trackers();
-        NSMutableArray<TorrentTracker *> *results = [[NSMutableArray alloc] initWithCapacity:trackers.size()];
-
-        for (auto tracker : trackers) {
-            [results addObject:[[TorrentTracker alloc] initWithAnnounceEntry:tracker from:owner]];
+        TorrentHandle *owner = _torrentHandleOwner;
+        if (owner == nil) {
+            _trackers = @[];
+            return _trackers;
         }
 
-        _trackers = [results copy];
-    } catch (std::exception const &exception) {
-        _trackers = @[];
-        NSString *message = [NSString stringWithUTF8String:exception.what()] ?: @"Unknown C++ exception";
-        [_session reportErrorWithCode:ErrorCodeLibtorrentOperationFailed
-                            operation:@"snapshot.trackers"
-                              message:message];
-    } catch (...) {
-        _trackers = @[];
-        [_session reportErrorWithCode:ErrorCodeLibtorrentOperationFailed
-                            operation:@"snapshot.trackers"
-                              message:@"Unknown C++ exception"];
+        try {
+            auto trackers = _torrentHandle.trackers();
+            NSMutableArray<TorrentTracker *> *results = [[NSMutableArray alloc] initWithCapacity:trackers.size()];
+
+            for (auto tracker : trackers) {
+                [results addObject:[[TorrentTracker alloc] initWithAnnounceEntry:tracker from:owner]];
+            }
+
+            _trackers = [results copy];
+        } catch (std::exception const &exception) {
+            _trackers = @[];
+            NSString *message = [NSString stringWithUTF8String:exception.what()] ?: @"Unknown C++ exception";
+            [_session reportErrorWithCode:ErrorCodeLibtorrentOperationFailed
+                                operation:@"snapshot.trackers"
+                                  message:message];
+        } catch (...) {
+            _trackers = @[];
+            [_session reportErrorWithCode:ErrorCodeLibtorrentOperationFailed
+                                operation:@"snapshot.trackers"
+                                  message:@"Unknown C++ exception"];
+        }
+        return _trackers;
     }
-    return _trackers;
 }
 
 - (NSString *)magnetLink {
-    if (_magnetLink != nil) { return _magnetLink; }
+    @synchronized (self) {
+        if (_magnetLink != nil) { return _magnetLink; }
 
-    try {
-        auto uri = lt::make_magnet_uri(magnetParams(_torrentHandle));
-        _magnetLink = [NSString stringWithCString:uri.c_str() encoding:NSUTF8StringEncoding] ?: @"";
-    } catch (std::exception const &exception) {
-        _magnetLink = @"";
-        NSString *message = [NSString stringWithUTF8String:exception.what()] ?: @"Unknown C++ exception";
-        [_session reportErrorWithCode:ErrorCodeLibtorrentOperationFailed
-                            operation:@"snapshot.magnetLink"
-                              message:message];
-    } catch (...) {
-        _magnetLink = @"";
-        [_session reportErrorWithCode:ErrorCodeLibtorrentOperationFailed
-                            operation:@"snapshot.magnetLink"
-                              message:@"Unknown C++ exception"];
+        try {
+            auto uri = lt::make_magnet_uri(magnetParams(_torrentHandle));
+            _magnetLink = [NSString stringWithCString:uri.c_str() encoding:NSUTF8StringEncoding] ?: @"";
+        } catch (std::exception const &exception) {
+            _magnetLink = @"";
+            NSString *message = [NSString stringWithUTF8String:exception.what()] ?: @"Unknown C++ exception";
+            [_session reportErrorWithCode:ErrorCodeLibtorrentOperationFailed
+                                operation:@"snapshot.magnetLink"
+                                  message:message];
+        } catch (...) {
+            _magnetLink = @"";
+            [_session reportErrorWithCode:ErrorCodeLibtorrentOperationFailed
+                                operation:@"snapshot.magnetLink"
+                                  message:@"Unknown C++ exception"];
+        }
+        return _magnetLink;
     }
-    return _magnetLink;
 }
 
 - (NSString * _Nullable)torrentFilePath {
-    if (_didLoadTorrentFilePath) { return _torrentFilePath; }
-    _didLoadTorrentFilePath = true;
+    @synchronized (self) {
+        if (_didLoadTorrentFilePath) { return _torrentFilePath; }
+        _didLoadTorrentFilePath = true;
 
-    if (!self.isValid || !self.hasMetadata) { return NULL; }
+        if (!self.isValid || !self.hasMetadata) { return NULL; }
 
-    NSString *filePath = [_session torrentFilePathForInfoHashes:self.infoHashes];
+        NSString *filePath = [_session torrentFilePathForInfoHashes:self.infoHashes];
 
-    if (![[NSFileManager defaultManager] fileExistsAtPath:filePath]) {
-        return NULL;
+        if (![[NSFileManager defaultManager] fileExistsAtPath:filePath]) {
+            return NULL;
+        }
+
+        _torrentFilePath = filePath;
+        return _torrentFilePath;
     }
-
-    _torrentFilePath = filePath;
-    return _torrentFilePath;
 }
 
 - (NSURL * _Nullable)downloadPath {
-    if (_didLoadDownloadPath) { return _downloadPath; }
-    _didLoadDownloadPath = true;
+    @synchronized (self) {
+        if (_didLoadDownloadPath) { return _downloadPath; }
+        _didLoadDownloadPath = true;
 
-    if (!self.isValid || !self.hasMetadata) { return NULL; }
+        if (!self.isValid || !self.hasMetadata) { return NULL; }
 
-    auto savePath = _status.save_path;
-//    auto url = [NSString stringWithFormat:@"file://%s", savePath.c_str()];
-//    return [NSURL URLWithString: url].URLByStandardizingPath;
-    auto path = [NSString stringWithUTF8String:savePath.c_str()];
-    _downloadPath = [NSURL fileURLWithPath:path];
-    return _downloadPath;
+        auto savePath = _status.save_path;
+    //    auto url = [NSString stringWithFormat:@"file://%s", savePath.c_str()];
+    //    return [NSURL URLWithString: url].URLByStandardizingPath;
+        auto path = [NSString stringWithUTF8String:savePath.c_str()];
+        _downloadPath = [NSURL fileURLWithPath:path];
+        return _downloadPath;
+    }
 }
 
 - (NSUUID * _Nullable)storageUUID {
